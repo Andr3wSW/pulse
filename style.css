@@ -888,3 +888,137 @@ body{
 
 
 }
+
+/* ===========================
+   How Pulse Works
+=========================== */
+
+
+.how-it-works{
+
+    width:85%;
+
+    max-width:1200px;
+
+    margin:150px auto;
+
+    text-align:center;
+
+}
+
+
+
+.how-it-works h2{
+
+    font-size:60px;
+
+}
+
+
+
+.subtitle{
+
+    color:#A8B3CF;
+
+    font-size:20px;
+
+    margin-top:20px;
+
+}
+
+
+
+.steps{
+
+    display:flex;
+
+    justify-content:center;
+
+    gap:40px;
+
+    margin-top:70px;
+
+}
+
+
+
+.step{
+
+    background:#171A21;
+
+    border:1px solid rgba(255,255,255,.08);
+
+    padding:40px;
+
+    border-radius:24px;
+
+    flex:1;
+
+}
+
+
+
+.step-number{
+
+    width:55px;
+
+    height:55px;
+
+    margin:auto;
+
+    margin-bottom:25px;
+
+    border-radius:50%;
+
+    background:#22C55E;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    font-size:24px;
+
+    font-weight:700;
+
+}
+
+
+
+.step p{
+
+    color:#A8B3CF;
+
+    line-height:1.6;
+
+}
+
+/* ===========================
+   Scroll Reveal
+=========================== */
+
+
+.reveal{
+
+    opacity:0;
+
+    transform:translateY(60px);
+
+    transition:
+
+    opacity .8s ease,
+
+    transform .8s ease;
+
+}
+
+
+
+.reveal.visible{
+
+    opacity:1;
+
+    transform:translateY(0);
+
+}
