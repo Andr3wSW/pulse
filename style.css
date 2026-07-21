@@ -1022,3 +1022,42 @@ body{
     transform:translateY(0);
 
 }
+
+html{
+    scroll-behavior:smooth;
+}
+
+.navbar{
+
+    position:fixed;
+
+    top:0;
+
+    left:50%;
+
+    transform:translateX(-50%);
+
+    z-index:100;
+
+}
+
+header{
+
+    height:100px;
+
+}
+
+.navbar{
+
+    background:rgba(15,17,21,.65);
+
+    backdrop-filter:blur(20px);
+
+    border:1px solid rgba(255,255,255,.08);
+
+    border-radius:20px;
+
+    padding:20px 30px;
+
+}
+
