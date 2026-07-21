@@ -36,11 +36,20 @@
 
         <ul class="nav-links">
 
-            <li><a href="#">Features</a></li>
-            <li><a href="#">About</a></li>
-
+            <li>
+                <a href="javascript:void(0)" onclick="scrollToSection('features')">
+                    Features
+                </a>
+            </li>
+        
+            <li>
+                <a href="javascript:void(0)" onclick="scrollToSection('statement')">
+                    About
+                </a>
+            </li>
+        
         </ul>
-
+        
         <div class="nav-buttons">
 
             <button class="login-btn">
@@ -158,8 +167,7 @@
 
 <!-- Brand Statement -->
 
-<section class="statement">
-
+<section class="statement reveal" id="statement">
     <h2>
         Communication
         <span>should</span>
@@ -177,10 +185,9 @@
 
 <!-- Features -->
 
-<section class="features">
+<section class="features" id="features">
 
-
-    <div class="feature">
+    <div class="feature reveal">
 
 
         <div class="feature-text">
@@ -215,7 +222,7 @@
 
 
 
-    <div class="feature reverse">
+    <div class="feature reverse reveal">
 
 
         <div class="feature-visual">
@@ -249,7 +256,7 @@
 
 
 
-    <div class="feature">
+    <div class="feature reveal">
 
 
         <div class="feature-text">
@@ -273,6 +280,81 @@
                 📹
 
             </div>
+
+        </div>
+
+
+    </div>
+
+
+</section>
+
+<section class="how-it-works reveal" id="how">
+
+
+    <h2>
+        How Pulse works.
+    </h2>
+
+
+    <p class="subtitle">
+        Start connecting in just a few steps.
+    </p>
+
+
+
+    <div class="steps">
+
+
+        <div class="step">
+
+            <div class="step-number">
+                1
+            </div>
+
+            <h3>
+                Create an account
+            </h3>
+
+            <p>
+                Choose your username and build your profile.
+            </p>
+
+        </div>
+
+
+
+        <div class="step">
+
+            <div class="step-number">
+                2
+            </div>
+
+            <h3>
+                Find friends
+            </h3>
+
+            <p>
+                Add people and start conversations.
+            </p>
+
+        </div>
+
+
+
+        <div class="step">
+
+            <div class="step-number">
+                3
+            </div>
+
+            <h3>
+                Start chatting
+            </h3>
+
+            <p>
+                Message, call, and stay connected.
+            </p>
 
         </div>
 
