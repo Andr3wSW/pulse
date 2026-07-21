@@ -1,3 +1,5 @@
+console.log("Pulse JS loaded");
+
 const typing = document.getElementById("typing");
 const newMessage = document.getElementById("newMessage");
 
