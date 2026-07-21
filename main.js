@@ -1,62 +1,33 @@
 console.log("Pulse JS loaded");
 
-const typing = document.getElementById("typing");
-const newMessage = document.getElementById("newMessage");
 
+// Smooth scrolling
 
-setInterval(()=>{
+window.scrollToSection = function(id){
 
+    const section = document.getElementById(id);
 
-    typing.style.display="block";
+    if(section){
 
+        section.scrollIntoView({
+            behavior:"smooth"
+        });
 
-    setTimeout(()=>{
+    }
 
-
-        typing.style.display="none";
-
-        newMessage.classList.add("show");
-
-
-    },2000);
+};
 
 
 
-    setTimeout(()=>{
+// Scroll reveal
+
+const revealElements = document.querySelectorAll(".reveal");
 
 
-        newMessage.classList.remove("show");
-
-
-    },6000);
-
-
-
-},8000);
-
-// Smooth scrolling without changing URL
-
-function scrollToSection(id){
-
-    document
-    .getElementById(id)
-    .scrollIntoView({
-
-        behavior:"smooth"
-
-    });
-
-}
-
-
-
-// Scroll reveal animation
-
-const observer = new IntersectionObserver((entries)=>{
-
+const observer = new IntersectionObserver(
+(entries)=>{
 
     entries.forEach(entry=>{
-
 
         if(entry.isIntersecting){
 
@@ -64,20 +35,15 @@ const observer = new IntersectionObserver((entries)=>{
 
         }
 
-
     });
 
-
-},{
-
-    threshold:.15
-
+},
+{
+    threshold:0.15
 });
 
 
-
-document.querySelectorAll(".reveal")
-.forEach(element=>{
+revealElements.forEach(element=>{
 
     observer.observe(element);
 
