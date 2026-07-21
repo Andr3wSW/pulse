@@ -636,3 +636,226 @@ body{
 
 
 }
+
+/* ===========================
+   Brand Statement
+=========================== */
+
+
+.statement{
+
+    width:80%;
+
+    max-width:1000px;
+
+    margin:180px auto;
+
+    text-align:center;
+
+}
+
+
+.statement h2{
+
+    font-size:64px;
+
+    line-height:1.1;
+
+    font-weight:800;
+
+}
+
+
+.statement h2 span{
+
+    color:#22C55E;
+
+}
+
+
+.statement p{
+
+    margin-top:30px;
+
+    font-size:20px;
+
+    color:#A8B3CF;
+
+}
+
+
+
+/* ===========================
+   Features
+=========================== */
+
+
+.features{
+
+    width:85%;
+
+    max-width:1200px;
+
+    margin:auto;
+
+}
+
+
+
+.feature{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    gap:80px;
+
+    margin-bottom:180px;
+
+}
+
+
+.feature.reverse{
+
+    flex-direction:row-reverse;
+
+}
+
+
+
+.feature-text{
+
+    flex:1;
+
+}
+
+
+.feature-text h3{
+
+    font-size:42px;
+
+    margin-bottom:25px;
+
+}
+
+
+
+.feature-text p{
+
+    color:#A8B3CF;
+
+    font-size:20px;
+
+    line-height:1.7;
+
+}
+
+
+
+.feature-visual{
+
+    flex:1;
+
+    display:flex;
+
+    justify-content:center;
+
+}
+
+
+
+.chat-orb,
+.people-orb,
+.call-orb{
+
+
+    width:260px;
+
+    height:260px;
+
+
+    border-radius:50%;
+
+
+    background:
+
+    radial-gradient(
+    circle,
+    rgba(34,197,94,.35),
+    rgba(34,197,94,.05)
+    );
+
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+
+    font-size:90px;
+
+
+    box-shadow:
+
+    0 0 80px rgba(34,197,94,.2);
+
+
+    animation:orbFloat 6s ease-in-out infinite;
+
+
+}
+
+
+
+.people-orb{
+
+    background:
+
+    radial-gradient(
+    circle,
+    rgba(0,191,255,.35),
+    rgba(0,191,255,.05)
+    );
+
+    animation-delay:-2s;
+
+}
+
+
+
+.call-orb{
+
+    background:
+
+    radial-gradient(
+    circle,
+    rgba(139,92,246,.35),
+    rgba(139,92,246,.05)
+    );
+
+    animation-delay:-4s;
+
+}
+
+
+
+@keyframes orbFloat{
+
+
+    0%,100%{
+
+        transform:translateY(0);
+
+    }
+
+
+    50%{
+
+        transform:translateY(-15px);
+
+    }
+
+}
