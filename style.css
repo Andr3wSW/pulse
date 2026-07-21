@@ -859,3 +859,32 @@ body{
     }
 
 }
+
+@media(max-width:900px){
+
+
+    .statement h2{
+
+        font-size:42px;
+
+    }
+
+
+    .feature,
+    .feature.reverse{
+
+        flex-direction:column;
+
+        text-align:center;
+
+    }
+
+
+    .feature-text h3{
+
+        font-size:34px;
+
+    }
+
+
+}
