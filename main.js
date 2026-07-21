@@ -31,3 +31,52 @@ setInterval(()=>{
 
 
 },8000);
+
+// Smooth scrolling without changing URL
+
+function scrollToSection(id){
+
+    document
+    .getElementById(id)
+    .scrollIntoView({
+
+        behavior:"smooth"
+
+    });
+
+}
+
+
+
+// Scroll reveal animation
+
+const observer = new IntersectionObserver((entries)=>{
+
+
+    entries.forEach(entry=>{
+
+
+        if(entry.isIntersecting){
+
+            entry.target.classList.add("visible");
+
+        }
+
+
+    });
+
+
+},{
+
+    threshold:.15
+
+});
+
+
+
+document.querySelectorAll(".reveal")
+.forEach(element=>{
+
+    observer.observe(element);
+
+});
