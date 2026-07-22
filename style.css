@@ -1662,29 +1662,6 @@ footer p{
 }
 
 /* ===========================
-   Animated Pulse Thing
-=========================== */
-
-#scrollProgress{
-
-    position:fixed;
-
-    top:0;
-    left:0;
-
-    width:0%;
-
-    height:3px;
-
-    background:#22C55E;
-
-    z-index:9999;
-
-    transition:width .05s linear;
-
-}
-
-/* ===========================
    Lucide Sizes
 =========================== */
 
@@ -1712,5 +1689,45 @@ footer p{
     height:96px;
 
     stroke-width:1.5;
+
+}
+
+/* ===========================
+   Animated Pulse Thing
+=========================== */
+
+#scrollProgress{
+
+    position:fixed;
+
+    top:0;
+    left:0;
+
+    width:0%;
+
+    height:3px;
+
+    background:#22C55E;
+
+    z-index:9999;
+
+    transition:width .05s linear;
+
+}
+
+#pulse-network{
+
+    position:fixed;
+
+    inset:0;
+
+    width:100%;
+    height:100%;
+
+    z-index:-1;
+
+    pointer-events:none;
+
+    opacity:.45;
 
 }
