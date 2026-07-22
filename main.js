@@ -64,3 +64,5 @@ window.addEventListener("scroll",()=>{
         .style.width = percent + "%";
 
 });
+
+lucide.createIcons();
