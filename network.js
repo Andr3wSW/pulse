@@ -52,43 +52,7 @@ for(let i = 0; i < nodeCount; i++){
 
 }
 
-function createPulse(){
 
-    if(nodes.length < 2) return;
-
-
-    const a =
-    nodes[Math.floor(Math.random()*nodes.length)];
-
-
-    const b =
-    nodes[Math.floor(Math.random()*nodes.length)];
-
-
-    const distance =
-    Math.hypot(
-        a.x-b.x,
-        a.y-b.y
-    );
-
-
-    if(distance > 180) return;
-
-
-    pulses.push({
-
-        from:a,
-
-        to:b,
-
-        progress:0,
-
-        speed:
-        Math.random()*0.004 + 0.003
-
-    });
-
-}
 
 
 
@@ -249,20 +213,89 @@ for(let i = 0; i < nodes.length; i++){
 
 
 
+        // Heartbeat pulse
+
+        const waveHeight = 12;
+        const waveWidth = 35;
+
+
         ctx.beginPath();
 
 
-        ctx.arc(
-            x,
-            y,
-            4,
-            0,
-            Math.PI*2
-        );
+        for(let i = -waveWidth; i <= waveWidth; i++){
 
 
-        ctx.fillStyle =
+            const offset =
+            i / waveWidth;
+
+
+            let wave = 0;
+
+
+            if(offset > -0.25 && offset < -0.1){
+
+                wave =
+                Math.sin(
+                    (offset + .25) * Math.PI * 4
+                )
+                * waveHeight;
+
+            }
+
+
+            if(offset >= -0.1 && offset <= .1){
+
+                wave =
+                -Math.sin(
+                    (offset + .1) * Math.PI * 10
+                )
+                * waveHeight;
+
+            }
+
+
+            if(offset > .1 && offset < .25){
+
+                wave =
+                Math.sin(
+                    (offset - .1) * Math.PI * 4
+                )
+                * waveHeight;
+
+            }
+
+
+
+            const px =
+            x + i;
+
+
+            const py =
+            y + wave;
+
+
+
+            if(i === -waveWidth){
+
+                ctx.moveTo(px,py);
+
+            }
+            else{
+
+                ctx.lineTo(px,py);
+
+            }
+
+
+        }
+
+
+
+        ctx.strokeStyle =
         "rgba(34,197,94,1)";
+
+
+        ctx.lineWidth = 2;
 
 
         ctx.shadowBlur = 20;
@@ -271,21 +304,10 @@ for(let i = 0; i < nodes.length; i++){
         "rgba(34,197,94,.8)";
 
 
-        ctx.fill();
+        ctx.stroke();
 
 
         ctx.shadowBlur = 0;
-
-
-
-        if(pulse.progress >= 1){
-
-            pulses.splice(index,1);
-
-        }
-
-
-    });
 
 
 
