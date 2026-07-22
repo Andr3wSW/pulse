@@ -71,6 +71,71 @@ function animate(){
 
     nodes.forEach(node=>{
 
+        // ==========================
+// Connections
+// ==========================
+
+
+for(let i = 0; i < nodes.length; i++){
+
+    for(let j = i + 1; j < nodes.length; j++){
+
+
+        const a = nodes[i];
+        const b = nodes[j];
+
+
+        const distance = Math.hypot(
+            a.x - b.x,
+            a.y - b.y
+        );
+
+
+
+        const maxDistance = 180;
+
+
+
+        if(distance < maxDistance){
+
+
+            const opacity =
+                1 - (distance / maxDistance);
+
+
+
+            ctx.beginPath();
+
+
+            ctx.moveTo(
+                a.x,
+                a.y
+            );
+
+
+            ctx.lineTo(
+                b.x,
+                b.y
+            );
+
+
+            ctx.strokeStyle =
+            `rgba(34,197,94,${opacity * .25})`;
+
+
+            ctx.lineWidth = 1;
+
+
+            ctx.stroke();
+
+
+        }
+
+
+    }
+
+}
+
 
         node.x += node.vx;
         node.y += node.vy;
