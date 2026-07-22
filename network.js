@@ -258,7 +258,30 @@ function animate(){
 
 
         const waveHeight = 12;
-        const waveWidth = 35;
+        const waveWidth = 50;
+
+
+        // Direction of the connection
+
+        const angle = Math.atan2(
+            pulse.to.y - pulse.from.y,
+            pulse.to.x - pulse.from.x
+        );
+
+
+
+        ctx.save();
+
+
+        // Move to current pulse position
+
+        ctx.translate(
+            x,
+            y
+        );
+
+
+        ctx.rotate(angle);
 
 
 
@@ -266,22 +289,20 @@ function animate(){
 
 
 
-        for(let i=-waveWidth; i<=waveWidth; i++){
+        for(let i = -waveWidth; i <= waveWidth; i++){
 
 
-            const offset =
-            i / waveWidth;
+            const offset = i / waveWidth;
 
 
             let wave = 0;
-
 
 
             if(offset > -.25 && offset < -.1){
 
                 wave =
                 Math.sin(
-                    (offset+.25)
+                    (offset + .25)
                     * Math.PI
                     * 4
                 )
@@ -290,12 +311,11 @@ function animate(){
             }
 
 
-
             if(offset >= -.1 && offset <= .1){
 
                 wave =
                 -Math.sin(
-                    (offset+.1)
+                    (offset + .1)
                     * Math.PI
                     * 10
                 )
@@ -304,12 +324,11 @@ function animate(){
             }
 
 
-
             if(offset > .1 && offset < .25){
 
                 wave =
                 Math.sin(
-                    (offset-.1)
+                    (offset - .1)
                     * Math.PI
                     * 4
                 )
@@ -319,29 +338,19 @@ function animate(){
 
 
 
-
-            const px =
-            x + i;
-
-
-            const py =
-            y + wave;
-
-
-
             if(i === -waveWidth){
 
                 ctx.moveTo(
-                    px,
-                    py
+                    i,
+                    wave
                 );
 
             }
             else{
 
                 ctx.lineTo(
-                    px,
-                    py
+                    i,
+                    wave
                 );
 
             }
@@ -365,6 +374,9 @@ function animate(){
 
 
         ctx.stroke();
+
+
+        ctx.restore();
 
 
         ctx.shadowBlur = 0;
