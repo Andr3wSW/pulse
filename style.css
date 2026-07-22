@@ -35,11 +35,27 @@ body{
 
 .logo{
 
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
     font-size:30px;
 
     font-weight:800;
 
-    color:#22C55E;
+    color:white;
+
+}
+
+.logo img{
+
+    width:42px;
+
+    height:42px;
+
+    object-fit:contain;
 
 }
 
@@ -439,34 +455,45 @@ body{
 
 .pulse-icon{
 
-    width:90px;
-
-    height:90px;
-
-
-    border-radius:50%;
-
-
-    background:#22C55E;
-
+    width:120px;
+    height:120px;
 
     display:flex;
-
     justify-content:center;
-
     align-items:center;
-
-
-    font-size:40px;
-
-
-    box-shadow:
-
-    0 0 60px rgba(34,197,94,.5);
-
 
     margin-bottom:35px;
 
+    animation:logoGlow 3s ease-in-out infinite;
+
+}
+
+.pulse-icon img{
+
+    width:100%;
+    height:100%;
+
+    object-fit:contain;
+
+    filter:
+        drop-shadow(0 0 20px rgba(34,197,94,.25))
+        drop-shadow(0 0 40px rgba(34,197,94,.15));
+
+}
+
+@keyframes logoGlow{
+
+    0%,100%{
+
+        transform:scale(1);
+
+    }
+
+    50%{
+
+        transform:scale(1.04);
+
+    }
 
 }
 
@@ -1289,13 +1316,27 @@ footer{
 
 .footer-logo{
 
-    color:#22C55E;
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    gap:14px;
 
     font-size:32px;
 
     font-weight:800;
 
     margin-bottom:25px;
+
+}
+
+.footer-logo img{
+
+    width:48px;
+
+    height:48px;
 
 }
 
