@@ -1,6 +1,7 @@
 const canvas = document.getElementById("pulse-network");
 const ctx = canvas.getContext("2d");
 
+
 let width;
 let height;
 
@@ -13,6 +14,7 @@ function resizeCanvas(){
 }
 
 window.addEventListener("resize", resizeCanvas);
+
 resizeCanvas();
 
 
@@ -22,23 +24,24 @@ resizeCanvas();
 // ==========================
 
 const nodes = [];
-
 const connections = [];
 
+
 const nodeCount = 45;
+
 
 
 for(let i = 0; i < nodeCount; i++){
 
     nodes.push({
 
-        x: Math.random() * width,
-        y: Math.random() * height,
+        x: Math.random()*width,
+        y: Math.random()*height,
 
-        radius: Math.random() * 2 + 1,
+        radius: Math.random()*2+1,
 
-        vx:(Math.random() - .5) * .15,
-        vy:(Math.random() - .5) * .15
+        vx:(Math.random()-.5)*.15,
+        vy:(Math.random()-.5)*.15
 
     });
 
@@ -47,24 +50,77 @@ for(let i = 0; i < nodeCount; i++){
 
 
 // ==========================
-// Create Pulse
+// Create Permanent Connections
 // ==========================
 
-function createPulse(){
+function createConnections(){
 
-    if(connections.length === 0)
+    connections.length = 0;
+
+
+    for(let i=0;i<nodes.length;i++){
+
+        for(let j=i+1;j<nodes.length;j++){
+
+
+            const distance =
+            Math.hypot(
+                nodes[i].x-nodes[j].x,
+                nodes[i].y-nodes[j].y
+            );
+
+
+            if(distance < 180){
+
+                connections.push({
+
+                    from:nodes[i],
+
+                    to:nodes[j],
+
+                    pulse:null
+
+                });
+
+            }
+
+        }
+
+    }
+
+}
+
+
+createConnections();
+
+
+
+// ==========================
+// Start Pulse
+// ==========================
+
+function startPulse(){
+
+
+    if(connections.length===0)
         return;
+
 
 
     const connection =
     connections[
         Math.floor(
-            Math.random() * connections.length
+            Math.random()*connections.length
         )
     ];
 
 
-    connection.pulse = 0;
+
+    if(connection.pulse===null){
+
+        connection.pulse=0;
+
+    }
 
 }
 
@@ -72,9 +128,168 @@ function createPulse(){
 
 setInterval(()=>{
 
-    createPulse();
+    startPulse();
 
 },2000);
+
+
+
+// ==========================
+// Draw Connection
+// ==========================
+
+function drawConnection(connection){
+
+
+    const a = connection.from;
+    const b = connection.to;
+
+
+    const dx = b.x-a.x;
+    const dy = b.y-a.y;
+
+
+    const distance =
+    Math.hypot(dx,dy);
+
+
+    const angle =
+    Math.atan2(dy,dx);
+
+
+
+    const opacity =
+    1-distance/180;
+
+
+
+    ctx.save();
+
+
+    ctx.translate(
+        a.x,
+        a.y
+    );
+
+
+    ctx.rotate(angle);
+
+
+
+    ctx.beginPath();
+
+
+
+    // ----------------------
+    // No pulse
+    // ----------------------
+
+    if(connection.pulse===null){
+
+
+        ctx.moveTo(
+            0,
+            0
+        );
+
+
+        ctx.lineTo(
+            distance,
+            0
+        );
+
+
+    }
+
+
+    // ----------------------
+    // Heartbeat pulse
+    // ----------------------
+
+    else{
+
+
+        const p =
+        connection.pulse;
+
+
+        const pulseX =
+        distance*p;
+
+
+
+        const spikeSize = 12;
+
+
+
+        ctx.moveTo(
+            0,
+            0
+        );
+
+
+        ctx.lineTo(
+            pulseX-25,
+            0
+        );
+
+
+        // heartbeat goes UP
+
+        ctx.lineTo(
+            pulseX,
+            -spikeSize
+        );
+
+
+        // heartbeat goes DOWN
+
+        ctx.lineTo(
+            pulseX+12,
+            0
+        );
+
+
+        ctx.lineTo(
+            distance,
+            0
+        );
+
+
+    }
+
+
+
+    ctx.strokeStyle =
+    `rgba(34,197,94,${opacity*.25})`;
+
+
+    ctx.lineWidth=1;
+
+
+    ctx.stroke();
+
+
+
+    ctx.restore();
+
+
+
+    if(connection.pulse!==null){
+
+
+        connection.pulse += .008;
+
+
+        if(connection.pulse>=1){
+
+            connection.pulse=null;
+
+        }
+
+    }
+
+}
 
 
 
@@ -94,97 +309,45 @@ function animate(){
 
 
 
-    connections.length = 0;
-
-
-
-    // Move nodes
+    // move nodes
 
     nodes.forEach(node=>{
 
 
-        node.x += node.vx;
-        node.y += node.vy;
+        node.x+=node.vx;
+        node.y+=node.vy;
 
 
+        if(node.x<0)
+            node.x=width;
 
-        if(node.x < 0)
-            node.x = width;
+        if(node.x>width)
+            node.x=0;
 
-        if(node.x > width)
-            node.x = 0;
+        if(node.y<0)
+            node.y=height;
 
-        if(node.y < 0)
-            node.y = height;
-
-        if(node.y > height)
-            node.y = 0;
+        if(node.y>height)
+            node.y=0;
 
 
     });
 
 
 
-    // ==========================
-    // Connections
-    // ==========================
+    connections.forEach(connection=>{
 
+        drawConnection(connection);
 
-    for(let i=0;i<nodes.length;i++){
+    });
 
-        for(let j=i+1;j<nodes.length;j++){
-
-
-            const a = nodes[i];
-            const b = nodes[j];
-
-
-            const distance =
-            Math.hypot(
-                a.x-b.x,
-                a.y-b.y
-            );
-
-
-            if(distance < 180){
-
-
-                const connection = {
-
-                    from:a,
-
-                    to:b,
-
-                    pulse:null
-
-                };
-
-
-                connections.push(connection);
-
-
-
-                drawConnection(connection);
-
-
-            }
-
-        }
-
-    }
-
-
-
-
-    // ==========================
-    // Nodes
-    // ==========================
 
 
     nodes.forEach(node=>{
 
 
         ctx.beginPath();
+
 
         ctx.arc(
             node.x,
@@ -209,156 +372,6 @@ function animate(){
     requestAnimationFrame(animate);
 
 }
-
-
-
-// ==========================
-// Draw Connection
-// ==========================
-
-function drawConnection(connection){
-
-
-    const a = connection.from;
-    const b = connection.to;
-
-
-    const dx = b.x-a.x;
-    const dy = b.y-a.y;
-
-
-
-    const distance =
-    Math.hypot(dx,dy);
-
-
-
-    const opacity =
-    1-(distance/180);
-
-
-
-    ctx.beginPath();
-
-
-
-    if(connection.pulse !== null){
-
-
-        const progress =
-        connection.pulse;
-
-
-
-        const pulseX =
-        a.x + dx * progress;
-
-
-        const pulseY =
-        a.y + dy * progress;
-
-
-
-        const angle =
-        Math.atan2(dy,dx);
-
-
-
-        ctx.save();
-
-
-        ctx.translate(
-            pulseX,
-            pulseY
-        );
-
-
-        ctx.rotate(angle);
-
-
-
-        ctx.moveTo(
-            -distance/2,
-            0
-        );
-
-
-
-        ctx.lineTo(
-            -10,
-            0
-        );
-
-
-        ctx.lineTo(
-            0,
-            -12
-        );
-
-
-        ctx.lineTo(
-            10,
-            0
-        );
-
-
-        ctx.lineTo(
-            distance/2,
-            0
-        );
-
-
-        ctx.restore();
-
-
-
-    }
-    else{
-
-
-        ctx.moveTo(
-            a.x,
-            a.y
-        );
-
-
-        ctx.lineTo(
-            b.x,
-            b.y
-        );
-
-
-    }
-
-
-
-    ctx.strokeStyle =
-    `rgba(34,197,94,${opacity*.25})`;
-
-
-    ctx.lineWidth = 1;
-
-
-    ctx.stroke();
-
-
-
-    if(connection.pulse !== null){
-
-        connection.pulse += .01;
-
-
-        if(connection.pulse >= 1){
-
-            connection.pulse = null;
-
-        }
-
-    }
-
-
-}
-
 
 
 animate();
