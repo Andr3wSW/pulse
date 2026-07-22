@@ -52,6 +52,44 @@ for(let i = 0; i < nodeCount; i++){
 
 }
 
+function createPulse(){
+
+    if(nodes.length < 2) return;
+
+
+    const a =
+    nodes[Math.floor(Math.random()*nodes.length)];
+
+
+    const b =
+    nodes[Math.floor(Math.random()*nodes.length)];
+
+
+    const distance =
+    Math.hypot(
+        a.x-b.x,
+        a.y-b.y
+    );
+
+
+    if(distance > 180) return;
+
+
+    pulses.push({
+
+        from:a,
+
+        to:b,
+
+        progress:0,
+
+        speed:
+        Math.random()*0.004 + 0.003
+
+    });
+
+}
+
 
 
 // ==========================
