@@ -124,6 +124,58 @@ body{
 
 }
 
+.primary,
+.secondary,
+.signup-btn,
+.login-btn,
+.cta button{
+
+    position:relative;
+
+    overflow:hidden;
+
+}
+
+.primary::before,
+.secondary::before,
+.signup-btn::before,
+.login-btn::before,
+.cta button::before{
+
+    content:"";
+
+    position:absolute;
+
+    top:0;
+
+    left:-120%;
+
+    width:60%;
+
+    height:100%;
+
+    background:
+        linear-gradient(
+            120deg,
+            transparent,
+            rgba(255,255,255,.25),
+            transparent
+        );
+
+    transition:left .6s;
+
+}
+
+.primary:hover::before,
+.secondary:hover::before,
+.signup-btn:hover::before,
+.login-btn:hover::before,
+.cta button:hover::before{
+
+    left:160%;
+
+}
+
 .login-btn{
 
     background:none;
@@ -135,6 +187,58 @@ body{
     cursor:pointer;
 
     font-size:15px;
+
+}
+
+.primary,
+.secondary,
+.signup-btn,
+.login-btn,
+.cta button{
+
+    position:relative;
+
+    overflow:hidden;
+
+}
+
+.primary::before,
+.secondary::before,
+.signup-btn::before,
+.login-btn::before,
+.cta button::before{
+
+    content:"";
+
+    position:absolute;
+
+    top:0;
+
+    left:-120%;
+
+    width:60%;
+
+    height:100%;
+
+    background:
+        linear-gradient(
+            120deg,
+            transparent,
+            rgba(255,255,255,.25),
+            transparent
+        );
+
+    transition:left .6s;
+
+}
+
+.primary:hover::before,
+.secondary:hover::before,
+.signup-btn:hover::before,
+.login-btn:hover::before,
+.cta button:hover::before{
+
+    left:160%;
 
 }
 
@@ -155,6 +259,58 @@ body{
     font-weight:600;
 
     transition:.25s;
+
+}
+
+.primary,
+.secondary,
+.signup-btn,
+.login-btn,
+.cta button{
+
+    position:relative;
+
+    overflow:hidden;
+
+}
+
+.primary::before,
+.secondary::before,
+.signup-btn::before,
+.login-btn::before,
+.cta button::before{
+
+    content:"";
+
+    position:absolute;
+
+    top:0;
+
+    left:-120%;
+
+    width:60%;
+
+    height:100%;
+
+    background:
+        linear-gradient(
+            120deg,
+            transparent,
+            rgba(255,255,255,.25),
+            transparent
+        );
+
+    transition:left .6s;
+
+}
+
+.primary:hover::before,
+.secondary:hover::before,
+.signup-btn:hover::before,
+.login-btn:hover::before,
+.cta button:hover::before{
+
+    left:160%;
 
 }
 
@@ -210,6 +366,58 @@ body{
     display:flex;
 
     gap:20px;
+
+}
+
+.primary,
+.secondary,
+.signup-btn,
+.login-btn,
+.cta button{
+
+    position:relative;
+
+    overflow:hidden;
+
+}
+
+.primary::before,
+.secondary::before,
+.signup-btn::before,
+.login-btn::before,
+.cta button::before{
+
+    content:"";
+
+    position:absolute;
+
+    top:0;
+
+    left:-120%;
+
+    width:60%;
+
+    height:100%;
+
+    background:
+        linear-gradient(
+            120deg,
+            transparent,
+            rgba(255,255,255,.25),
+            transparent
+        );
+
+    transition:left .6s;
+
+}
+
+.primary:hover::before,
+.secondary:hover::before,
+.signup-btn:hover::before,
+.login-btn:hover::before,
+.cta button:hover::before{
+
+    left:160%;
 
 }
 
@@ -1313,6 +1521,58 @@ header{
     cursor:pointer;
 
     transition:.3s;
+
+}
+
+.primary,
+.secondary,
+.signup-btn,
+.login-btn,
+.cta button{
+
+    position:relative;
+
+    overflow:hidden;
+
+}
+
+.primary::before,
+.secondary::before,
+.signup-btn::before,
+.login-btn::before,
+.cta button::before{
+
+    content:"";
+
+    position:absolute;
+
+    top:0;
+
+    left:-120%;
+
+    width:60%;
+
+    height:100%;
+
+    background:
+        linear-gradient(
+            120deg,
+            transparent,
+            rgba(255,255,255,.25),
+            transparent
+        );
+
+    transition:left .6s;
+
+}
+
+.primary:hover::before,
+.secondary:hover::before,
+.signup-btn:hover::before,
+.login-btn:hover::before,
+.cta button:hover::before{
+
+    left:160%;
 
 }
 
