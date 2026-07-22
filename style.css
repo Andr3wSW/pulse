@@ -71,19 +71,48 @@ body{
 
 .nav-links a{
 
+    position:relative;
+
     text-decoration:none;
 
     color:#d8d8d8;
 
     font-weight:500;
 
-    transition:.25s;
+    transition:color .3s;
 
 }
 
 .nav-links a:hover{
 
     color:white;
+
+}
+
+.nav-links a::after{
+
+    content:"";
+
+    position:absolute;
+
+    left:0;
+    bottom:-6px;
+
+    width:0;
+
+    height:2px;
+
+    background:#22C55E;
+
+    border-radius:10px;
+
+    transition:width .3s ease;
+
+}
+
+.nav-links a:hover::after{
+
+    width:100%;
 
 }
 
@@ -1369,5 +1398,28 @@ footer{
 footer p{
 
     color:#667085;
+
+}
+
+/* ===========================
+   Animated Pulse Thing
+=========================== */
+
+#scrollProgress{
+
+    position:fixed;
+
+    top:0;
+    left:0;
+
+    width:0%;
+
+    height:3px;
+
+    background:#22C55E;
+
+    z-index:9999;
+
+    transition:width .05s linear;
 
 }
