@@ -5,10 +5,6 @@ let width;
 let height;
 
 
-// ==========================
-// Canvas Setup
-// ==========================
-
 function resizeCanvas(){
 
     width = canvas.width = window.innerWidth;
@@ -17,20 +13,19 @@ function resizeCanvas(){
 }
 
 window.addEventListener("resize", resizeCanvas);
-
 resizeCanvas();
 
 
 
 // ==========================
-// Nodes + Pulses
+// Nodes
 // ==========================
 
 const nodes = [];
-const pulses = [];
+
+const connections = [];
 
 const nodeCount = 45;
-
 
 
 for(let i = 0; i < nodeCount; i++){
@@ -52,42 +47,24 @@ for(let i = 0; i < nodeCount; i++){
 
 
 // ==========================
-// Create Heartbeat Pulse
+// Create Pulse
 // ==========================
 
 function createPulse(){
 
-    const from =
-    nodes[Math.floor(Math.random()*nodes.length)];
-
-
-    const to =
-    nodes[Math.floor(Math.random()*nodes.length)];
-
-
-    const distance =
-    Math.hypot(
-        from.x - to.x,
-        from.y - to.y
-    );
-
-
-    if(distance > 180)
+    if(connections.length === 0)
         return;
 
 
-    pulses.push({
+    const connection =
+    connections[
+        Math.floor(
+            Math.random() * connections.length
+        )
+    ];
 
-        from: from,
 
-        to: to,
-
-        progress:0,
-
-        speed:
-        Math.random() * .004 + .003
-
-    });
+    connection.pulse = 0;
 
 }
 
@@ -97,7 +74,7 @@ setInterval(()=>{
 
     createPulse();
 
-},1500);
+},2000);
 
 
 
@@ -117,71 +94,11 @@ function animate(){
 
 
 
-    // --------------------------
-    // Connections
-    // --------------------------
-
-    for(let i = 0; i < nodes.length; i++){
-
-        for(let j = i + 1; j < nodes.length; j++){
-
-
-            const a = nodes[i];
-            const b = nodes[j];
-
-
-            const distance =
-            Math.hypot(
-                a.x - b.x,
-                a.y - b.y
-            );
-
-
-            const maxDistance = 180;
-
-
-            if(distance < maxDistance){
-
-
-                const opacity =
-                1 - distance / maxDistance;
+    connections.length = 0;
 
 
 
-                ctx.beginPath();
-
-                ctx.moveTo(
-                    a.x,
-                    a.y
-                );
-
-                ctx.lineTo(
-                    b.x,
-                    b.y
-                );
-
-
-                ctx.strokeStyle =
-                `rgba(34,197,94,${opacity * .25})`;
-
-
-                ctx.lineWidth = 1;
-
-                ctx.stroke();
-
-
-            }
-
-        }
-
-    }
-
-
-
-
-    // --------------------------
-    // Nodes
-    // --------------------------
+    // Move nodes
 
     nodes.forEach(node=>{
 
@@ -204,6 +121,67 @@ function animate(){
             node.y = 0;
 
 
+    });
+
+
+
+    // ==========================
+    // Connections
+    // ==========================
+
+
+    for(let i=0;i<nodes.length;i++){
+
+        for(let j=i+1;j<nodes.length;j++){
+
+
+            const a = nodes[i];
+            const b = nodes[j];
+
+
+            const distance =
+            Math.hypot(
+                a.x-b.x,
+                a.y-b.y
+            );
+
+
+            if(distance < 180){
+
+
+                const connection = {
+
+                    from:a,
+
+                    to:b,
+
+                    pulse:null
+
+                };
+
+
+                connections.push(connection);
+
+
+
+                drawConnection(connection);
+
+
+            }
+
+        }
+
+    }
+
+
+
+
+    // ==========================
+    // Nodes
+    // ==========================
+
+
+    nodes.forEach(node=>{
 
 
         ctx.beginPath();
@@ -213,7 +191,7 @@ function animate(){
             node.y,
             node.radius,
             0,
-            Math.PI * 2
+            Math.PI*2
         );
 
 
@@ -228,56 +206,70 @@ function animate(){
 
 
 
+    requestAnimationFrame(animate);
 
-
-    // --------------------------
-    // Heartbeat Pulses
-    // --------------------------
-
-
-    pulses.forEach((pulse,index)=>{
-
-
-        pulse.progress += pulse.speed;
+}
 
 
 
-        const x =
-        pulse.from.x +
-        (pulse.to.x - pulse.from.x)
-        * pulse.progress;
+// ==========================
+// Draw Connection
+// ==========================
+
+function drawConnection(connection){
+
+
+    const a = connection.from;
+    const b = connection.to;
+
+
+    const dx = b.x-a.x;
+    const dy = b.y-a.y;
 
 
 
-        const y =
-        pulse.from.y +
-        (pulse.to.y - pulse.from.y)
-        * pulse.progress;
+    const distance =
+    Math.hypot(dx,dy);
 
 
 
+    const opacity =
+    1-(distance/180);
 
-        const waveHeight = 12;
-        const waveWidth = 50;
 
 
-        // Direction of the connection
+    ctx.beginPath();
 
-        const angle = Math.atan2(
-            pulse.to.y - pulse.from.y,
-            pulse.to.x - pulse.from.x
-        );
+
+
+    if(connection.pulse !== null){
+
+
+        const progress =
+        connection.pulse;
+
+
+
+        const pulseX =
+        a.x + dx * progress;
+
+
+        const pulseY =
+        a.y + dy * progress;
+
+
+
+        const angle =
+        Math.atan2(dy,dx);
 
 
 
         ctx.save();
 
 
-        // Move to current pulse position
-
         ctx.translate(
-            x,
-            y
+            pulseX,
+            pulseY
         );
 
 
@@ -285,116 +277,85 @@ function animate(){
 
 
 
-        ctx.beginPath();
+        ctx.moveTo(
+            -distance/2,
+            0
+        );
 
 
 
-        for(let i = -waveWidth; i <= waveWidth; i++){
+        ctx.lineTo(
+            -10,
+            0
+        );
 
 
-            const offset = i / waveWidth;
+        ctx.lineTo(
+            0,
+            -12
+        );
 
 
-            let wave = 0;
+        ctx.lineTo(
+            10,
+            0
+        );
 
 
-            if(offset > -.25 && offset < -.1){
-
-                wave =
-                Math.sin(
-                    (offset + .25)
-                    * Math.PI
-                    * 4
-                )
-                * waveHeight;
-
-            }
-
-
-            if(offset >= -.1 && offset <= .1){
-
-                wave =
-                -Math.sin(
-                    (offset + .1)
-                    * Math.PI
-                    * 10
-                )
-                * waveHeight;
-
-            }
-
-
-            if(offset > .1 && offset < .25){
-
-                wave =
-                Math.sin(
-                    (offset - .1)
-                    * Math.PI
-                    * 4
-                )
-                * waveHeight;
-
-            }
-
-
-
-            if(i === -waveWidth){
-
-                ctx.moveTo(
-                    i,
-                    wave
-                );
-
-            }
-            else{
-
-                ctx.lineTo(
-                    i,
-                    wave
-                );
-
-            }
-
-
-        }
-
-
-
-        ctx.strokeStyle =
-        "rgba(34,197,94,1)";
-
-
-        ctx.lineWidth = 2;
-
-
-        ctx.shadowBlur = 20;
-
-        ctx.shadowColor =
-        "rgba(34,197,94,.8)";
-
-
-        ctx.stroke();
+        ctx.lineTo(
+            distance/2,
+            0
+        );
 
 
         ctx.restore();
 
 
-        ctx.shadowBlur = 0;
+
+    }
+    else{
+
+
+        ctx.moveTo(
+            a.x,
+            a.y
+        );
+
+
+        ctx.lineTo(
+            b.x,
+            b.y
+        );
+
+
+    }
 
 
 
-        if(pulse.progress >= 1){
+    ctx.strokeStyle =
+    `rgba(34,197,94,${opacity*.25})`;
 
-            pulses.splice(index,1);
+
+    ctx.lineWidth = 1;
+
+
+    ctx.stroke();
+
+
+
+    if(connection.pulse !== null){
+
+        connection.pulse += .01;
+
+
+        if(connection.pulse >= 1){
+
+            connection.pulse = null;
 
         }
 
+    }
 
-    });
-
-
-
-    requestAnimationFrame(animate);
 
 }
 
