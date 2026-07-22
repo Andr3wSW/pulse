@@ -27,6 +27,8 @@ resizeCanvas();
 
 const nodes = [];
 
+const pulses = [];
+
 const nodeCount = 45;
 
 
@@ -71,7 +73,8 @@ function animate(){
 
     nodes.forEach(node=>{
 
-        // ==========================
+
+// ==========================
 // Connections
 // ==========================
 
@@ -182,6 +185,70 @@ for(let i = 0; i < nodes.length; i++){
 
     });
 
+    // ==========================
+    // Draw Pulses
+    // ==========================
+
+
+    pulses.forEach((pulse,index)=>{
+
+
+        pulse.progress += pulse.speed;
+
+
+
+        const x =
+        pulse.from.x +
+        (pulse.to.x - pulse.from.x)
+        * pulse.progress;
+
+
+
+        const y =
+        pulse.from.y +
+        (pulse.to.y - pulse.from.y)
+        * pulse.progress;
+
+
+
+        ctx.beginPath();
+
+
+        ctx.arc(
+            x,
+            y,
+            4,
+            0,
+            Math.PI*2
+        );
+
+
+        ctx.fillStyle =
+        "rgba(34,197,94,1)";
+
+
+        ctx.shadowBlur = 20;
+
+        ctx.shadowColor =
+        "rgba(34,197,94,.8)";
+
+
+        ctx.fill();
+
+
+        ctx.shadowBlur = 0;
+
+
+
+        if(pulse.progress >= 1){
+
+            pulses.splice(index,1);
+
+        }
+
+
+    });
+
 
 
     requestAnimationFrame(animate);
@@ -192,3 +259,9 @@ for(let i = 0; i < nodes.length; i++){
 
 
 animate();
+
+setInterval(()=>{
+
+    createPulse();
+
+},1500);
