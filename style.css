@@ -1895,7 +1895,7 @@ text-decoration:none;
 
 .app-header{
 
-height:80px;
+height:70px;
 
 display:flex;
 
@@ -1903,11 +1903,23 @@ align-items:center;
 
 justify-content:space-between;
 
-padding:0 40px;
+padding:0 35px;
 
 position:relative;
 
 z-index:2;
+
+}
+
+
+
+.app-title{
+
+font-size:24px;
+
+font-weight:700;
+
+color:white;
 
 }
 
@@ -1921,15 +1933,20 @@ align-items:center;
 
 gap:12px;
 
-}
+text-decoration:none;
 
+color:white;
+
+cursor:pointer;
+
+}
 
 
 .profile-circle{
 
-width:40px;
+width:42px;
 
-height:40px;
+height:42px;
 
 border-radius:50%;
 
@@ -1947,6 +1964,22 @@ justify-content:center;
 font-weight:bold;
 
 color:white;
+
+font-size:18px;
+
+overflow:hidden;
+
+}
+
+
+
+.profile-circle img{
+
+width:100%;
+
+height:100%;
+
+object-fit:cover;
 
 }
 
@@ -2115,5 +2148,44 @@ transition:.3s;
 .back-home:hover{
 
 color:#22c55e;
+
+}
+
+.profile{
+
+display:flex;
+
+align-items:center;
+
+gap:12px;
+
+text-decoration:none;
+
+color:white;
+
+cursor:pointer;
+
+transition:.3s;
+
+}
+
+
+.profile:hover{
+
+opacity:.8;
+
+}
+
+.large-profile img{
+
+width:120px;
+
+height:120px;
+
+border-radius:50%;
+
+object-fit:cover;
+
+border:3px solid #22c55e;
 
 }
