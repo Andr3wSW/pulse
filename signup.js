@@ -121,22 +121,41 @@ await setDoc(
 doc(db,"users",user.uid),
 {
 
-firstName:
-firstName.trim(),
+    firstName:firstName,
 
-lastName:
-lastName.trim(),
+    lastName:lastName,
 
-username:
-username.trim(),
 
-usernameLower,
+    username:username,
 
-email:
-email.trim().toLowerCase(),
 
-createdAt:
-Date.now()
+    usernameLower:
+    username.toLowerCase(),
+
+
+    email:email,
+
+
+    searchTerms:[
+
+        firstName.toLowerCase(),
+
+        ...(lastName
+        ?
+        [lastName.toLowerCase()]
+        :
+        []),
+
+
+        (
+        firstName + " " + lastName
+        )
+        .toLowerCase(),
+
+
+        username.toLowerCase()
+
+    ]
 
 }
 );
