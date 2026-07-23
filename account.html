@@ -1,13 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Account | Pulse</title>
+
+<link rel="stylesheet" href="style.css">
+
+</head>
+
+
+<body>
+
+
 <canvas id="pulse-network"></canvas>
+
+
+
+<header class="app-header">
+
+
+<div class="app-title">
+
+Pulse
+
+</div>
+
+
+<a href="app" class="back-home">
+
+← Back to Pulse
+
+</a>
+
+
+</header>
+
+
+
 
 
 <main class="account-container">
 
 
+
 <div class="account-card">
 
 
+
 <div class="large-profile">
+
 
 <img 
 id="profileImage"
@@ -18,6 +63,8 @@ src="pulse_logo.png"
 </div>
 
 
+
+
 <input
 type="file"
 id="imageUpload"
@@ -25,80 +72,101 @@ accept="image/*"
 >
 
 
+
+
 <h1 id="displayName">
+
 Loading...
+
 </h1>
 
 
 <p id="username">
-Loading...
+
+@username
+
 </p>
 
 
 
-<div class="settings-section">
+
+
+<div class="account-section">
+
 
 <h2>
-Username
+About Me
 </h2>
 
 
-<input 
-id="usernameInput"
-placeholder="New username"
->
-
-
-<button id="changeUsername">
-Change Username
-</button>
-
-
-<p id="usernameTimer"></p>
-
-</div>
-
-
-
-
-<div class="settings-section">
-
-<h2>
-Profile Picture
-</h2>
-
-
-<input 
-type="file"
-id="imageUpload"
-accept="image/*"
->
-
-
-</div>
-
-
-
-
-<div class="settings-section">
-
-<h2>
-Bio
-</h2>
-
-
-<textarea 
+<textarea
 id="bioInput"
 placeholder="Tell people about yourself..."
+maxlength="200"
 ></textarea>
 
 
-<button id="saveBio">
-Save
+
+<button 
+id="saveBio"
+class="primary"
+>
+
+Save Bio
+
 </button>
 
 
 </div>
+
+
+
+
+
+<div class="account-section">
+
+
+<h2>
+Account Information
+</h2>
+
+
+
+<div class="info-row">
+
+<span>
+Email
+</span>
+
+<span id="email">
+
+Loading...
+
+</span>
+
+</div>
+
+
+
+<div class="info-row">
+
+<span>
+Joined
+</span>
+
+<span id="createdAt">
+
+Loading...
+
+</span>
+
+</div>
+
+
+
+</div>
+
+
 
 
 
@@ -107,15 +175,28 @@ Save
 id="logout"
 class="logout-btn"
 >
+
 Logout
+
 </button>
 
 
 
 </div>
 
+
+
+</main>
+
+
+
+
+
 <script src="network.js"></script>
 
 <script type="module" src="account.js"></script>
 
-</main>
+
+</body>
+
+</html>
