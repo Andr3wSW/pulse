@@ -2,6 +2,8 @@ import { db, auth } from "./firebase.js";
 
 import {
 collection,
+doc,
+getDoc,
 addDoc,
 serverTimestamp,
 query,
@@ -69,8 +71,13 @@ div.className =
 
 div.innerHTML = `
 
-<strong>
+<strong 
+class="chat-user"
+data-user="${data.senderID}"
+>
+
 ${data.senderName}
+
 </strong>
 
 <br>
@@ -78,6 +85,23 @@ ${data.senderName}
 ${data.text}
 
 `;
+
+document
+.querySelectorAll(".chat-user")
+.forEach(name=>{
+
+
+name.onclick=()=>{
+
+
+window.location.href =
+"profile?uid=" + name.dataset.user;
+
+
+};
+
+
+});
 
 
 
@@ -106,9 +130,26 @@ const text =
 input.value.trim();
 
 
-
 if(!text)
 return;
+
+
+
+const userSnap =
+await getDoc(
+
+doc(
+db,
+"users",
+auth.currentUser.uid
+)
+
+);
+
+
+
+const userData =
+userSnap.data();
 
 
 
@@ -120,11 +161,20 @@ collection(db,"messages"),
 
 text:text,
 
-senderID:auth.currentUser.uid,
+senderID:
+auth.currentUser.uid,
 
-senderName:auth.currentUser.email,
 
-createdAt:serverTimestamp()
+senderName:
+userData.firstName,
+
+
+profilePicture:
+userData.profilePicture || "",
+
+
+createdAt:
+serverTimestamp()
 
 }
 
