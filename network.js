@@ -13,8 +13,8 @@ function resizeCanvas(){
 
 }
 
-window.addEventListener("resize", resizeCanvas);
 
+window.addEventListener("resize", resizeCanvas);
 resizeCanvas();
 
 
@@ -26,19 +26,18 @@ resizeCanvas();
 const nodes = [];
 const connections = [];
 
-
 const nodeCount = 45;
 
 
 
-for(let i = 0; i < nodeCount; i++){
+for(let i=0;i<nodeCount;i++){
 
     nodes.push({
 
-        x: Math.random()*width,
-        y: Math.random()*height,
+        x:Math.random()*width,
+        y:Math.random()*height,
 
-        radius: Math.random()*2+1,
+        radius:Math.random()*2+1,
 
         vx:(Math.random()-.5)*.15,
         vy:(Math.random()-.5)*.15
@@ -50,12 +49,13 @@ for(let i = 0; i < nodeCount; i++){
 
 
 // ==========================
-// Create Permanent Connections
+// Connections
 // ==========================
+
 
 function createConnections(){
 
-    connections.length = 0;
+    connections.length=0;
 
 
     for(let i=0;i<nodes.length;i++){
@@ -99,28 +99,30 @@ createConnections();
 // Start Pulse
 // ==========================
 
+
 function startPulse(){
 
+    const available =
+    connections.filter(
+        c=>c.pulse===null
+    );
 
-    if(connections.length===0)
+
+    if(available.length===0)
         return;
 
 
 
     const connection =
-    connections[
+    available[
         Math.floor(
-            Math.random()*connections.length
+            Math.random()*available.length
         )
     ];
 
 
 
-    if(connection.pulse===null){
-
-        connection.pulse=0;
-
-    }
+    connection.pulse=0;
 
 }
 
@@ -130,13 +132,15 @@ setInterval(()=>{
 
     startPulse();
 
-},2000);
+},1800);
+
 
 
 
 // ==========================
 // Draw Connection
 // ==========================
+
 
 function drawConnection(connection){
 
@@ -145,12 +149,13 @@ function drawConnection(connection){
     const b = connection.to;
 
 
-    const dx = b.x-a.x;
-    const dy = b.y-a.y;
+    const dx=b.x-a.x;
+    const dy=b.y-a.y;
 
 
     const distance =
     Math.hypot(dx,dy);
+
 
 
     const angle =
@@ -159,11 +164,16 @@ function drawConnection(connection){
 
 
     const opacity =
-    1-distance/180;
+    1-(distance/180);
+
+
+
+    const ecgWidth = 70;
 
 
 
     ctx.save();
+
 
 
     ctx.translate(
@@ -180,18 +190,12 @@ function drawConnection(connection){
 
 
 
-    // ----------------------
-    // No pulse
-    // ----------------------
+    // Normal line
 
     if(connection.pulse===null){
 
 
-        ctx.moveTo(
-            0,
-            0
-        );
-
+        ctx.moveTo(0,0);
 
         ctx.lineTo(
             distance,
@@ -202,24 +206,16 @@ function drawConnection(connection){
     }
 
 
-    // ----------------------
-    // Heartbeat pulse
-    // ----------------------
+
+    // ECG pulse
 
     else{
 
 
-        const p =
-        connection.pulse;
-
-        const waveWidth = 55;
-
-        const pulseX =
-        (distance + waveWidth * 2) * p - waveWidth;
-
-
-
-        const spikeSize = 12;
+        const pulsePosition =
+        connection.pulse *
+        (distance + ecgWidth*2)
+        - ecgWidth;
 
 
 
@@ -229,55 +225,53 @@ function drawConnection(connection){
         );
 
 
+
+        // line before pulse
+
         ctx.lineTo(
-            pulseX-25,
+            pulsePosition-35,
             0
         );
 
 
+
+        // ECG dip
+
         ctx.lineTo(
-            pulseX - 55,
-            0
+            pulsePosition-20,
+            4
         );
 
 
-        // small downward dip
+
+        // ECG spike up
 
         ctx.lineTo(
-            pulseX - 15,
-            5
-        );
-
-
-        // sharp upward spike
-
-        ctx.lineTo(
-            pulseX - 5,
+            pulsePosition-5,
             -18
         );
 
 
-        // sharp downward spike
+
+        // ECG spike down
 
         ctx.lineTo(
-            pulseX + 5,
-            14
+            pulsePosition+8,
+            15
         );
+
 
 
         // recovery
 
         ctx.lineTo(
-            pulseX + 55,
+            pulsePosition+25,
             0
         );
 
 
-        ctx.lineTo(
-            distance,
-            0
-        );
 
+        // line after pulse
 
         ctx.lineTo(
             distance,
@@ -289,18 +283,20 @@ function drawConnection(connection){
 
 
 
-    if(connection.pulse !== null){
+    if(connection.pulse!==null){
 
         ctx.strokeStyle =
         `rgba(34,197,94,${opacity*.9})`;
 
-        ctx.shadowBlur = 15;
+        ctx.shadowBlur=15;
 
-        ctx.shadowColor =
+        ctx.shadowColor=
         "rgba(34,197,94,.8)";
 
     }
+
     else{
+
 
         ctx.strokeStyle =
         `rgba(34,197,94,${opacity*.25})`;
@@ -308,23 +304,29 @@ function drawConnection(connection){
     }
 
 
+
     ctx.lineWidth=1;
 
     ctx.stroke();
 
-    ctx.shadowBlur = 0;
+
 
     ctx.restore();
+
+
+
+    ctx.shadowBlur=0;
 
 
 
     if(connection.pulse!==null){
 
 
-        connection.pulse += .008;
+        connection.pulse += .004;
 
 
-        if(connection.pulse >= 1 + (waveWidth / distance)){
+
+        if(connection.pulse>1){
 
             connection.pulse=null;
 
@@ -332,13 +334,16 @@ function drawConnection(connection){
 
     }
 
+
 }
+
 
 
 
 // ==========================
 // Animation
 // ==========================
+
 
 function animate(){
 
@@ -351,8 +356,6 @@ function animate(){
     );
 
 
-
-    // move nodes
 
     nodes.forEach(node=>{
 
@@ -401,7 +404,7 @@ function animate(){
         );
 
 
-        ctx.fillStyle =
+        ctx.fillStyle=
         "rgba(34,197,94,.8)";
 
 
@@ -415,6 +418,7 @@ function animate(){
     requestAnimationFrame(animate);
 
 }
+
 
 
 animate();
