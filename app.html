@@ -111,27 +111,50 @@ Friends
 
 
 
-    <section id="global-page" >
+    <section id="global-page">
 
 
-        <div class="welcome-card">
+        <h1>
+        Global Chat
+        </h1>
 
 
-            <h1>
-                Global Chat
-            </h1>
 
-            <br>
+        <div 
+        id="chatMessages"
+        class="chat-messages"
+        >
 
-            <p>
-                Messages will appear here
-            </p>
+        </div>
+
+
+
+        <div class="chat-input">
+
+
+        <input
+        id="messageInput"
+        placeholder="Message everyone..."
+        maxlength="300"
+        >
+
+
+
+        <button 
+        id="sendMessage"
+        class="primary"
+        >
+
+        Send
+
+        </button>
 
 
         </div>
 
 
-    </section>
+
+        </section>
 
     <section 
     id="friends-page"
@@ -220,6 +243,7 @@ Friends
 
 <script type="module" src="app.js"></script>
 
+<script type="module" src="chat.js"></script>
 
 </body>
 
