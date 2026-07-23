@@ -1,124 +1,276 @@
-import {
-signOut
-}
-from
-"https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
-
-
-document
-.getElementById("logout")
-.onclick = async()=>{
-
-await signOut(auth);
-
-window.location.href="login";
-
-};
-
 import { checkAuth } from "./auth.js";
 
 import {
-storage,
-db
+    db,
+    storage,
+    auth
 }
 from "./firebase.js";
 
 
 import {
-ref,
-uploadBytes,
-getDownloadURL
+    doc,
+    getDoc,
+    updateDoc
+}
+from
+"https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+
+
+import {
+    ref,
+    uploadBytes,
+    getDownloadURL
 }
 from
 "https://www.gstatic.com/firebasejs/12.0.0/firebase-storage.js";
 
 
 import {
-doc,
-updateDoc
+    signOut
 }
 from
-"https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+"https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
 
 
-
-
-const upload =
-document.getElementById("imageUpload");
 
 
 
 checkAuth()
-.then((user)=>{
+
+.then(async(user)=>{
 
 
-upload.addEventListener(
-"change",
-async()=>{
+    const userRef =
+    doc(
+        db,
+        "users",
+        user.uid
+    );
 
 
-const file =
-upload.files[0];
-
-
-if(!file)
-return;
-
-
-
-// Create storage location
-
-const imageRef =
-ref(
-storage,
-"profilePictures/" + user.uid
-);
+    const userSnap =
+    await getDoc(userRef);
 
 
 
-// Upload image
+    if(!userSnap.exists()){
 
-await uploadBytes(
-imageRef,
-file
-);
+        console.error("User document does not exist");
 
+        return;
 
-
-// Get URL
-
-const url =
-await getDownloadURL(imageRef);
+    }
 
 
 
-// Save URL
+    const data =
+    userSnap.data();
 
-await updateDoc(
 
-doc(
-db,
-"users",
-user.uid
-),
 
-{
+    // Display name
 
-profilePicture:url
+    const displayName =
+    data.firstName +
+    (
+        data.lastName
+        ?
+        " " + data.lastName
+        :
+        ""
+    );
 
-}
 
-);
 
+    document
+    .getElementById("displayName")
+    .textContent =
+    displayName;
+
+
+
+    document
+    .getElementById("username")
+    .textContent =
+    "@" + data.username;
+
+
+
+    document
+    .getElementById("email")
+    .textContent =
+    data.email;
+
+
+
+    // Bio
+
+    document
+    .getElementById("bioInput")
+    .value =
+    data.bio || "";
+
+
+
+    // Created date
+
+    if(data.createdAt){
+
+
+        const date =
+        new Date(data.createdAt);
+
+
+
+        document
+        .getElementById("createdAt")
+        .textContent =
+        date.toLocaleDateString();
+
+
+    }
+
+
+
+    // Profile picture
+
+    if(data.profilePicture){
+
+
+        document
+        .getElementById("profileImage")
+        .src =
+        data.profilePicture;
+
+
+    }
+
+
+
+    // ==========================
+    // Profile Upload
+    // ==========================
+
+
+    document
+    .getElementById("imageUpload")
+    .addEventListener(
+    "change",
+    async()=>{
+
+
+        const file =
+        document
+        .getElementById("imageUpload")
+        .files[0];
+
+
+        if(!file)
+        return;
+
+
+
+        const imageRef =
+        ref(
+            storage,
+            "profilePictures/" + user.uid
+        );
+
+
+
+        await uploadBytes(
+            imageRef,
+            file
+        );
+
+
+
+        const url =
+        await getDownloadURL(imageRef);
+
+
+
+        await updateDoc(
+            userRef,
+            {
+
+                profilePicture:url
+
+            }
+        );
+
+
+
+        document
+        .getElementById("profileImage")
+        .src =
+        url;
+
+
+
+    });
+
+
+
+    // ==========================
+    // Save Bio
+    // ==========================
+
+
+    document
+    .getElementById("saveBio")
+    .onclick =
+    async()=>{
+
+
+        const bio =
+        document
+        .getElementById("bioInput")
+        .value
+        .trim();
+
+
+
+        await updateDoc(
+            userRef,
+            {
+
+                bio:bio
+
+            }
+        );
+
+
+        alert("Bio saved");
+
+
+    };
+
+
+
+
+
+});
+
+
+
+
+// ==========================
+// Logout
+// ==========================
 
 
 document
-.getElementById("profileImage")
-.src=url;
+.getElementById("logout")
+.onclick =
+async()=>{
 
 
+    await signOut(auth);
 
-});
+
+    window.location.href="login";
 
 
-});
+};
