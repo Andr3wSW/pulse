@@ -212,11 +212,12 @@ function drawConnection(connection){
     else{
 
 
-        const pulsePosition =
-        connection.pulse *
-        (distance + ecgWidth*2)
-        - ecgWidth;
+        const travelDistance =
+        distance - (ecgWidth * 2);
 
+
+        const pulsePosition =
+        (ecgWidth + travelDistance * connection.pulse);
 
 
         ctx.moveTo(
