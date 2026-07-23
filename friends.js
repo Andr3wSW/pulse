@@ -672,7 +672,6 @@ card.className =
 "friend-result";
 
 
-
 card.innerHTML = `
 
 <div>
