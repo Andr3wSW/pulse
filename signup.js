@@ -1,5 +1,7 @@
 import {auth, db} from "./firebase.js";
 
+console.log("Signup JS loaded");
+
 
 import {
 createUserWithEmailAndPassword
