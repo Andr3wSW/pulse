@@ -10,12 +10,14 @@ from
 
 import {
 doc,
-setDoc
+setDoc,
+collection,
+query,
+where,
+getDocs
 }
 from
 "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
-
-
 
 const form =
 document.querySelector("form");
@@ -51,6 +53,53 @@ const password =
 document.querySelector("#password").value;
 
 
+// Check username format
+
+const usernameRegex =
+/^[A-Za-z0-9_.]{3,20}$/;
+
+if(!usernameRegex.test(username)){
+
+    alert(
+        "Username must be 3-20 characters and may only contain letters, numbers, periods, and underscores."
+    );
+
+    return;
+
+}
+
+
+
+// Check username uniqueness
+
+const usernameLower =
+username.trim().toLowerCase();
+
+const q = query(
+
+    collection(db,"users"),
+
+    where(
+        "usernameLower",
+        "==",
+        usernameLower
+    )
+
+);
+
+
+const snapshot =
+await getDocs(q);
+
+
+if(!snapshot.empty){
+
+    alert("That username is already taken.");
+
+    return;
+
+}
+
 
 const userCredential =
 await createUserWithEmailAndPassword(
@@ -70,19 +119,24 @@ await setDoc(
 doc(db,"users",user.uid),
 {
 
-firstName,
+firstName:
+firstName.trim(),
 
-lastName,
+lastName:
+lastName.trim(),
 
-username,
+username:
+username.trim(),
 
-email,
+usernameLower,
+
+email:
+email.trim().toLowerCase(),
 
 createdAt:
 Date.now()
 
 }
-
 );
 
 
