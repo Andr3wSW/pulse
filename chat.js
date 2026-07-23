@@ -68,7 +68,6 @@ div.className =
 "chat-message";
 
 
-
 div.innerHTML = `
 
 <strong 
