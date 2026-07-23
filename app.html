@@ -67,7 +67,10 @@ Loading...
 <aside class="sidebar">
 
 
-<button class="app-option active">
+<button 
+class="app-option active"
+data-page="global"
+>
 
 Global Chat
 
@@ -75,7 +78,10 @@ Global Chat
 
 
 
-<button class="app-option">
+<button 
+class="app-option"
+data-page="messages"
+>
 
 Messages
 
@@ -83,15 +89,18 @@ Messages
 
 
 
-<button class="app-option">
+<button 
+class="app-option"
+data-page="friends"
+>
 
 Friends
 
 </button>
 
 
-
 </aside>
+
 
 
 
@@ -101,24 +110,83 @@ Friends
 
 
 
-<div class="welcome-card">
+
+    <div id="app-content-area">
 
 
-<h1 id="welcomeText">
-
-Welcome
-
-</h1>
+        <div class="welcome-card">
 
 
-<p>
-
-Your conversations will appear here.
-
-</p>
+            <h1>
+                Welcome to Pulse
+            </h1>
 
 
-</div>
+            <p>
+                Select an option to begin.
+            </p>
+
+
+        </div>
+
+
+    </div>
+
+    <section 
+    id="friends-page"
+    class="hidden-page"
+    >
+
+
+    <h1>
+    Friends
+    </h1>
+
+
+
+    <div class="friend-search">
+
+
+    <input
+    id="friendSearch"
+    placeholder="Search by name or username..."
+    >
+
+
+    <button 
+    id="searchUsers"
+    class="primary"
+    >
+
+    Search
+
+    </button>
+
+
+    </div>
+
+
+
+    <div id="searchResults">
+
+    </div>
+
+
+
+
+    <h2>
+    Incoming Requests
+    </h2>
+
+
+
+    <div id="incomingRequests">
+
+    </div>
+
+
+
+    </section>
 
 
 
