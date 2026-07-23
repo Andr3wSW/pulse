@@ -234,18 +234,46 @@ function drawConnection(connection){
         );
 
 
-        // heartbeat goes UP
-
         ctx.lineTo(
-            pulseX,
-            -spikeSize
+            pulseX - 35,
+            0
         );
 
 
-        // heartbeat goes DOWN
+        // small downward dip
 
         ctx.lineTo(
-            pulseX+12,
+            pulseX - 15,
+            5
+        );
+
+
+        // sharp upward spike
+
+        ctx.lineTo(
+            pulseX - 5,
+            -18
+        );
+
+
+        // sharp downward spike
+
+        ctx.lineTo(
+            pulseX + 5,
+            14
+        );
+
+
+        // recovery
+
+        ctx.lineTo(
+            pulseX + 18,
+            0
+        );
+
+
+        ctx.lineTo(
+            distance,
             0
         );
 
@@ -260,16 +288,30 @@ function drawConnection(connection){
 
 
 
-    ctx.strokeStyle =
-    `rgba(34,197,94,${opacity*.25})`;
+    if(connection.pulse !== null){
+
+        ctx.strokeStyle =
+        `rgba(34,197,94,${opacity*.9})`;
+
+        ctx.shadowBlur = 15;
+
+        ctx.shadowColor =
+        "rgba(34,197,94,.8)";
+
+    }
+    else{
+
+        ctx.strokeStyle =
+        `rgba(34,197,94,${opacity*.25})`;
+
+    }
 
 
     ctx.lineWidth=1;
 
-
     ctx.stroke();
 
-
+    ctx.shadowBlur = 0;
 
     ctx.restore();
 
