@@ -2527,6 +2527,38 @@ opacity:.8;
 
 }
 
+.terms-box{
+
+display:flex;
+
+align-items:center;
+
+gap:10px;
+
+margin:20px 0;
+
+font-size:14px;
+
+opacity:.85;
+
+}
+
+
+.terms-box a{
+
+color:#22c55e;
+
+text-decoration:none;
+
+}
+
+
+.terms-box a:hover{
+
+text-decoration:underline;
+
+}
+
 /* ==========================
     Friends
 ========================== */
