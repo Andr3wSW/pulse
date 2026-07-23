@@ -7,8 +7,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Login | Pulse</title>
-<link rel="icon" href="pulse_logo.png" sizes="64x64">
-<link rel="apple-touch-icon" href="pulse_logo.png">
 
 <link rel="stylesheet" href="style.css">
 
@@ -19,6 +17,21 @@
 
 
 <canvas id="pulse-network"></canvas>
+
+
+
+<div class="auth-brand">
+
+<img src="pulse_logo.png">
+
+<span>
+Pulse
+</span>
+
+</div>
+
+
+
 
 <main class="auth-container">
 
@@ -38,7 +51,7 @@ Welcome back
 
 
 <p>
-Sign in to reconnect.
+Sign in to continue.
 </p>
 
 
@@ -46,20 +59,28 @@ Sign in to reconnect.
 <form>
 
 
-<input 
-type="text"
-placeholder="Username"
+<input
+id="email"
+type="email"
+placeholder="Email"
+required
 >
 
 
-<input 
+
+<input
+id="password"
 type="password"
 placeholder="Password"
+required
 >
 
 
 
-<button class="primary">
+<button 
+class="primary"
+type="submit"
+>
 
 Login
 
@@ -81,6 +102,14 @@ Create one
 </p>
 
 
+
+<a href="index" class="back-home">
+
+← Back to Pulse
+
+</a>
+
+
 </div>
 
 
@@ -88,7 +117,10 @@ Create one
 
 
 
+
 <script src="network.js"></script>
+
+<script type="module" src="login.js"></script>
 
 
 </body>

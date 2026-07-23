@@ -2094,3 +2094,26 @@ font-size:40px;
 color:#a7b8ad;
 
 }
+
+.back-home{
+
+display:block;
+
+margin-top:20px;
+
+color:#a7b8ad;
+
+text-decoration:none;
+
+font-size:14px;
+
+transition:.3s;
+
+}
+
+
+.back-home:hover{
+
+color:#22c55e;
+
+}
