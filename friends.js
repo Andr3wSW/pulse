@@ -2,11 +2,11 @@ import { auth, db } from "./firebase.js";
 
 import {
 collection,
+query,
+where,
 getDocs,
 addDoc,
 serverTimestamp,
-query,
-where,
 onSnapshot,
 doc,
 getDoc,
@@ -23,7 +23,6 @@ let currentUser;
 
 auth.onAuthStateChanged((user)=>{
 
-
 if(!user)
 return;
 
@@ -35,15 +34,10 @@ loadRequests();
 
 loadFriends();
 
-
 });
 
 
 
-
-// ==========================
-// ELEMENTS
-// ==========================
 
 
 const searchInput =
@@ -64,20 +58,42 @@ document.getElementById("friendsList");
 
 
 
+
+
 // ==========================
 // SEARCH
 // ==========================
 
 
+let timer;
+
+
 searchInput.addEventListener(
 "input",
-async()=>{
+()=>{
+
+
+clearTimeout(timer);
+
+
+timer=setTimeout(
+searchUsers,
+300
+);
+
+
+});
+
+
+
+
+async function searchUsers(){
 
 
 const text =
 searchInput.value
-.toLowerCase()
-.trim();
+.trim()
+.toLowerCase();
 
 
 
@@ -119,65 +135,63 @@ data.searchTerms || [];
 
 
 
-const match =
-terms.some(term =>
-term.includes(text)
-);
-
-
-
-if(!match)
+if(!terms.some(
+term=>term.includes(text)
+))
 return;
 
 
 
-const div =
+const card =
 document.createElement("div");
 
 
-div.className =
-"friend-result";
+card.className =
+"friend-card";
 
 
 
-div.innerHTML = `
+card.innerHTML = `
 
-<div>
+<div class="friend-info">
 
-<strong>
+<h3>
 ${data.firstName}
 ${data.lastName || ""}
-</strong>
+</h3>
 
-<br>
 
+<p>
 @${data.username}
+</p>
 
 </div>
 
 
 <button class="primary">
-Add Friend
+
+Add
+
 </button>
 
 `;
 
 
 
-div.querySelector("button")
+card.querySelector("button")
 .onclick =
 ()=>sendRequest(uid);
 
 
 
-searchResults.appendChild(div);
+searchResults.appendChild(card);
 
 
 
 });
 
 
-});
+}
 
 
 
@@ -190,10 +204,10 @@ searchResults.appendChild(div);
 // ==========================
 
 
-async function sendRequest(uid){
+async function sendRequest(friendID){
 
 
-const existing =
+const check =
 await getDocs(
 
 query(
@@ -209,7 +223,7 @@ currentUser.uid
 where(
 "to",
 "==",
-uid
+friendID
 )
 
 )
@@ -218,13 +232,8 @@ uid
 
 
 
-if(!existing.empty){
-
-alert("Request already sent");
-
+if(!check.empty)
 return;
-
-}
 
 
 
@@ -237,11 +246,10 @@ collection(db,"friendRequests"),
 from:
 currentUser.uid,
 
-to:
-uid,
 
-status:
-"pending",
+to:
+friendID,
+
 
 createdAt:
 serverTimestamp()
@@ -251,12 +259,7 @@ serverTimestamp()
 );
 
 
-
-alert("Friend request sent");
-
-
 }
-
 
 
 
@@ -281,108 +284,114 @@ where(
 "to",
 "==",
 currentUser.uid
-),
-
-where(
-"status",
-"==",
-"pending"
 )
 
 );
 
 
 
-onSnapshot(q, async(snapshot)=>{
+onSnapshot(
+q,
+async(snapshot)=>{
 
 
 incomingRequests.innerHTML="";
 
 
 
-for(const requestDoc of snapshot.docs){
+for(const request of snapshot.docs){
 
 
-const request =
-requestDoc.data();
+const data =
+request.data();
 
 
 
-const userSnap =
+const user =
 await getDoc(
 
 doc(
 db,
 "users",
-request.from
+data.from
+
 )
 
 );
 
 
 
-const user =
-userSnap.data();
+const person =
+user.data();
 
 
 
-const div =
+const card =
 document.createElement("div");
 
 
-div.className =
-"friend-result";
+card.className =
+"friend-card";
 
 
 
-div.innerHTML = `
+card.innerHTML = `
 
-<div>
+<div class="friend-info">
 
-<strong>
-${user.firstName}
-</strong>
+<h3>
+${person.firstName}
+${person.lastName || ""}
+</h3>
 
-<br>
 
-@${user.username}
+<p>
+@${person.username}
+</p>
 
 </div>
 
 
-<button class="primary">
+<div>
+
+<button class="primary accept">
 Accept
 </button>
 
 
-<button class="secondary">
+<button class="secondary decline">
 Decline
 </button>
+
+</div>
 
 `;
 
 
 
-div.children[1].onclick =
+card.querySelector(".accept")
+.onclick =
 ()=>acceptRequest(
-requestDoc.id,
-request.from
+request.id,
+data.from
 );
 
 
 
-div.children[2].onclick =
+card.querySelector(".decline")
+.onclick =
 ()=>declineRequest(
-requestDoc.id
+request.id
 );
 
 
 
-incomingRequests.appendChild(div);
+incomingRequests.appendChild(card);
 
 
 
 }
+
 
 
 });
@@ -403,17 +412,41 @@ friendID
 ){
 
 
+
 await addDoc(
 
 collection(db,"friends"),
 
 {
 
-user1:
+user:
 currentUser.uid,
 
-user2:
+friend:
 friendID,
+
+
+createdAt:
+serverTimestamp()
+
+}
+
+);
+
+
+
+await addDoc(
+
+collection(db,"friends"),
+
+{
+
+user:
+friendID,
+
+friend:
+currentUser.uid,
+
 
 createdAt:
 serverTimestamp()
@@ -483,19 +516,33 @@ query(
 collection(db,"friends"),
 
 where(
-"user1",
+"user",
 "==",
 currentUser.uid
+
 )
 
 );
 
 
 
-onSnapshot(q, async(snapshot)=>{
+onSnapshot(
+q,
+async(snapshot)=>{
 
 
 friendsList.innerHTML="";
+
+
+
+if(snapshot.empty){
+
+friendsList.innerHTML=
+"<p>No friends yet</p>";
+
+return;
+
+}
 
 
 
@@ -507,13 +554,13 @@ friendDoc.data();
 
 
 
-const friend =
+const user =
 await getDoc(
 
 doc(
 db,
 "users",
-data.user2
+data.friend
 
 )
 
@@ -521,36 +568,41 @@ data.user2
 
 
 
-const user =
-friend.data();
+const person =
+user.data();
 
 
 
-const div =
+const card =
 document.createElement("div");
 
 
-div.className =
-"friend-result";
+card.className =
+"friend-card clickable";
 
 
 
-div.innerHTML = `
+card.innerHTML = `
 
-<strong>
-${user.firstName}
-${user.lastName || ""}
-</strong>
+<div class="friend-info">
 
-<br>
+<h3>
+${person.firstName}
+${person.lastName || ""}
+</h3>
 
-@${user.username}
+
+<p>
+@${person.username}
+</p>
+
+</div>
 
 `;
 
 
 
-friendsList.appendChild(div);
+friendsList.appendChild(card);
 
 
 
