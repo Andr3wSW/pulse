@@ -102,33 +102,126 @@ return;
 try{
 
 
-const q =
-query(
-
-collection(db,"users"),
-
-where(
-"searchTerms",
-"array-contains",
-search
-
-)
-
+const snapshot =
+await getDocs(
+collection(db,"users")
 );
 
 
 
-const snapshot =
-await getDocs(q);
+let found = false;
 
 
 
-if(snapshot.empty){
+snapshot.forEach((userDoc)=>{
+
+
+const data =
+userDoc.data();
+
+
+const uid =
+userDoc.id;
+
+
+
+if(uid === user.uid)
+return;
+
+
+
+const terms =
+data.searchTerms || [];
+
+
+
+const matches =
+terms.some(term =>
+term.includes(search)
+);
+
+
+
+if(!matches)
+return;
+
+
+
+found = true;
+
+
+
+const card =
+document.createElement("div");
+
+
+card.className =
+"friend-result";
+
+
+
+card.innerHTML = `
+
+<div>
+
+<strong>
+${data.firstName}
+${data.lastName || ""}
+</strong>
+
+<br>
+
+<span>
+@${data.username}
+</span>
+
+
+</div>
+
+
+<button class="primary">
+
+Add
+
+</button>
+
+`;
+
+
+
+card.querySelector("button")
+.onclick =
+()=>sendRequest(uid, card.querySelector("button"));
+
+
+
+results.appendChild(card);
+
+
+
+});
+
+
+
+if(!found){
 
 results.innerHTML =
 "<p>No users found</p>";
 
-return;
+}
+
+
+}
+
+catch(error){
+
+console.error(
+"Search failed:",
+error
+);
+
+}
+
 
 }
 
