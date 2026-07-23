@@ -11,14 +11,12 @@ import { getFirestore } from
 
 const firebaseConfig = {
 
-    const firebaseConfig = {
-        apiKey: "AIzaSyAMc9c1Ez4bWWJvyUeqKdH1p7w8pu1qmOA",
-        authDomain: "pulse-bb092.firebaseapp.com",
-        projectId: "pulse-bb092",
-        storageBucket: "pulse-bb092.firebasestorage.app",
-        messagingSenderId: "90274642456",
-        appId: "1:90274642456:web:f442f9fb191ad6e76fa16d"
-    };
+     apiKey: "AIzaSyAMc9c1Ez4bWWJvyUeqKdH1p7w8pu1qmOA",
+     authDomain: "pulse-bb092.firebaseapp.com",
+     projectId: "pulse-bb092",
+     storageBucket: "pulse-bb092.firebasestorage.app",
+     messagingSenderId: "90274642456",
+     appId: "1:90274642456:web:f442f9fb191ad6e76fa16d"
 
 };
 
