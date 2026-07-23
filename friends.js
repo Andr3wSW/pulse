@@ -294,7 +294,6 @@ button.onclick =
 ()=>sendRequest(uid,button);
 
 
-
 results.appendChild(card);
 
 
