@@ -212,9 +212,10 @@ function drawConnection(connection){
         const p =
         connection.pulse;
 
+        const waveWidth = 55;
 
         const pulseX =
-        distance*p;
+        (distance + waveWidth * 2) * p - waveWidth;
 
 
 
@@ -235,7 +236,7 @@ function drawConnection(connection){
 
 
         ctx.lineTo(
-            pulseX - 35,
+            pulseX - 55,
             0
         );
 
@@ -267,7 +268,7 @@ function drawConnection(connection){
         // recovery
 
         ctx.lineTo(
-            pulseX + 18,
+            pulseX + 55,
             0
         );
 
@@ -323,7 +324,7 @@ function drawConnection(connection){
         connection.pulse += .008;
 
 
-        if(connection.pulse>=1){
+        if(connection.pulse >= 1 + (waveWidth / distance)){
 
             connection.pulse=null;
 
