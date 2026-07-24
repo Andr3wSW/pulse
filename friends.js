@@ -505,13 +505,29 @@ card.className =
 
 card.innerHTML = `
 
+<div class="friend-avatar">
+
+${
+person.profilePicture
+
+?
+
+`<img src="${person.profilePicture}">`
+
+:
+
+person.firstName[0]
+
+}
+
+</div>
+
+
 <div class="friend-info">
 
 <h3>
 ${person.firstName}
-${person.lastName || ""}
 </h3>
-
 
 <p>
 @${person.username}

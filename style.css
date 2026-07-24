@@ -1587,6 +1587,7 @@ body{
    PROFILE MODAL
 ========================== */
 
+
 #profileModal{
 
     position:fixed;
@@ -1599,13 +1600,15 @@ body{
 
     align-items:center;
 
-    background:rgba(0,0,0,.65);
+    background:
+    rgba(0,0,0,.65);
 
     backdrop-filter:blur(10px);
 
     z-index:9999;
 
 }
+
 
 
 #profileModal.hidden-page{
@@ -1618,11 +1621,11 @@ body{
 
 .profile-card{
 
-    width:380px;
+    width:420px;
 
-    padding:35px;
+    min-height:520px;
 
-    border-radius:25px;
+    padding:40px;
 
 
     background:
@@ -1635,12 +1638,23 @@ body{
     1px solid rgba(34,197,94,.3);
 
 
+    border-radius:30px;
+
+
     box-shadow:
 
-    0 30px 80px rgba(0,0,0,.5);
+    0 30px 100px rgba(0,0,0,.6);
+
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
 
 
     text-align:center;
+
 
     position:relative;
 
@@ -1648,15 +1662,14 @@ body{
 
 
 
-/* CLOSE BUTTON */
-
 .close-profile{
 
     position:absolute;
 
-    top:15px;
 
-    right:20px;
+    top:18px;
+
+    right:22px;
 
 
     background:none;
@@ -1666,7 +1679,8 @@ body{
 
     color:white;
 
-    font-size:28px;
+
+    font-size:30px;
 
 
     cursor:pointer;
@@ -1683,16 +1697,17 @@ body{
 
 
 
-/* PROFILE IMAGE */
-
 .profile-large-picture{
 
-    width:120px;
+    width:130px;
 
-    height:120px;
+    height:130px;
 
 
-    margin:0 auto 20px;
+    flex-shrink:0;
+
+
+    margin-bottom:25px;
 
 
     border-radius:50%;
@@ -1713,14 +1728,17 @@ body{
 
     display:flex;
 
+
     justify-content:center;
+
 
     align-items:center;
 
 
-    font-size:45px;
+    font-size:50px;
 
-    font-weight:bold;
+
+    font-weight:700;
 
 }
 
@@ -1738,11 +1756,9 @@ body{
 
 
 
-/* TEXT */
-
 #viewProfileName{
 
-    font-size:28px;
+    font-size:30px;
 
     margin-bottom:8px;
 
@@ -1754,21 +1770,25 @@ body{
 
     color:#22C55E;
 
-    font-size:16px;
-
 }
 
 
 
 #viewProfileBio{
 
-    margin-top:20px;
+    margin-top:25px;
 
 
-    padding:15px;
+    width:100%;
 
 
-    border-radius:15px;
+    min-height:90px;
+
+
+    padding:18px;
+
+
+    border-radius:18px;
 
 
     background:
@@ -1779,21 +1799,63 @@ body{
     color:#d1d5db;
 
 
-    min-height:60px;
-
     line-height:1.5;
 
 }
 
 
 
-/* BUTTON */
-
 #profileAction{
 
     width:100%;
 
-    margin-top:25px;
+
+    margin-top:auto;
+
+
+    padding:15px;
+
+}
+
+.friend-avatar{
+
+width:50px;
+
+height:50px;
+
+border-radius:50%;
+
+
+background:#22C55E;
+
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+
+font-weight:bold;
+
+overflow:hidden;
+
+
+flex-shrink:0;
+
+margin-right:15px;
+
+}
+
+
+
+.friend-avatar img{
+
+width:100%;
+
+height:100%;
+
+object-fit:cover;
 
 }
 
