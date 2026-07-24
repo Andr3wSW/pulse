@@ -149,26 +149,35 @@ checkAuth()
 
 
     // ==========================
-    // Profile Upload
-    // ==========================
+// Profile Upload
+// ==========================
+
+document
+.getElementById("imageUpload")
+.addEventListener(
+"change",
+async()=>{
 
 
+    const file =
     document
     .getElementById("imageUpload")
-    .addEventListener(
-    "change",
-    async()=>{
+    .files[0];
 
 
-        const file =
-        document
-        .getElementById("imageUpload")
-        .files[0];
+    if(!file){
 
-
-        if(!file)
+        console.log("No file selected");
         return;
 
+    }
+
+
+    console.log("Selected file:", file);
+
+
+
+    try{
 
 
         const imageRef =
@@ -178,11 +187,17 @@ checkAuth()
         );
 
 
+        console.log("Uploading to:", imageRef.fullPath);
+
+
 
         await uploadBytes(
             imageRef,
             file
         );
+
+
+        console.log("Upload complete");
 
 
 
@@ -191,14 +206,19 @@ checkAuth()
 
 
 
+        console.log("Download URL:", url);
+
+
+
         await updateDoc(
             userRef,
             {
-
                 profilePicture:url
-
             }
         );
+
+
+        console.log("Firestore updated");
 
 
 
@@ -209,8 +229,24 @@ checkAuth()
 
 
 
-    });
+        alert("Profile picture updated");
 
+
+    }
+
+    catch(error){
+
+        console.error(
+            "Profile upload failed:",
+            error
+        );
+
+        alert(error.message);
+
+    }
+
+
+});
 
 
     // ==========================
