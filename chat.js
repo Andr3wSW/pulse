@@ -1,50 +1,124 @@
-import { auth, db } from "./firebase.js";
+import { db, auth } from "./firebase.js";
 
 import { openProfile } from "./profile.js";
 
 import {
-    collection,
-    addDoc,
-    serverTimestamp,
-    query,
-    orderBy,
-    onSnapshot
+collection,
+doc,
+getDoc,
+addDoc,
+serverTimestamp,
+query,
+orderBy,
+onSnapshot
 }
 from
 "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
 
 
 
-let currentUser = null;
-
-
-
-const messagesContainer =
+const messages =
 document.getElementById("chatMessages");
 
 
-const messageInput =
+const input =
 document.getElementById("messageInput");
 
 
-const sendButton =
+const send =
 document.getElementById("sendMessage");
 
 
 
+const chatQuery =
+query(
+
+collection(db,"messages"),
+
+orderBy(
+"createdAt"
+)
+
+);
 
 
-auth.onAuthStateChanged((user)=>{
 
 
-    if(!user)
-    return;
 
 
-    currentUser = user;
+onSnapshot(
+chatQuery,
+(snapshot)=>{
 
 
-    loadMessages();
+messages.innerHTML="";
+
+
+
+snapshot.forEach(messageDoc=>{
+
+
+const data =
+messageDoc.data();
+
+
+
+const div =
+document.createElement("div");
+
+
+
+div.className =
+"chat-message";
+
+
+
+div.innerHTML = `
+
+<strong 
+class="chat-user"
+data-user="${data.senderID}"
+>
+
+${data.senderName}
+
+</strong>
+
+<br>
+
+${data.text}
+
+`;
+
+
+
+const name =
+div.querySelector(".chat-user");
+
+
+
+name.onclick = ()=>{
+
+
+openProfile(
+name.dataset.user
+);
+
+
+};
+
+
+
+messages.appendChild(div);
+
+
+
+});
+
+
+
+messages.scrollTop =
+messages.scrollHeight;
 
 
 });
@@ -56,193 +130,72 @@ auth.onAuthStateChanged((user)=>{
 
 
 
-// ==========================
-// SEND MESSAGE
-// ==========================
+
+send.onclick =
+async()=>{
 
 
-sendButton.onclick =
-sendMessage;
-
-
-
-messageInput.addEventListener(
-"keydown",
-(e)=>{
-
-
-    if(e.key === "Enter"){
-
-        sendMessage();
-
-    }
-
-
-});
+const text =
+input.value.trim();
 
 
 
+if(!text)
+return;
 
 
 
-async function sendMessage(){
+const userSnap =
+await getDoc(
 
+doc(
+db,
+"users",
+auth.currentUser.uid
+)
 
-    const text =
-    messageInput.value.trim();
-
-
-
-    if(!text)
-    return;
-
-
-
-    await addDoc(
-
-        collection(db,"messages"),
-
-        {
-
-            senderID:
-            currentUser.uid,
-
-
-            senderName:
-            currentUser.displayName || "User",
-
-
-            profilePicture:
-            "",
-
-
-            text:text,
-
-
-            createdAt:
-            serverTimestamp()
-
-        }
-
-    );
+);
 
 
 
-    messageInput.value = "";
+const userData =
+userSnap.data();
 
+
+
+
+
+await addDoc(
+
+collection(db,"messages"),
+
+{
+
+text:text,
+
+
+senderID:
+auth.currentUser.uid,
+
+
+senderName:
+userData.firstName,
+
+
+profilePicture:
+userData.profilePicture || "",
+
+
+createdAt:
+serverTimestamp()
 
 }
 
+);
 
 
 
+input.value="";
 
 
-
-
-
-// ==========================
-// LOAD MESSAGES
-// ==========================
-
-
-function loadMessages(){
-
-
-
-    const q =
-    query(
-
-        collection(db,"messages"),
-
-        orderBy(
-            "createdAt",
-            "asc"
-        )
-
-    );
-
-
-
-    onSnapshot(
-    q,
-    (snapshot)=>{
-
-
-        messagesContainer.innerHTML="";
-
-
-
-        snapshot.forEach((messageDoc)=>{
-
-
-            const message =
-            messageDoc.data();
-
-
-
-            const messageDiv =
-            document.createElement("div");
-
-
-
-            messageDiv.className =
-            "chat-message";
-
-
-
-            messageDiv.innerHTML = `
-
-            <span 
-            class="chat-user"
-            data-uid="${message.senderID}">
-
-            ${message.senderName}
-
-            </span>
-
-
-            <span class="chat-text">
-
-            ${message.text}
-
-            </span>
-
-            `;
-
-
-
-            messageDiv
-            .querySelector(".chat-user")
-            .onclick =
-            ()=>{
-
-
-                openProfile(
-                    message.senderID
-                );
-
-
-            };
-
-
-
-            messagesContainer.appendChild(
-                messageDiv
-            );
-
-
-
-        });
-
-
-
-        messagesContainer.scrollTop =
-        messagesContainer.scrollHeight;
-
-
-
-    });
-
-
-}
+};
