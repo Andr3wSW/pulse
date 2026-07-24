@@ -1584,44 +1584,28 @@ body{
 
 
 /* ==========================
-   PROFILE POPUP MODAL
+   PROFILE MODAL
 ========================== */
-
 
 #profileModal{
 
     position:fixed;
 
-
     inset:0;
-
-
-    width:100%;
-
-    height:100%;
-
-
-    background:
-
-    rgba(0,0,0,.55);
-
-
-    backdrop-filter:blur(8px);
-
 
     display:flex;
 
-
     justify-content:center;
-
 
     align-items:center;
 
+    background:rgba(0,0,0,.65);
+
+    backdrop-filter:blur(10px);
 
     z-index:9999;
 
 }
-
 
 
 #profileModal.hidden-page{
@@ -1636,16 +1620,14 @@ body{
 
     width:380px;
 
-
     padding:35px;
+
+    border-radius:25px;
 
 
     background:
 
-    rgba(10,20,15,.95);
-
-
-    border-radius:25px;
+    rgba(15,25,20,.95);
 
 
     border:
@@ -1653,26 +1635,61 @@ body{
     1px solid rgba(34,197,94,.3);
 
 
-    text-align:center;
-
-
-    position:relative;
-
-
     box-shadow:
 
     0 30px 80px rgba(0,0,0,.5);
+
+
+    text-align:center;
+
+    position:relative;
 
 }
 
 
 
+/* CLOSE BUTTON */
+
+.close-profile{
+
+    position:absolute;
+
+    top:15px;
+
+    right:20px;
+
+
+    background:none;
+
+    border:none;
+
+
+    color:white;
+
+    font-size:28px;
+
+
+    cursor:pointer;
+
+}
+
+
+
+.close-profile:hover{
+
+    color:#22C55E;
+
+}
+
+
+
+/* PROFILE IMAGE */
+
 .profile-large-picture{
 
-    width:110px;
+    width:120px;
 
-
-    height:110px;
+    height:120px;
 
 
     margin:0 auto 20px;
@@ -1684,21 +1701,24 @@ body{
     overflow:hidden;
 
 
-    display:flex;
-
-
-    align-items:center;
-
-
-    justify-content:center;
-
-
     background:
 
     rgba(34,197,94,.2);
 
 
-    font-size:40px;
+    border:
+
+    3px solid #22C55E;
+
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+
+    font-size:45px;
 
     font-weight:bold;
 
@@ -1710,9 +1730,7 @@ body{
 
     width:100%;
 
-
     height:100%;
-
 
     object-fit:cover;
 
@@ -1720,48 +1738,62 @@ body{
 
 
 
-.close-profile{
+/* TEXT */
 
-    position:absolute;
+#viewProfileName{
 
+    font-size:28px;
 
-    top:15px;
-
-
-    right:20px;
-
-
-    background:none;
-
-
-    border:none;
-
-
-    color:white;
-
-
-    font-size:25px;
-
-
-    cursor:pointer;
+    margin-bottom:8px;
 
 }
 
 
 
-.profile-card h2{
+#viewProfileUsername{
 
-    margin-bottom:5px;
+    color:#22C55E;
+
+    font-size:16px;
 
 }
 
 
 
-.profile-card p{
+#viewProfileBio{
 
-    opacity:.8;
+    margin-top:20px;
 
-    margin-top:10px;
+
+    padding:15px;
+
+
+    border-radius:15px;
+
+
+    background:
+
+    rgba(255,255,255,.06);
+
+
+    color:#d1d5db;
+
+
+    min-height:60px;
+
+    line-height:1.5;
+
+}
+
+
+
+/* BUTTON */
+
+#profileAction{
+
+    width:100%;
+
+    margin-top:25px;
 
 }
 
