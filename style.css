@@ -2907,3 +2907,170 @@ color:white;
     color:white;
 
 }
+
+/* ===========================
+   Profile Popup Modal
+=========================== */
+
+.profile-modal{
+
+    position:fixed;
+
+    inset:0;
+
+    background:rgba(0,0,0,.65);
+
+    backdrop-filter:blur(8px);
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    z-index:999;
+
+}
+
+
+.profile-modal.hidden-page{
+
+    display:none;
+
+}
+
+
+.profile-card{
+
+    width:420px;
+
+    min-height:450px;
+
+    padding:40px;
+
+    border-radius:30px;
+
+    background:#22c55e;
+
+    color:#0F1115;
+
+    box-shadow:
+    0 30px 80px rgba(0,0,0,.5);
+
+    position:relative;
+
+    text-align:center;
+
+}
+
+
+.profile-card h2{
+
+    font-size:32px;
+
+    margin-top:25px;
+
+}
+
+
+.profile-card p{
+
+    margin-top:10px;
+
+    color:#182018;
+
+}
+
+
+/* Profile image */
+
+.profile-large-picture{
+
+    width:120px;
+
+    height:120px;
+
+    margin:auto;
+
+    border-radius:50%;
+
+    overflow:hidden;
+
+    background:#0F1115;
+
+    color:#22c55e;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    font-size:45px;
+
+    font-weight:700;
+
+}
+
+
+.profile-large-picture img{
+
+    width:100%;
+
+    height:100%;
+
+    object-fit:cover;
+
+}
+
+
+/* Close button */
+
+.close-profile{
+
+    position:absolute;
+
+    top:20px;
+
+    right:25px;
+
+    background:#0F1115;
+
+    color:#22c55e;
+
+    border:none;
+
+    width:40px;
+
+    height:40px;
+
+    border-radius:50%;
+
+    font-size:22px;
+
+    cursor:pointer;
+
+}
+
+
+/* Action button */
+
+#profileAction{
+
+    margin-top:30px;
+
+    background:#0F1115;
+
+    color:#22c55e;
+
+    border:none;
+
+    padding:14px 30px;
+
+    border-radius:14px;
+
+    cursor:pointer;
+
+    font-weight:700;
+
+}
