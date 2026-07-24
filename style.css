@@ -1,8 +1,13 @@
+/* ===========================
+   GLOBAL RESET
+=========================== */
+
 *{
     margin:0;
     padding:0;
     box-sizing:border-box;
 }
+
 
 body{
 
@@ -12,9 +17,21 @@ body{
 
     color:white;
 
+    overflow-x:hidden;
+
 }
 
-/* ---------------- NAVBAR ---------------- */
+
+html{
+
+    scroll-behavior:smooth;
+
+}
+
+
+/* ===========================
+   NAVBAR
+=========================== */
 
 .navbar{
 
@@ -31,7 +48,28 @@ body{
 
     padding:28px 0;
 
+    position:fixed;
+
+    top:0;
+
+    left:50%;
+
+    transform:translateX(-50%);
+
+    z-index:100;
+
+    background:rgba(15,17,21,.65);
+
+    backdrop-filter:blur(20px);
+
+    border:1px solid rgba(255,255,255,.08);
+
+    border-radius:20px;
+
+    padding:20px 30px;
+
 }
+
 
 .logo{
 
@@ -49,6 +87,7 @@ body{
 
 }
 
+
 .logo img{
 
     width:42px;
@@ -59,6 +98,7 @@ body{
 
 }
 
+
 .nav-links{
 
     list-style:none;
@@ -68,6 +108,7 @@ body{
     gap:40px;
 
 }
+
 
 .nav-links a{
 
@@ -83,11 +124,13 @@ body{
 
 }
 
+
 .nav-links a:hover{
 
     color:white;
 
 }
+
 
 .nav-links a::after{
 
@@ -96,6 +139,7 @@ body{
     position:absolute;
 
     left:0;
+
     bottom:-6px;
 
     width:0;
@@ -110,11 +154,13 @@ body{
 
 }
 
+
 .nav-links a:hover::after{
 
     width:100%;
 
 }
+
 
 .nav-buttons{
 
@@ -123,6 +169,19 @@ body{
     gap:15px;
 
 }
+
+
+header{
+
+    height:100px;
+
+}
+
+
+/* ===========================
+   BUTTONS + SHIMMER EFFECT
+=========================== */
+
 
 .primary,
 .secondary,
@@ -135,6 +194,7 @@ body{
     overflow:hidden;
 
 }
+
 
 .primary::before,
 .secondary::before,
@@ -166,6 +226,7 @@ body{
 
 }
 
+
 .primary:hover::before,
 .secondary:hover::before,
 .signup-btn:hover::before,
@@ -175,6 +236,7 @@ body{
     left:160%;
 
 }
+
 
 .login-btn{
 
@@ -190,57 +252,6 @@ body{
 
 }
 
-.primary,
-.secondary,
-.signup-btn,
-.login-btn,
-.cta button{
-
-    position:relative;
-
-    overflow:hidden;
-
-}
-
-.primary::before,
-.secondary::before,
-.signup-btn::before,
-.login-btn::before,
-.cta button::before{
-
-    content:"";
-
-    position:absolute;
-
-    top:0;
-
-    left:-120%;
-
-    width:60%;
-
-    height:100%;
-
-    background:
-        linear-gradient(
-            120deg,
-            transparent,
-            rgba(255,255,255,.25),
-            transparent
-        );
-
-    transition:left .6s;
-
-}
-
-.primary:hover::before,
-.secondary:hover::before,
-.signup-btn:hover::before,
-.login-btn:hover::before,
-.cta button:hover::before{
-
-    left:160%;
-
-}
 
 .signup-btn{
 
@@ -262,57 +273,6 @@ body{
 
 }
 
-.primary,
-.secondary,
-.signup-btn,
-.login-btn,
-.cta button{
-
-    position:relative;
-
-    overflow:hidden;
-
-}
-
-.primary::before,
-.secondary::before,
-.signup-btn::before,
-.login-btn::before,
-.cta button::before{
-
-    content:"";
-
-    position:absolute;
-
-    top:0;
-
-    left:-120%;
-
-    width:60%;
-
-    height:100%;
-
-    background:
-        linear-gradient(
-            120deg,
-            transparent,
-            rgba(255,255,255,.25),
-            transparent
-        );
-
-    transition:left .6s;
-
-}
-
-.primary:hover::before,
-.secondary:hover::before,
-.signup-btn:hover::before,
-.login-btn:hover::before,
-.cta button:hover::before{
-
-    left:160%;
-
-}
 
 .signup-btn:hover{
 
@@ -320,11 +280,16 @@ body{
 
 }
 
-/* ---------------- HERO ---------------- */
+
+/* ===========================
+   HERO
+=========================== */
+
 
 .hero{
 
     width:90%;
+
     max-width:1300px;
 
     margin:80px auto;
@@ -339,6 +304,7 @@ body{
 
 }
 
+
 .hero h1{
 
     font-size:64px;
@@ -348,6 +314,7 @@ body{
     margin-bottom:25px;
 
 }
+
 
 .hero p{
 
@@ -361,6 +328,7 @@ body{
 
 }
 
+
 .hero-buttons{
 
     display:flex;
@@ -369,57 +337,6 @@ body{
 
 }
 
-.primary,
-.secondary,
-.signup-btn,
-.login-btn,
-.cta button{
-
-    position:relative;
-
-    overflow:hidden;
-
-}
-
-.primary::before,
-.secondary::before,
-.signup-btn::before,
-.login-btn::before,
-.cta button::before{
-
-    content:"";
-
-    position:absolute;
-
-    top:0;
-
-    left:-120%;
-
-    width:60%;
-
-    height:100%;
-
-    background:
-        linear-gradient(
-            120deg,
-            transparent,
-            rgba(255,255,255,.25),
-            transparent
-        );
-
-    transition:left .6s;
-
-}
-
-.primary:hover::before,
-.secondary:hover::before,
-.signup-btn:hover::before,
-.login-btn:hover::before,
-.cta button:hover::before{
-
-    left:160%;
-
-}
 
 .primary{
 
@@ -441,6 +358,7 @@ body{
 
 }
 
+
 .secondary{
 
     background:#1F2430;
@@ -458,6 +376,7 @@ body{
     font-size:17px;
 
 }
+
 
 .mockup{
 
@@ -486,16 +405,8 @@ body{
 }
 
 /* ===========================
-   Animated Background
+   ANIMATED BACKGROUND
 =========================== */
-
-body{
-
-    overflow-x:hidden;
-
-}
-
-/* Background Container */
 
 .background{
 
@@ -515,6 +426,7 @@ body{
 
 }
 
+
 /* Blurred Orbs */
 
 .orb{
@@ -531,21 +443,26 @@ body{
 
 }
 
+
 .orb1{
 
     width:420px;
+
     height:420px;
 
     background:#22C55E;
 
     top:-120px;
+
     left:-100px;
 
 }
 
+
 .orb2{
 
     width:350px;
+
     height:350px;
 
     background:#00BFFF;
@@ -558,9 +475,11 @@ body{
 
 }
 
+
 .orb3{
 
     width:500px;
+
     height:500px;
 
     background:#16A34A;
@@ -573,6 +492,7 @@ body{
 
 }
 
+
 @keyframes float{
 
     0%{
@@ -581,11 +501,13 @@ body{
 
     }
 
+
     50%{
 
         transform:translate(40px,-40px) scale(1.1);
 
     }
+
 
     100%{
 
@@ -595,8 +517,9 @@ body{
 
 }
 
+
 /* ===========================
-   Pulse Brand Card
+   PULSE BRAND CARD
 =========================== */
 
 
@@ -621,20 +544,15 @@ body{
 
     border-radius:32px;
 
-
     background:
     rgba(255,255,255,.04);
 
-
     backdrop-filter:blur(20px);
-
 
     border:1px solid rgba(255,255,255,.1);
 
-
     box-shadow:
     0 40px 100px rgba(0,0,0,.5);
-
 
     display:flex;
 
@@ -644,16 +562,12 @@ body{
 
     justify-content:center;
 
-
     animation:cardFloat 7s ease-in-out infinite;
-
 
 }
 
 
-
 @keyframes cardFloat{
-
 
     0%,100%{
 
@@ -668,9 +582,7 @@ body{
 
     }
 
-
 }
-
 
 
 .pulse-logo{
@@ -678,7 +590,6 @@ body{
     position:absolute;
 
     top:25px;
-
 
     font-size:24px;
 
@@ -689,14 +600,16 @@ body{
 }
 
 
-
 .pulse-icon{
 
     width:120px;
+
     height:120px;
 
     display:flex;
+
     justify-content:center;
+
     align-items:center;
 
     margin-bottom:35px;
@@ -705,9 +618,11 @@ body{
 
 }
 
+
 .pulse-icon img{
 
     width:100%;
+
     height:100%;
 
     object-fit:contain;
@@ -718,6 +633,7 @@ body{
 
 }
 
+
 @keyframes logoGlow{
 
     0%,100%{
@@ -725,6 +641,7 @@ body{
         transform:scale(1);
 
     }
+
 
     50%{
 
@@ -735,49 +652,37 @@ body{
 }
 
 
-
 .pulse-card h2{
 
     text-align:center;
-
 
     font-size:36px;
 
     line-height:1.2;
 
-
     margin-bottom:40px;
-
 
 }
 
 
-
 .pulse-features{
-
 
     display:flex;
 
     gap:15px;
 
-
 }
 
 
-
 .pulse-features div{
-
 
     width:95px;
 
     height:80px;
 
-
     border-radius:18px;
 
-
     background:#1F2430;
-
 
     display:flex;
 
@@ -787,15 +692,11 @@ body{
 
     justify-content:center;
 
-
     gap:8px;
-
 
     color:white;
 
-
 }
-
 
 
 .pulse-features span{
@@ -807,29 +708,22 @@ body{
 }
 
 
-
 /* Floating Symbols */
 
 
 .bubble{
 
-
     position:absolute;
-
 
     width:55px;
 
     height:55px;
 
-
     border-radius:50%;
-
 
     background:rgba(255,255,255,.05);
 
-
     backdrop-filter:blur(10px);
-
 
     display:flex;
 
@@ -837,15 +731,11 @@ body{
 
     justify-content:center;
 
-
     font-size:24px;
-
 
     animation:bubbleFloat 6s ease-in-out infinite;
 
-
 }
-
 
 
 .bubble1{
@@ -855,7 +745,6 @@ body{
     right:20px;
 
 }
-
 
 
 .bubble2{
@@ -869,7 +758,6 @@ body{
 }
 
 
-
 .bubble3{
 
     top:220px;
@@ -881,9 +769,7 @@ body{
 }
 
 
-
 @keyframes bubbleFloat{
-
 
     0%,100%{
 
@@ -898,11 +784,11 @@ body{
 
     }
 
-
 }
 
+
 /* ===========================
-   Brand Statement
+   BRAND STATEMENT
 =========================== */
 
 
@@ -948,9 +834,8 @@ body{
 }
 
 
-
 /* ===========================
-   Features
+   FEATURES
 =========================== */
 
 
@@ -963,7 +848,6 @@ body{
     margin:auto;
 
 }
-
 
 
 .feature{
@@ -988,7 +872,6 @@ body{
 }
 
 
-
 .feature-text{
 
     flex:1;
@@ -1005,7 +888,6 @@ body{
 }
 
 
-
 .feature-text p{
 
     color:#A8B3CF;
@@ -1015,7 +897,6 @@ body{
     line-height:1.7;
 
 }
-
 
 
 .feature-visual{
@@ -1029,19 +910,15 @@ body{
 }
 
 
-
 .chat-orb,
 .people-orb,
 .call-orb{
-
 
     width:260px;
 
     height:260px;
 
-
     border-radius:50%;
-
 
     background:
 
@@ -1051,27 +928,21 @@ body{
     rgba(34,197,94,.05)
     );
 
-
     display:flex;
 
     align-items:center;
 
     justify-content:center;
 
-
     font-size:90px;
-
 
     box-shadow:
 
     0 0 80px rgba(34,197,94,.2);
 
-
     animation:orbFloat 6s ease-in-out infinite;
 
-
 }
-
 
 
 .people-orb{
@@ -1089,7 +960,6 @@ body{
 }
 
 
-
 .call-orb{
 
     background:
@@ -1105,9 +975,7 @@ body{
 }
 
 
-
 @keyframes orbFloat{
-
 
     0%,100%{
 
@@ -1124,37 +992,8 @@ body{
 
 }
 
-@media(max-width:900px){
-
-
-    .statement h2{
-
-        font-size:42px;
-
-    }
-
-
-    .feature,
-    .feature.reverse{
-
-        flex-direction:column;
-
-        text-align:center;
-
-    }
-
-
-    .feature-text h3{
-
-        font-size:34px;
-
-    }
-
-
-}
-
 /* ===========================
-   How Pulse Works
+   HOW PULSE WORKS
 =========================== */
 
 
@@ -1171,13 +1010,11 @@ body{
 }
 
 
-
 .how-it-works h2{
 
     font-size:60px;
 
 }
-
 
 
 .subtitle{
@@ -1189,7 +1026,6 @@ body{
     margin-top:20px;
 
 }
-
 
 
 .steps{
@@ -1205,7 +1041,6 @@ body{
 }
 
 
-
 .step{
 
     background:#171A21;
@@ -1219,7 +1054,6 @@ body{
     flex:1;
 
 }
-
 
 
 .step-number{
@@ -1249,7 +1083,6 @@ body{
 }
 
 
-
 .step p{
 
     color:#A8B3CF;
@@ -1258,8 +1091,9 @@ body{
 
 }
 
+
 /* ===========================
-   Scroll Reveal
+   SCROLL REVEAL
 =========================== */
 
 
@@ -1278,7 +1112,6 @@ body{
 }
 
 
-
 .reveal.visible{
 
     opacity:1;
@@ -1287,46 +1120,54 @@ body{
 
 }
 
-html{
-    scroll-behavior:smooth;
-}
 
-.navbar{
+/* ===========================
+   FIXED NETWORK BACKGROUND
+=========================== */
+
+
+#scrollProgress{
 
     position:fixed;
 
     top:0;
 
-    left:50%;
+    left:0;
 
-    transform:translateX(-50%);
+    width:0%;
 
-    z-index:100;
+    height:3px;
+
+    background:#22C55E;
+
+    z-index:9999;
+
+    transition:width .05s linear;
+
+}
+
+
+#pulse-network{
+
+    position:fixed;
+
+    inset:0;
+
+    width:100%;
+
+    height:100%;
+
+    z-index:-1;
+
+    pointer-events:none;
+
+    opacity:.45;
 
 }
 
-header{
-
-    height:100px;
-
-}
-
-.navbar{
-
-    background:rgba(15,17,21,.65);
-
-    backdrop-filter:blur(20px);
-
-    border:1px solid rgba(255,255,255,.08);
-
-    border-radius:20px;
-
-    padding:20px 30px;
-
-}
 
 /* ===========================
-   Security Section
+   SECURITY SECTION
 =========================== */
 
 
@@ -1341,7 +1182,6 @@ header{
 }
 
 
-
 .security-header{
 
     text-align:center;
@@ -1349,7 +1189,6 @@ header{
     margin-bottom:70px;
 
 }
-
 
 
 .security-header h2{
@@ -1361,13 +1200,11 @@ header{
 }
 
 
-
 .security-header span{
 
     color:#22C55E;
 
 }
-
 
 
 .security-header p{
@@ -1381,7 +1218,6 @@ header{
 }
 
 
-
 .security-grid{
 
     display:grid;
@@ -1391,7 +1227,6 @@ header{
     gap:30px;
 
 }
-
 
 
 .security-card{
@@ -1409,7 +1244,6 @@ header{
 }
 
 
-
 .security-card:hover{
 
     transform:translateY(-8px);
@@ -1417,7 +1251,6 @@ header{
     border-color:rgba(34,197,94,.4);
 
 }
-
 
 
 .security-icon{
@@ -1429,7 +1262,6 @@ header{
 }
 
 
-
 .security-card h3{
 
     font-size:28px;
@@ -1437,7 +1269,6 @@ header{
     margin-bottom:15px;
 
 }
-
 
 
 .security-card p{
@@ -1448,8 +1279,9 @@ header{
 
 }
 
+
 /* ===========================
-   Final CTA
+   FINAL CTA
 =========================== */
 
 
@@ -1473,11 +1305,9 @@ header{
         transparent 60%
     );
 
-
     border-radius:40px;
 
 }
-
 
 
 .cta h2{
@@ -1489,7 +1319,6 @@ header{
 }
 
 
-
 .cta p{
 
     color:#A8B3CF;
@@ -1499,7 +1328,6 @@ header{
     margin-bottom:40px;
 
 }
-
 
 
 .cta button{
@@ -1524,59 +1352,6 @@ header{
 
 }
 
-.primary,
-.secondary,
-.signup-btn,
-.login-btn,
-.cta button{
-
-    position:relative;
-
-    overflow:hidden;
-
-}
-
-.primary::before,
-.secondary::before,
-.signup-btn::before,
-.login-btn::before,
-.cta button::before{
-
-    content:"";
-
-    position:absolute;
-
-    top:0;
-
-    left:-120%;
-
-    width:60%;
-
-    height:100%;
-
-    background:
-        linear-gradient(
-            120deg,
-            transparent,
-            rgba(255,255,255,.25),
-            transparent
-        );
-
-    transition:left .6s;
-
-}
-
-.primary:hover::before,
-.secondary:hover::before,
-.signup-btn:hover::before,
-.login-btn:hover::before,
-.cta button:hover::before{
-
-    left:160%;
-
-}
-
-
 
 .cta button:hover{
 
@@ -1586,8 +1361,9 @@ header{
 
 }
 
+
 /* ===========================
-   Footer
+   FOOTER
 =========================== */
 
 
@@ -1600,7 +1376,6 @@ footer{
     text-align:center;
 
 }
-
 
 
 .footer-logo{
@@ -1621,6 +1396,7 @@ footer{
 
 }
 
+
 .footer-logo img{
 
     width:48px;
@@ -1628,7 +1404,6 @@ footer{
     height:48px;
 
 }
-
 
 
 .footer-links{
@@ -1644,7 +1419,6 @@ footer{
 }
 
 
-
 .footer-links a{
 
     color:#A8B3CF;
@@ -1654,1161 +1428,56 @@ footer{
 }
 
 
-
 footer p{
 
     color:#667085;
 
 }
 
+
 /* ===========================
-   Lucide Sizes
+   LUCIDE ICON SIZES
 =========================== */
+
 
 .icon-small{
 
     width:20px;
+
     height:20px;
 
     stroke-width:2;
 
 }
 
+
 .icon-medium{
 
     width:40px;
+
     height:40px;
 
     stroke-width:1.75;
 
 }
 
+
 .icon-large{
 
     width:96px;
+
     height:96px;
 
     stroke-width:1.5;
 
 }
 
-/* ===========================
-   Animated Pulse Thing
-=========================== */
-
-#scrollProgress{
-
-    position:fixed;
-
-    top:0;
-    left:0;
-
-    width:0%;
-
-    height:3px;
-
-    background:#22C55E;
-
-    z-index:9999;
-
-    transition:width .05s linear;
-
-}
-
-#pulse-network{
-
-    position:fixed;
-
-    inset:0;
-
-    width:100%;
-    height:100%;
-
-    z-index:-1;
-
-    pointer-events:none;
-
-    opacity:.45;
-
-}
-
 /* ==========================
-   Auth Pages
+   AUTH PAGES
 ========================== */
 
 
 .auth-container{
-
-min-height:100vh;
-
-display:flex;
-
-justify-content:center;
-
-align-items:center;
-
-position:relative;
-
-z-index:2;
-
-}
-
-
-
-.auth-card{
-
-width:380px;
-
-padding:45px;
-
-border-radius:25px;
-
-
-background:
-rgba(10,20,15,.75);
-
-
-backdrop-filter:
-blur(15px);
-
-
-border:
-1px solid rgba(34,197,94,.25);
-
-
-box-shadow:
-0 0 40px rgba(34,197,94,.15);
-
-
-text-align:center;
-
-
-}
-
-
-
-.auth-logo{
-
-width:70px;
-
-margin-bottom:20px;
-
-}
-
-
-
-.auth-card h1{
-
-font-size:32px;
-
-margin-bottom:10px;
-
-}
-
-
-
-.auth-card p{
-
-color:#a7b8ad;
-
-}
-
-
-
-.auth-card form{
-
-display:flex;
-
-flex-direction:column;
-
-gap:15px;
-
-margin-top:30px;
-
-}
-
-
-
-.auth-card input{
-
-padding:15px;
-
-border-radius:12px;
-
-border:none;
-
-
-background:
-rgba(255,255,255,.08);
-
-
-color:white;
-
-
-font-size:16px;
-
-
-outline:none;
-
-
-}
-
-
-
-.auth-card input:focus{
-
-box-shadow:
-0 0 15px rgba(34,197,94,.35);
-
-}
-
-
-
-.auth-card button{
-
-margin-top:10px;
-
-}
-
-
-
-.auth-switch{
-
-margin-top:25px;
-
-}
-
-
-
-.auth-switch a{
-
-color:#22c55e;
-
-text-decoration:none;
-
-}
-
-/* ==========================
-   App Page
-========================== */
-
-
-.app-header{
-
-height:70px;
-
-display:flex;
-
-align-items:center;
-
-justify-content:space-between;
-
-padding:0 35px;
-
-position:relative;
-
-z-index:2;
-
-}
-
-
-
-.app-title{
-
-font-size:24px;
-
-font-weight:700;
-
-color:white;
-
-}
-
-
-
-.profile{
-
-display:flex;
-
-align-items:center;
-
-gap:12px;
-
-text-decoration:none;
-
-color:white;
-
-cursor:pointer;
-
-}
-
-
-.profile-circle{
-
-width:42px;
-
-height:42px;
-
-border-radius:50%;
-
-
-background:#22c55e;
-
-
-display:flex;
-
-align-items:center;
-
-justify-content:center;
-
-
-font-weight:bold;
-
-color:white;
-
-font-size:18px;
-
-overflow:hidden;
-
-}
-
-
-
-.profile-circle img{
-
-width:100%;
-
-height:100%;
-
-object-fit:cover;
-
-}
-
-
-
-.app-container{
-
-display:flex;
-
-height:calc(100vh - 80px);
-
-position:relative;
-
-z-index:2;
-
-padding:30px;
-
-gap:25px;
-
-}
-
-
-
-.sidebar{
-
-width:220px;
-
-background:
-rgba(10,20,15,.65);
-
-
-backdrop-filter:
-blur(15px);
-
-
-border:
-1px solid rgba(34,197,94,.2);
-
-
-border-radius:20px;
-
-
-padding:20px;
-
-
-display:flex;
-
-flex-direction:column;
-
-gap:12px;
-
-}
-
-
-
-.app-option{
-
-padding:15px;
-
-border:none;
-
-border-radius:12px;
-
-
-background:
-transparent;
-
-
-color:white;
-
-
-font-size:16px;
-
-
-text-align:left;
-
-
-cursor:pointer;
-
-transition:.3s;
-
-}
-
-
-
-.app-option:hover,
-.app-option.active{
-
-background:
-rgba(34,197,94,.2);
-
-
-}
-
-
-
-.app-content{
-
-flex:1;
-
-}
-
-
-
-.welcome-card{
-
-height:100%;
-
-border-radius:25px;
-
-
-background:
-rgba(10,20,15,.65);
-
-
-backdrop-filter:
-blur(15px);
-
-
-border:
-1px solid rgba(34,197,94,.2);
-
-
-display:flex;
-
-flex-direction:column;
-
-justify-content:center;
-
-align-items:center;
-
-}
-
-
-
-.welcome-card h1{
-
-font-size:40px;
-
-}
-
-
-.welcome-card p{
-
-color:#a7b8ad;
-
-}
-
-.back-home{
-
-display:block;
-
-margin-top:20px;
-
-color:#a7b8ad;
-
-text-decoration:none;
-
-font-size:14px;
-
-transition:.3s;
-
-}
-
-
-.back-home:hover{
-
-color:#22c55e;
-
-}
-
-.profile{
-
-display:flex;
-
-align-items:center;
-
-gap:12px;
-
-text-decoration:none;
-
-color:white;
-
-cursor:pointer;
-
-transition:.3s;
-
-}
-
-
-.profile:hover{
-
-opacity:.8;
-
-}
-
-.large-profile img{
-
-width:120px;
-
-height:120px;
-
-border-radius:50%;
-
-object-fit:cover;
-
-border:3px solid #22c55e;
-
-}
-
-/* ==========================
-   Account Page
-========================== */
-
-
-.account-container{
-
-min-height:calc(100vh - 70px);
-
-display:flex;
-
-justify-content:center;
-
-align-items:center;
-
-position:relative;
-
-z-index:2;
-
-}
-
-
-
-.account-card{
-
-width:450px;
-
-padding:40px;
-
-
-background:
-rgba(10,20,15,.7);
-
-
-backdrop-filter:
-blur(15px);
-
-
-border:
-1px solid rgba(34,197,94,.25);
-
-
-border-radius:25px;
-
-
-text-align:center;
-
-
-}
-
-
-
-.large-profile{
-
-width:130px;
-
-height:130px;
-
-margin:auto;
-
-
-border-radius:50%;
-
-
-overflow:hidden;
-
-
-border:3px solid #22c55e;
-
-
-}
-
-
-
-.large-profile img{
-
-width:100%;
-
-height:100%;
-
-object-fit:cover;
-
-}
-
-
-
-#imageUpload{
-
-margin:20px 0;
-
-color:white;
-
-}
-
-
-
-.account-card h1{
-
-margin-top:20px;
-
-}
-
-
-
-#username{
-
-color:#22c55e;
-
-}
-
-
-
-.account-section{
-
-margin-top:30px;
-
-text-align:left;
-
-}
-
-
-
-.account-section h2{
-
-font-size:18px;
-
-}
-
-
-
-.account-section textarea{
-
-width:100%;
-
-height:100px;
-
-resize:none;
-
-
-background:
-rgba(255,255,255,.08);
-
-
-border:none;
-
-
-border-radius:12px;
-
-
-padding:15px;
-
-
-color:white;
-
-
-font-size:15px;
-
-
-}
-
-
-
-.info-row{
-
-display:flex;
-
-justify-content:space-between;
-
-padding:12px 0;
-
-
-color:#b5c5bb;
-
-}
-
-
-
-.logout-btn{
-
-margin-top:35px;
-
-width:100%;
-
-
-padding:14px;
-
-
-border:none;
-
-
-border-radius:12px;
-
-
-background:#ef4444;
-
-
-color:white;
-
-
-font-size:16px;
-
-
-cursor:pointer;
-
-
-}
-
-#saveBio{
-
-display:block;
-
-margin:15px auto 0;
-
-}
-
-.profile-modal{
-
-position:fixed;
-
-top:0;
-
-left:0;
-
-width:100%;
-
-height:100%;
-
-
-background:
-rgba(0,0,0,.55);
-
-
-backdrop-filter:
-blur(8px);
-
-
-display:flex;
-
-justify-content:center;
-
-align-items:center;
-
-
-z-index:100;
-
-
-}
-
-
-
-.profile-card{
-
-width:350px;
-
-padding:35px;
-
-
-background:
-rgba(10,20,15,.95);
-
-
-border-radius:25px;
-
-
-border:
-1px solid rgba(34,197,94,.3);
-
-
-text-align:center;
-
-
-position:relative;
-
-}
-
-
-
-.profile-large-picture{
-
-width:100px;
-
-height:100px;
-
-
-border-radius:50%;
-
-
-margin:auto;
-
-
-display:flex;
-
-align-items:center;
-
-justify-content:center;
-
-
-font-size:40px;
-
-
-background:
-rgba(34,197,94,.2);
-
-}
-
-
-
-.close-profile{
-
-position:absolute;
-
-top:15px;
-
-right:20px;
-
-
-background:none;
-
-border:none;
-
-
-color:white;
-
-font-size:25px;
-
-cursor:pointer;
-
-}
-
-
-
-.profile-card p{
-
-opacity:.8;
-
-}
-
-.terms-box{
-
-display:flex;
-
-align-items:center;
-
-gap:10px;
-
-margin:20px 0;
-
-font-size:14px;
-
-opacity:.85;
-
-}
-
-
-.terms-box a{
-
-color:#22c55e;
-
-text-decoration:none;
-
-}
-
-
-.terms-box a:hover{
-
-text-decoration:underline;
-
-}
-
-/* ==========================
-    Friends
-========================== */
-
-.hidden-page{
-
-display:none;
-
-}
-
-
-
-.friend-search{
-
-display:flex;
-
-gap:10px;
-
-margin:20px 0;
-
-}
-
-
-
-.friend-search{
-
-margin:25px 0;
-
-}
-
-
-
-.friend-search input{
-
-width:100%;
-
-padding:16px;
-
-border-radius:15px;
-
-border:none;
-
-background:
-rgba(255,255,255,.08);
-
-color:white;
-
-font-size:16px;
-
-}
-
-
-
-.friends-grid{
-
-display:grid;
-
-grid-template-columns:1fr 1fr;
-
-gap:25px;
-
-}
-
-
-
-.friends-panel{
-
-background:
-rgba(10,20,15,.55);
-
-border:
-1px solid rgba(34,197,94,.2);
-
-border-radius:22px;
-
-padding:25px;
-
-}
-
-
-
-.friends-panel.full{
-
-margin-top:25px;
-
-}
-
-
-
-.friend-card{
-
-display:flex;
-
-justify-content:space-between;
-
-align-items:center;
-
-padding:16px;
-
-margin-bottom:12px;
-
-border-radius:15px;
-
-background:
-rgba(255,255,255,.06);
-
-transition:.2s;
-
-}
-
-
-
-.friend-card:hover{
-
-background:
-rgba(34,197,94,.12);
-
-transform:translateY(-2px);
-
-}
-
-
-
-.friend-info h3{
-
-margin:0;
-
-font-size:17px;
-
-}
-
-
-
-.friend-info p{
-
-margin:4px 0 0;
-
-opacity:.65;
-
-}
-
-
-
-.clickable{
-
-cursor:pointer;
-
-}
-
-
-
-@media(max-width:800px){
-
-.friends-grid{
-
-grid-template-columns:1fr;
-
-}
-
-}
-
-/* ==========================
-    Global Chat
-========================== */
-
-.chat-messages{
-
-height:500px;
-
-overflow-y:auto;
-
-
-padding:20px;
-
-
-background:
-rgba(0,0,0,.15);
-
-
-border-radius:20px;
-
-
-margin-top:20px;
-
-}
-
-
-
-.chat-message{
-
-padding:12px;
-
-margin-bottom:10px;
-
-
-background:
-rgba(255,255,255,.08);
-
-
-border-radius:12px;
-
-}
-
-
-
-.chat-message strong{
-
-color:#22c55e;
-
-}
-
-
-
-.chat-input{
-
-display:flex;
-
-gap:10px;
-
-margin-top:15px;
-
-}
-
-
-
-.chat-input input{
-
-flex:1;
-
-padding:15px;
-
-
-border-radius:12px;
-
-border:none;
-
-
-background:
-rgba(255,255,255,.1);
-
-
-color:white;
-
-}
-
-/* ==========================
-   Legal Pages
-========================== */
-
-.legal-container{
 
     min-height:100vh;
 
@@ -2816,101 +1485,558 @@ color:white;
 
     justify-content:center;
 
-    align-items:flex-start;
-
-    padding:70px 20px;
+    align-items:center;
 
     position:relative;
 
-    z-index:1;
+    z-index:2;
 
 }
 
-.legal-card{
 
-    width:100%;
+.auth-card{
 
-    max-width:900px;
+    width:380px;
 
     padding:45px;
 
-    border-radius:24px;
+    border-radius:25px;
 
-    background:rgba(10,20,15,.82);
+    background:
+    rgba(10,20,15,.75);
 
-    backdrop-filter:blur(18px);
+    backdrop-filter:
+    blur(15px);
 
-    border:1px solid rgba(34,197,94,.18);
+    border:
+    1px solid rgba(34,197,94,.25);
 
-    box-shadow:0 20px 60px rgba(0,0,0,.35);
+    box-shadow:
+    0 0 40px rgba(34,197,94,.15);
+
+    text-align:center;
 
 }
 
-.legal-card h1{
 
-    text-align:center;
+.auth-logo{
+
+    width:70px;
+
+    margin-bottom:20px;
+
+}
+
+
+.auth-card h1{
+
+    font-size:32px;
 
     margin-bottom:10px;
 
-    font-size:40px;
+}
+
+
+.auth-card p{
+
+    color:#a7b8ad;
 
 }
 
-.last-updated{
 
-    text-align:center;
+.auth-card form{
 
-    color:#9ca3af;
+    display:flex;
 
-    margin-bottom:40px;
+    flex-direction:column;
+
+    gap:15px;
+
+    margin-top:30px;
 
 }
 
-.legal-card h2{
 
-    margin-top:40px;
+.auth-card input{
 
-    margin-bottom:12px;
+    padding:15px;
+
+    border-radius:12px;
+
+    border:none;
+
+    background:
+    rgba(255,255,255,.08);
+
+    color:white;
+
+    font-size:16px;
+
+    outline:none;
+
+}
+
+
+.auth-card input:focus{
+
+    box-shadow:
+    0 0 15px rgba(34,197,94,.35);
+
+}
+
+
+.auth-card button{
+
+    margin-top:10px;
+
+}
+
+
+.auth-switch{
+
+    margin-top:25px;
+
+}
+
+
+.auth-switch a{
 
     color:#22c55e;
 
-    border-bottom:1px solid rgba(34,197,94,.15);
-
-    padding-bottom:8px;
+    text-decoration:none;
 
 }
 
-.legal-card p{
 
-    line-height:1.8;
+/* ==========================
+   APP PAGE
+========================== */
 
-    color:#d1d5db;
+
+.app-header{
+
+    height:70px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    padding:0 35px;
+
+    position:relative;
+
+    z-index:2;
 
 }
 
-.legal-card ul{
 
-    margin-left:25px;
+.app-title{
 
-    line-height:1.8;
+    font-size:24px;
 
-}
-
-.legal-card li{
-
-    margin:8px 0;
-
-}
-
-.legal-card strong{
+    font-weight:700;
 
     color:white;
 
 }
 
-/* ===========================
-   Profile Popup Modal
-=========================== */
+
+.profile{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+    text-decoration:none;
+
+    color:white;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+}
+
+
+.profile:hover{
+
+    opacity:.8;
+
+}
+
+
+.profile-circle{
+
+    width:42px;
+
+    height:42px;
+
+    border-radius:50%;
+
+    background:#22c55e;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-weight:bold;
+
+    color:white;
+
+    font-size:18px;
+
+    overflow:hidden;
+
+}
+
+
+.profile-circle img{
+
+    width:100%;
+
+    height:100%;
+
+    object-fit:cover;
+
+}
+
+
+.app-container{
+
+    display:flex;
+
+    height:calc(100vh - 80px);
+
+    position:relative;
+
+    z-index:2;
+
+    padding:30px;
+
+    gap:25px;
+
+}
+
+
+.sidebar{
+
+    width:220px;
+
+    background:
+    rgba(10,20,15,.65);
+
+    backdrop-filter:
+    blur(15px);
+
+    border:
+    1px solid rgba(34,197,94,.2);
+
+    border-radius:20px;
+
+    padding:20px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:12px;
+
+}
+
+
+.app-option{
+
+    padding:15px;
+
+    border:none;
+
+    border-radius:12px;
+
+    background:
+    transparent;
+
+    color:white;
+
+    font-size:16px;
+
+    text-align:left;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+}
+
+
+.app-option:hover,
+.app-option.active{
+
+    background:
+    rgba(34,197,94,.2);
+
+}
+
+
+.app-content{
+
+    flex:1;
+
+}
+
+
+.welcome-card{
+
+    height:100%;
+
+    border-radius:25px;
+
+    background:
+    rgba(10,20,15,.65);
+
+    backdrop-filter:
+    blur(15px);
+
+    border:
+    1px solid rgba(34,197,94,.2);
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:center;
+
+    align-items:center;
+
+}
+
+
+.welcome-card h1{
+
+    font-size:40px;
+
+}
+
+
+.welcome-card p{
+
+    color:#a7b8ad;
+
+}
+
+
+.back-home{
+
+    display:block;
+
+    margin-top:20px;
+
+    color:#a7b8ad;
+
+    text-decoration:none;
+
+    font-size:14px;
+
+    transition:.3s;
+
+}
+
+
+.back-home:hover{
+
+    color:#22c55e;
+
+}
+
+
+/* ==========================
+   ACCOUNT PAGE
+========================== */
+
+
+.account-container{
+
+    min-height:calc(100vh - 70px);
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    position:relative;
+
+    z-index:2;
+
+}
+
+
+.account-card{
+
+    width:450px;
+
+    padding:40px;
+
+    background:
+    rgba(10,20,15,.7);
+
+    backdrop-filter:
+    blur(15px);
+
+    border:
+    1px solid rgba(34,197,94,.25);
+
+    border-radius:25px;
+
+    text-align:center;
+
+}
+
+
+.large-profile{
+
+    width:130px;
+
+    height:130px;
+
+    margin:auto;
+
+    border-radius:50%;
+
+    overflow:hidden;
+
+    border:3px solid #22c55e;
+
+}
+
+
+.large-profile img{
+
+    width:100%;
+
+    height:100%;
+
+    object-fit:cover;
+
+}
+
+
+#imageUpload{
+
+    margin:20px 0;
+
+    color:white;
+
+}
+
+
+.account-card h1{
+
+    margin-top:20px;
+
+}
+
+
+#username{
+
+    color:#22c55e;
+
+}
+
+
+.account-section{
+
+    margin-top:30px;
+
+    text-align:left;
+
+}
+
+
+.account-section h2{
+
+    font-size:18px;
+
+}
+
+
+.account-section textarea{
+
+    width:100%;
+
+    height:100px;
+
+    resize:none;
+
+    background:
+    rgba(255,255,255,.08);
+
+    border:none;
+
+    border-radius:12px;
+
+    padding:15px;
+
+    color:white;
+
+    font-size:15px;
+
+}
+
+
+.info-row{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    padding:12px 0;
+
+    color:#b5c5bb;
+
+}
+
+
+.logout-btn{
+
+    margin-top:35px;
+
+    width:100%;
+
+    padding:14px;
+
+    border:none;
+
+    border-radius:12px;
+
+    background:#ef4444;
+
+    color:white;
+
+    font-size:16px;
+
+    cursor:pointer;
+
+}
+
+
+#saveBio{
+
+    display:block;
+
+    margin:15px auto 0;
+
+}
+
+/* ==========================
+   PROFILE MODAL
+========================== */
+
 
 .profile-modal{
 
@@ -2918,9 +2044,11 @@ color:white;
 
     inset:0;
 
-    background:rgba(0,0,0,.65);
+    background:
+    rgba(0,0,0,.65);
 
-    backdrop-filter:blur(8px);
+    backdrop-filter:
+    blur(8px);
 
     display:flex;
 
@@ -2982,8 +2110,6 @@ color:white;
 }
 
 
-/* Profile image */
-
 .profile-large-picture{
 
     width:120px;
@@ -3024,8 +2150,6 @@ color:white;
 }
 
 
-/* Close button */
-
 .close-profile{
 
     position:absolute;
@@ -3053,8 +2177,6 @@ color:white;
 }
 
 
-/* Action button */
-
 #profileAction{
 
     margin-top:30px;
@@ -3072,5 +2194,412 @@ color:white;
     cursor:pointer;
 
     font-weight:700;
+
+}
+
+
+/* ==========================
+   TERMS BOX
+========================== */
+
+
+.terms-box{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    margin:20px 0;
+
+    font-size:14px;
+
+    opacity:.85;
+
+}
+
+
+.terms-box a{
+
+    color:#22c55e;
+
+    text-decoration:none;
+
+}
+
+
+.terms-box a:hover{
+
+    text-decoration:underline;
+
+}
+
+
+/* ==========================
+   FRIENDS
+========================== */
+
+
+.hidden-page{
+
+    display:none;
+
+}
+
+
+.friend-search{
+
+    display:flex;
+
+    gap:10px;
+
+    margin:25px 0;
+
+}
+
+
+.friend-search input{
+
+    width:100%;
+
+    padding:16px;
+
+    border-radius:15px;
+
+    border:none;
+
+    background:
+    rgba(255,255,255,.08);
+
+    color:white;
+
+    font-size:16px;
+
+}
+
+
+.friends-grid{
+
+    display:grid;
+
+    grid-template-columns:1fr 1fr;
+
+    gap:25px;
+
+}
+
+
+.friends-panel{
+
+    background:
+    rgba(10,20,15,.55);
+
+    border:
+    1px solid rgba(34,197,94,.2);
+
+    border-radius:22px;
+
+    padding:25px;
+
+}
+
+
+.friends-panel.full{
+
+    margin-top:25px;
+
+}
+
+
+.friend-card{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:16px;
+
+    margin-bottom:12px;
+
+    border-radius:15px;
+
+    background:
+    rgba(255,255,255,.06);
+
+    transition:.2s;
+
+}
+
+
+.friend-card:hover{
+
+    background:
+    rgba(34,197,94,.12);
+
+    transform:translateY(-2px);
+
+}
+
+
+.friend-info h3{
+
+    margin:0;
+
+    font-size:17px;
+
+}
+
+
+.friend-info p{
+
+    margin:4px 0 0;
+
+    opacity:.65;
+
+}
+
+
+.clickable{
+
+    cursor:pointer;
+
+}
+
+
+@media(max-width:800px){
+
+    .friends-grid{
+
+        grid-template-columns:1fr;
+
+    }
+
+}
+
+
+/* ==========================
+   GLOBAL CHAT
+========================== */
+
+
+.chat-messages{
+
+    height:500px;
+
+    overflow-y:auto;
+
+    padding:20px;
+
+    background:
+    rgba(0,0,0,.15);
+
+    border-radius:20px;
+
+    margin-top:20px;
+
+}
+
+
+.chat-message{
+
+    padding:12px;
+
+    margin-bottom:10px;
+
+    background:
+    rgba(255,255,255,.08);
+
+    border-radius:12px;
+
+}
+
+
+.chat-message strong{
+
+    color:#22c55e;
+
+}
+
+
+.chat-input{
+
+    display:flex;
+
+    gap:10px;
+
+    margin-top:15px;
+
+}
+
+
+.chat-input input{
+
+    flex:1;
+
+    padding:15px;
+
+    border-radius:12px;
+
+    border:none;
+
+    background:
+    rgba(255,255,255,.1);
+
+    color:white;
+
+}
+
+
+/* ==========================
+   LEGAL PAGES
+========================== */
+
+
+.legal-container{
+
+    min-height:100vh;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:flex-start;
+
+    padding:70px 20px;
+
+    position:relative;
+
+    z-index:1;
+
+}
+
+
+.legal-card{
+
+    width:100%;
+
+    max-width:900px;
+
+    padding:45px;
+
+    border-radius:24px;
+
+    background:
+    rgba(10,20,15,.82);
+
+    backdrop-filter:blur(18px);
+
+    border:
+    1px solid rgba(34,197,94,.18);
+
+    box-shadow:
+    0 20px 60px rgba(0,0,0,.35);
+
+}
+
+
+.legal-card h1{
+
+    text-align:center;
+
+    margin-bottom:10px;
+
+    font-size:40px;
+
+}
+
+
+.last-updated{
+
+    text-align:center;
+
+    color:#9ca3af;
+
+    margin-bottom:40px;
+
+}
+
+
+.legal-card h2{
+
+    margin-top:40px;
+
+    margin-bottom:12px;
+
+    color:#22c55e;
+
+    border-bottom:
+    1px solid rgba(34,197,94,.15);
+
+    padding-bottom:8px;
+
+}
+
+
+.legal-card p{
+
+    line-height:1.8;
+
+    color:#d1d5db;
+
+}
+
+
+.legal-card ul{
+
+    margin-left:25px;
+
+    line-height:1.8;
+
+}
+
+
+.legal-card li{
+
+    margin:8px 0;
+
+}
+
+
+.legal-card strong{
+
+    color:white;
+
+}
+
+
+/* ==========================
+   RESPONSIVE
+========================== */
+
+
+@media(max-width:900px){
+
+
+    .statement h2{
+
+        font-size:42px;
+
+    }
+
+
+    .feature,
+    .feature.reverse{
+
+        flex-direction:column;
+
+        text-align:center;
+
+    }
+
+
+    .feature-text h3{
+
+        font-size:34px;
+
+    }
 
 }
