@@ -2391,3 +2391,171 @@ footer p{
 
 
 }
+
+/* ==========================
+   HOMEPAGE RESTORE PATCH
+========================== */
+
+
+.nav-buttons{
+
+    display:flex;
+
+    gap:15px;
+
+}
+
+
+.nav-buttons a{
+
+    text-decoration:none;
+
+}
+
+
+
+.login-btn{
+
+    color:white;
+
+    background:none;
+
+    border:none;
+
+    cursor:pointer;
+
+    font-size:15px;
+
+}
+
+
+
+.cta button{
+
+    background:#22C55E;
+
+    color:white;
+
+    border:none;
+
+    padding:18px 40px;
+
+    border-radius:16px;
+
+    font-size:18px;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+}
+
+
+
+.cta button:hover{
+
+    background:#16A34A;
+
+}
+
+
+
+/* BACKGROUND ORBS */
+
+
+.background{
+
+    position:fixed;
+
+    inset:0;
+
+    z-index:-2;
+
+    overflow:hidden;
+
+    background:#0F1115;
+
+}
+
+
+
+.orb{
+
+    position:absolute;
+
+    border-radius:50%;
+
+    filter:blur(120px);
+
+    opacity:.25;
+
+    animation:float 18s ease-in-out infinite;
+
+}
+
+
+
+.orb1{
+
+    width:420px;
+
+    height:420px;
+
+    background:#22C55E;
+
+    top:-120px;
+
+    left:-100px;
+
+}
+
+
+
+.orb2{
+
+    width:350px;
+
+    height:350px;
+
+    background:#00BFFF;
+
+    right:-120px;
+
+    top:40%;
+
+}
+
+
+
+.orb3{
+
+    width:500px;
+
+    height:500px;
+
+    background:#16A34A;
+
+    bottom:-180px;
+
+    left:35%;
+
+}
+
+
+
+@keyframes float{
+
+    0%,100%{
+
+        transform:translate(0,0);
+
+    }
+
+
+    50%{
+
+        transform:translate(40px,-40px);
+
+    }
+
+}
