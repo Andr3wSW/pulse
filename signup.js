@@ -172,6 +172,8 @@ doc(db,"users",user.uid),
 
     createdAt: Date.now()
 
+    
+
 }
 );
 
