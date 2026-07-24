@@ -175,6 +175,9 @@ function loadMessages(){
             const message =
             messageDoc.data();
 
+            if(!message.uid)
+            continue;
+
 
 
 
