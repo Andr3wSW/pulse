@@ -54,6 +54,9 @@ document.querySelector("#email").value;
 const password =
 document.querySelector("#password").value;
 
+const termsAgree =
+document.getElementById("termsAgree");
+
 
 // Check username format
 
@@ -99,6 +102,16 @@ if(!snapshot.empty){
     alert("That username is already taken.");
 
     return;
+
+}
+
+if(!termsAgree.checked){
+
+alert(
+"You must agree to the Pulse Terms of Use before creating an account."
+);
+
+return;
 
 }
 
