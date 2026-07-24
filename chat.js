@@ -8,14 +8,14 @@ import {
     serverTimestamp,
     query,
     orderBy,
-    onSnapshot,
-    getDoc,
-    doc
+    onSnapshot
 }
 from
 "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
 
 
+
+let currentUser = null;
 
 
 
@@ -29,10 +29,6 @@ document.getElementById("messageInput");
 
 const sendButton =
 document.getElementById("sendMessage");
-
-
-
-let currentUser = null;
 
 
 
@@ -88,6 +84,7 @@ messageInput.addEventListener(
 
 
 
+
 async function sendMessage(){
 
 
@@ -107,8 +104,16 @@ async function sendMessage(){
 
         {
 
-            uid:
+            senderID:
             currentUser.uid,
+
+
+            senderName:
+            currentUser.displayName || "User",
+
+
+            profilePicture:
+            "",
 
 
             text:text,
@@ -161,52 +166,18 @@ function loadMessages(){
 
     onSnapshot(
     q,
-    async(snapshot)=>{
+    (snapshot)=>{
 
 
         messagesContainer.innerHTML="";
 
 
 
-        for(const messageDoc of snapshot.docs){
-
+        snapshot.forEach((messageDoc)=>{
 
 
             const message =
             messageDoc.data();
-
-            if(!message.uid)
-            continue;
-
-
-
-
-            const userSnap =
-            await getDoc(
-
-                doc(
-                    db,
-                    "users",
-                    message.uid
-                )
-
-            );
-
-
-
-            if(!userSnap.exists())
-            continue;
-
-
-
-            const user =
-            userSnap.data();
-
-
-
-
-            const displayName =
-            user.firstName;
 
 
 
@@ -220,14 +191,13 @@ function loadMessages(){
 
 
 
-
             messageDiv.innerHTML = `
 
             <span 
             class="chat-user"
-            data-uid="${message.uid}">
-            
-            ${displayName}
+            data-uid="${message.senderID}">
+
+            ${message.senderName}
 
             </span>
 
@@ -249,7 +219,7 @@ function loadMessages(){
 
 
                 openProfile(
-                    message.uid
+                    message.senderID
                 );
 
 
@@ -263,7 +233,7 @@ function loadMessages(){
 
 
 
-        }
+        });
 
 
 
