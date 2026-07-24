@@ -112,6 +112,9 @@ async function searchUsers(){
 
 
 
+    const addedUsers = new Set();
+
+
     snapshot.forEach((userDoc)=>{
 
 
@@ -121,6 +124,11 @@ async function searchUsers(){
 
         const uid =
         userDoc.id;
+
+        if(addedUsers.has(uid))
+        return;
+
+        addedUsers.add(uid);
 
 
 
