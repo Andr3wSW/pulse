@@ -1,56 +1,34 @@
 import { auth, db } from "./firebase.js";
 
 import {
-collection,
-query,
-where,
-getDocs,
-addDoc,
-serverTimestamp,
-onSnapshot,
-doc,
-getDoc,
-deleteDoc
+    collection,
+    query,
+    where,
+    getDocs,
+    addDoc,
+    serverTimestamp,
+    onSnapshot,
+    doc,
+    getDoc,
+    deleteDoc
 }
 from
 "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
 
 
 
-let currentUser;
-
-
-
-auth.onAuthStateChanged((user)=>{
-
-if(!user)
-return;
-
-
-currentUser = user;
-
-
-loadRequests();
-
-loadFriends();
-
-});
-
-
+let currentUser = null;
 
 
 
 const searchInput =
 document.getElementById("friendSearch");
 
-
 const searchResults =
 document.getElementById("searchResults");
 
-
 const incomingRequests =
 document.getElementById("incomingRequests");
-
 
 const friendsList =
 document.getElementById("friendsList");
@@ -59,13 +37,33 @@ document.getElementById("friendsList");
 
 
 
-
-// ==========================
-// SEARCH
-// ==========================
+auth.onAuthStateChanged((user)=>{
 
 
-let timer;
+    if(!user)
+    return;
+
+
+    currentUser = user;
+
+
+    loadRequests();
+
+    loadFriends();
+
+
+});
+
+
+
+
+
+// ======================
+// SEARCH USERS
+// ======================
+
+
+if(searchInput){
 
 
 searchInput.addEventListener(
@@ -73,122 +71,165 @@ searchInput.addEventListener(
 ()=>{
 
 
-clearTimeout(timer);
-
-
-timer=setTimeout(
-searchUsers,
-300
-);
+    searchUsers();
 
 
 });
 
+
+}
 
 
 
 async function searchUsers(){
 
 
-const text =
-searchInput.value
-.trim()
-.toLowerCase();
+    if(!currentUser)
+    return;
+
+
+    const text =
+    searchInput.value
+    .trim()
+    .toLowerCase();
 
 
 
-searchResults.innerHTML="";
+    searchResults.innerHTML="";
 
 
 
-if(text.length < 2)
-return;
+    if(text.length < 2)
+    return;
 
 
 
-const users =
-await getDocs(
-collection(db,"users")
-);
+
+    const snapshot =
+    await getDocs(
+        collection(db,"users")
+    );
 
 
 
-users.forEach(userDoc=>{
+    snapshot.forEach((userDoc)=>{
 
 
-const data =
-userDoc.data();
+        const data =
+        userDoc.data();
 
 
-const uid =
-userDoc.id;
-
-
-
-if(uid === currentUser.uid)
-return;
+        const uid =
+        userDoc.id;
 
 
 
-const terms =
-data.searchTerms || [];
+        if(uid === currentUser.uid)
+        return;
 
 
 
-if(!terms.some(
-term=>term.includes(text)
-))
-return;
+        const terms =
+        data.searchTerms || [];
 
 
 
-const card =
-document.createElement("div");
-
-
-card.className =
-"friend-card";
-
-
-
-card.innerHTML = `
-
-<div class="friend-info">
-
-<h3>
-${data.firstName}
-${data.lastName || ""}
-</h3>
-
-
-<p>
-@${data.username}
-</p>
-
-</div>
-
-
-<button class="primary">
-
-Add
-
-</button>
-
-`;
+        const found =
+        terms.some(
+            term =>
+            term.includes(text)
+        );
 
 
 
-card.querySelector("button")
-.onclick =
-()=>sendRequest(uid);
+        if(!found)
+        return;
 
 
 
-searchResults.appendChild(card);
+        createSearchCard(
+            uid,
+            data
+        );
+
+
+    });
 
 
 
-});
+}
+
+
+
+
+
+
+function createSearchCard(uid,data){
+
+
+    const card =
+    document.createElement("div");
+
+
+    card.className =
+    "friend-card clickable";
+
+
+
+    card.innerHTML = `
+
+    <div class="friend-info">
+
+        <h3>
+        ${data.firstName}
+        ${data.lastName || ""}
+        </h3>
+
+        <p>
+        @${data.username}
+        </p>
+
+    </div>
+
+
+    <button class="primary">
+    Add
+    </button>
+
+    `;
+
+
+
+    card.onclick = ()=>{
+
+
+        if(window.openProfile){
+
+            window.openProfile(uid);
+
+        }
+
+
+    };
+
+
+
+    card.querySelector("button")
+    .onclick =
+    async(e)=>{
+
+
+        e.stopPropagation();
+
+
+        await sendRequest(uid);
+
+
+    };
+
+
+
+    searchResults.appendChild(card);
 
 
 }
@@ -199,67 +240,80 @@ searchResults.appendChild(card);
 
 
 
-// ==========================
+
+
+// ======================
 // SEND REQUEST
-// ==========================
+// ======================
 
 
 async function sendRequest(friendID){
 
 
-const check =
-await getDocs(
+    const existing =
+    await getDocs(
 
-query(
+        query(
 
-collection(db,"friendRequests"),
+            collection(db,"friendRequests"),
 
-where(
-"from",
-"==",
-currentUser.uid
-),
+            where(
+            "from",
+            "==",
+            currentUser.uid
+            ),
 
-where(
-"to",
-"==",
-friendID
-)
+            where(
+            "to",
+            "==",
+            friendID
+            )
 
-)
+        )
 
-);
-
-
-
-if(!check.empty)
-return;
+    );
 
 
 
-await addDoc(
+    if(!existing.empty){
 
-collection(db,"friendRequests"),
+        alert("Request already sent");
 
-{
+        return;
 
-from:
-currentUser.uid,
-
-
-to:
-friendID,
+    }
 
 
-createdAt:
-serverTimestamp()
+
+
+    await addDoc(
+
+        collection(db,"friendRequests"),
+
+        {
+
+            from:
+            currentUser.uid,
+
+
+            to:
+            friendID,
+
+
+            createdAt:
+            serverTimestamp()
+
+        }
+
+    );
+
+
+
+    alert("Friend request sent");
+
 
 }
 
-);
-
-
-}
 
 
 
@@ -267,134 +321,147 @@ serverTimestamp()
 
 
 
-// ==========================
-// REQUESTS
-// ==========================
+
+// ======================
+// INCOMING REQUESTS
+// ======================
 
 
 function loadRequests(){
 
 
-const q =
-query(
 
-collection(db,"friendRequests"),
+    const q =
+    query(
 
-where(
-"to",
-"==",
-currentUser.uid
-)
+        collection(db,"friendRequests"),
 
-);
+        where(
+        "to",
+        "==",
+        currentUser.uid
+        )
 
-
-
-onSnapshot(
-q,
-async(snapshot)=>{
-
-
-incomingRequests.innerHTML="";
+    );
 
 
 
-for(const request of snapshot.docs){
+    onSnapshot(
+    q,
+    async(snapshot)=>{
 
 
-const data =
-request.data();
-
-
-
-const user =
-await getDoc(
-
-doc(
-db,
-"users",
-data.from
-
-)
-
-);
+        if(!incomingRequests)
+        return;
 
 
 
-const person =
-user.data();
+        incomingRequests.innerHTML="";
 
 
 
-const card =
-document.createElement("div");
+        for(const request of snapshot.docs){
 
 
-card.className =
-"friend-card";
-
-
-
-card.innerHTML = `
-
-<div class="friend-info">
-
-<h3>
-${person.firstName}
-${person.lastName || ""}
-</h3>
-
-
-<p>
-@${person.username}
-</p>
-
-</div>
-
-
-<div>
-
-<button class="primary accept">
-Accept
-</button>
-
-
-<button class="secondary decline">
-Decline
-</button>
-
-</div>
-
-`;
+            const data =
+            request.data();
 
 
 
-card.querySelector(".accept")
-.onclick =
-()=>acceptRequest(
-request.id,
-data.from
-);
+            const userSnap =
+            await getDoc(
+
+                doc(
+                    db,
+                    "users",
+                    data.from
+                )
+
+            );
 
 
 
-card.querySelector(".decline")
-.onclick =
-()=>declineRequest(
-request.id
-);
+            if(!userSnap.exists())
+            continue;
 
 
 
-incomingRequests.appendChild(card);
+            const person =
+            userSnap.data();
 
 
 
-}
+            const card =
+            document.createElement("div");
+
+
+            card.className =
+            "friend-card";
 
 
 
-});
+            card.innerHTML = `
+
+
+            <div class="friend-info">
+
+                <h3>
+                ${person.firstName}
+                ${person.lastName || ""}
+                </h3>
+
+                <p>
+                @${person.username}
+                </p>
+
+            </div>
+
+
+            <div>
+
+            <button class="primary accept">
+            Accept
+            </button>
+
+
+            <button class="secondary decline">
+            Decline
+            </button>
+
+
+            </div>
+
+
+            `;
+
+
+
+
+            card.querySelector(".accept")
+            .onclick =
+            ()=>acceptRequest(
+                request.id,
+                data.from
+            );
+
+
+
+            card.querySelector(".decline")
+            .onclick =
+            ()=>declineRequest(
+                request.id
+            );
+
+
+
+            incomingRequests.appendChild(card);
+
+
+        }
+
+
+
+    });
 
 
 }
@@ -413,64 +480,65 @@ friendID
 
 
 
-await addDoc(
+    await addDoc(
 
-collection(db,"friends"),
+        collection(db,"friends"),
 
-{
+        {
 
-user:
-currentUser.uid,
-
-friend:
-friendID,
+            user:
+            currentUser.uid,
 
 
-createdAt:
-serverTimestamp()
+            friend:
+            friendID,
+
+
+            createdAt:
+            serverTimestamp()
+
+        }
+
+    );
+
+
+
+
+    await addDoc(
+
+        collection(db,"friends"),
+
+        {
+
+            user:
+            friendID,
+
+
+            friend:
+            currentUser.uid,
+
+
+            createdAt:
+            serverTimestamp()
+
+        }
+
+    );
+
+
+
+    await deleteDoc(
+
+        doc(
+            db,
+            "friendRequests",
+            requestID
+        )
+
+    );
+
 
 }
-
-);
-
-
-
-await addDoc(
-
-collection(db,"friends"),
-
-{
-
-user:
-friendID,
-
-friend:
-currentUser.uid,
-
-
-createdAt:
-serverTimestamp()
-
-}
-
-);
-
-
-
-await deleteDoc(
-
-doc(
-db,
-"friendRequests",
-requestID
-
-)
-
-);
-
-
-}
-
 
 
 
@@ -480,16 +548,15 @@ requestID
 async function declineRequest(id){
 
 
-await deleteDoc(
+    await deleteDoc(
 
-doc(
-db,
-"friendRequests",
-id
+        doc(
+            db,
+            "friendRequests",
+            id
+        )
 
-)
-
-);
+    );
 
 
 }
@@ -502,114 +569,146 @@ id
 
 
 
-// ==========================
+// ======================
 // FRIEND LIST
-// ==========================
+// ======================
 
 
 function loadFriends(){
 
 
-const q =
-query(
 
-collection(db,"friends"),
+    const q =
+    query(
 
-where(
-"user",
-"==",
-currentUser.uid
+        collection(db,"friends"),
 
-)
+        where(
+        "user",
+        "==",
+        currentUser.uid
+        )
 
-);
-
-
-
-onSnapshot(
-q,
-async(snapshot)=>{
-
-
-friendsList.innerHTML="";
+    );
 
 
 
-if(snapshot.empty){
 
-friendsList.innerHTML=
-"<p>No friends yet</p>";
-
-return;
-
-}
+    onSnapshot(
+    q,
+    async(snapshot)=>{
 
 
-
-for(const friendDoc of snapshot.docs){
-
-
-const data =
-friendDoc.data();
+        if(!friendsList)
+        return;
 
 
 
-const user =
-await getDoc(
-
-doc(
-db,
-"users",
-data.friend
-
-)
-
-);
+        friendsList.innerHTML="";
 
 
 
-const person =
-user.data();
+        if(snapshot.empty){
+
+
+            friendsList.innerHTML =
+            "<p>No friends yet</p>";
+
+
+            return;
+
+
+        }
 
 
 
-const card =
-document.createElement("div");
 
 
-card.className =
-"friend-card clickable";
+        for(const friend of snapshot.docs){
 
 
 
-card.innerHTML = `
-
-<div class="friend-info">
-
-<h3>
-${person.firstName}
-${person.lastName || ""}
-</h3>
-
-
-<p>
-@${person.username}
-</p>
-
-</div>
-
-`;
+            const data =
+            friend.data();
 
 
 
-friendsList.appendChild(card);
+            const userSnap =
+            await getDoc(
+
+                doc(
+                    db,
+                    "users",
+                    data.friend
+                )
+
+            );
 
 
 
-}
+            if(!userSnap.exists())
+            continue;
 
 
-});
+
+            const person =
+            userSnap.data();
+
+
+
+
+            const card =
+            document.createElement("div");
+
+
+            card.className =
+            "friend-card clickable";
+
+
+
+            card.innerHTML = `
+
+            <div class="friend-info">
+
+            <h3>
+            ${person.firstName}
+            ${person.lastName || ""}
+            </h3>
+
+            <p>
+            @${person.username}
+            </p>
+
+            </div>
+
+            `;
+
+
+
+            card.onclick = ()=>{
+
+
+                if(window.openProfile){
+
+                    window.openProfile(
+                    data.friend
+                    );
+
+                }
+
+
+            };
+
+
+
+            friendsList.appendChild(card);
+
+
+
+        }
+
+
+    });
 
 
 }
