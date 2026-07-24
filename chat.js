@@ -1,118 +1,54 @@
-import { db, auth } from "./firebase.js";
+import { auth, db } from "./firebase.js";
+
+import { openProfile } from "./profile.js";
 
 import {
-collection,
-doc,
-getDoc,
-addDoc,
-serverTimestamp,
-query,
-orderBy,
-onSnapshot
+    collection,
+    addDoc,
+    serverTimestamp,
+    query,
+    orderBy,
+    onSnapshot,
+    getDoc,
+    doc
 }
 from
 "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
 
 
 
-const messages =
+
+
+const messagesContainer =
 document.getElementById("chatMessages");
 
 
-const input =
+const messageInput =
 document.getElementById("messageInput");
 
 
-const send =
+const sendButton =
 document.getElementById("sendMessage");
 
 
 
-const chatQuery =
-query(
-
-collection(db,"messages"),
-
-orderBy(
-"createdAt"
-)
-
-);
+let currentUser = null;
 
 
 
 
-onSnapshot(
-chatQuery,
-(snapshot)=>{
+
+auth.onAuthStateChanged((user)=>{
 
 
-messages.innerHTML="";
+    if(!user)
+    return;
 
 
-
-snapshot.forEach(doc=>{
-
-
-const data =
-doc.data();
+    currentUser = user;
 
 
-
-const div =
-document.createElement("div");
-
-
-
-div.className =
-"chat-message";
-
-
-div.innerHTML = `
-
-<strong 
-class="chat-user"
-data-user="${data.senderID}"
->
-
-${data.senderName}
-
-</strong>
-
-<br>
-
-${data.text}
-
-`;
-
-document
-.querySelectorAll(".chat-user")
-.forEach(name=>{
-
-
-name.onclick=()=>{
-
-
-window.location.href =
-"profile?uid=" + name.dataset.user;
-
-
-};
-
-
-});
-
-
-
-messages.appendChild(div);
-
-
-});
-
-
-
-messages.scrollTop =
-messages.scrollHeight;
+    loadMessages();
 
 
 });
@@ -121,67 +57,219 @@ messages.scrollHeight;
 
 
 
-send.onclick =
-async()=>{
-
-
-const text =
-input.value.trim();
-
-
-if(!text)
-return;
 
 
 
-const userSnap =
-await getDoc(
+// ==========================
+// SEND MESSAGE
+// ==========================
 
-doc(
-db,
-"users",
-auth.currentUser.uid
-)
 
-);
+sendButton.onclick =
+sendMessage;
 
 
 
-const userData =
-userSnap.data();
+messageInput.addEventListener(
+"keydown",
+(e)=>{
+
+
+    if(e.key === "Enter"){
+
+        sendMessage();
+
+    }
+
+
+});
 
 
 
-await addDoc(
-
-collection(db,"messages"),
-
-{
-
-text:text,
-
-senderID:
-auth.currentUser.uid,
 
 
-senderName:
-userData.firstName,
+async function sendMessage(){
 
 
-profilePicture:
-userData.profilePicture || "",
+    const text =
+    messageInput.value.trim();
 
 
-createdAt:
-serverTimestamp()
+
+    if(!text)
+    return;
+
+
+
+    await addDoc(
+
+        collection(db,"messages"),
+
+        {
+
+            uid:
+            currentUser.uid,
+
+
+            text:text,
+
+
+            createdAt:
+            serverTimestamp()
+
+        }
+
+    );
+
+
+
+    messageInput.value = "";
+
 
 }
 
-);
 
 
 
-input.value="";
 
 
-};
+
+
+
+// ==========================
+// LOAD MESSAGES
+// ==========================
+
+
+function loadMessages(){
+
+
+
+    const q =
+    query(
+
+        collection(db,"messages"),
+
+        orderBy(
+            "createdAt",
+            "asc"
+        )
+
+    );
+
+
+
+    onSnapshot(
+    q,
+    async(snapshot)=>{
+
+
+        messagesContainer.innerHTML="";
+
+
+
+        for(const messageDoc of snapshot.docs){
+
+
+
+            const message =
+            messageDoc.data();
+
+
+
+
+            const userSnap =
+            await getDoc(
+
+                doc(
+                    db,
+                    "users",
+                    message.uid
+                )
+
+            );
+
+
+
+            if(!userSnap.exists())
+            continue;
+
+
+
+            const user =
+            userSnap.data();
+
+
+
+
+            const displayName =
+            user.firstName;
+
+
+
+            const messageDiv =
+            document.createElement("div");
+
+
+
+            messageDiv.className =
+            "chat-message";
+
+
+
+
+            messageDiv.innerHTML = `
+
+            <span 
+            class="chat-user"
+            data-uid="${message.uid}">
+            
+            ${displayName}
+
+            </span>
+
+
+            <span class="chat-text">
+
+            ${message.text}
+
+            </span>
+
+            `;
+
+
+
+            messageDiv
+            .querySelector(".chat-user")
+            .onclick =
+            ()=>{
+
+
+                openProfile(
+                    message.uid
+                );
+
+
+            };
+
+
+
+            messagesContainer.appendChild(
+                messageDiv
+            );
+
+
+
+        }
+
+
+
+        messagesContainer.scrollTop =
+        messagesContainer.scrollHeight;
+
+
+
+    });
+
+
+}

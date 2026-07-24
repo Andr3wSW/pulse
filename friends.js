@@ -1,5 +1,7 @@
 import { auth, db } from "./firebase.js";
 
+import { openProfile } from "./profile.js";
+
 import {
     collection,
     query,
@@ -239,6 +241,12 @@ data
 
     card.className =
     "friend-card clickable";
+
+    card.onclick = ()=>{
+
+        openProfile(data.friend);
+
+    };
 
 
 
