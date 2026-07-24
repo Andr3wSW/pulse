@@ -168,14 +168,16 @@ doc(db,"users",user.uid),
 
         username.toLowerCase()
 
-    ]
+    ],
+
+    createdAt: Date.now()
 
 }
 );
 
 
 
-window.location.href="index";
+window.location.href="app";
 
 
 });
