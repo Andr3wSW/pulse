@@ -149,101 +149,101 @@ checkAuth()
 
 
     // ==========================
-// Profile Upload
-// ==========================
+    // Profile Upload
+    // ==========================
 
-document
-.getElementById("imageUpload")
-.addEventListener(
-"change",
-async()=>{
-
-
-    const file =
     document
     .getElementById("imageUpload")
-    .files[0];
+    .addEventListener(
+    "change",
+    async()=>{
 
 
-    if(!file){
-
-        console.log("No file selected");
-        return;
-
-    }
-
-
-    console.log("Selected file:", file);
-
-
-
-    try{
-
-
-        const imageRef =
-        ref(
-            storage,
-            "profilePictures/" + user.uid
-        );
-
-
-        console.log("Uploading to:", imageRef.fullPath);
-
-
-
-        await uploadBytes(
-            imageRef,
-            file
-        );
-
-
-        console.log("Upload complete");
-
-
-
-        const url =
-        await getDownloadURL(imageRef);
-
-
-
-        console.log("Download URL:", url);
-
-
-
-        await updateDoc(
-            userRef,
-            {
-                profilePicture:url
-            }
-        );
-
-
-        console.log("Firestore updated");
-
-
-
+        const file =
         document
-        .getElementById("profileImage")
-        .src =
-        url;
+        .getElementById("imageUpload")
+        .files[0];
+
+
+        if(!file){
+
+            console.log("No file selected");
+            return;
+
+        }
+
+
+        console.log("Selected file:", file);
 
 
 
-        alert("Profile picture updated");
+        try{
 
 
-    }
+            const imageRef =
+            ref(
+                storage,
+                "profilePictures/" + user.uid
+            );
 
-    catch(error){
 
-        console.error(
-            "Profile upload failed:",
-            error
-        );
+            console.log("Uploading to:", imageRef.fullPath);
 
-        alert(error.message);
 
-    }
+
+            await uploadBytes(
+                imageRef,
+                file
+            );
+
+
+            console.log("Upload complete");
+
+
+
+            const url =
+            await getDownloadURL(imageRef);
+
+
+
+            console.log("Download URL:", url);
+
+
+
+            await updateDoc(
+                userRef,
+                {
+                    profilePicture:url
+                }
+            );
+
+
+            console.log("Firestore updated");
+
+
+
+            document
+            .getElementById("profileImage")
+            .src =
+            url;
+
+
+
+            alert("Profile picture updated");
+
+
+        }
+
+        catch(error){
+
+            console.error(
+                "Profile upload failed:",
+                error
+            );
+
+            alert(error.message);
+
+        }
 
 
 });
