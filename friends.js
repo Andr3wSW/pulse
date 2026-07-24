@@ -39,9 +39,14 @@ document.getElementById("friendsList");
 
 auth.onAuthStateChanged((user)=>{
 
-
     if(!user)
     return;
+
+
+    console.log(
+        "Logged in:",
+        user.uid
+    );
 
 
     currentUser = user;
@@ -58,9 +63,10 @@ auth.onAuthStateChanged((user)=>{
 
 
 
-// ======================
-// SEARCH USERS
-// ======================
+
+// ==========================
+// SEARCH
+// ==========================
 
 
 if(searchInput){
@@ -70,14 +76,15 @@ searchInput.addEventListener(
 "input",
 ()=>{
 
-
     searchUsers();
-
 
 });
 
 
 }
+
+
+
 
 
 
@@ -88,10 +95,18 @@ async function searchUsers(){
     return;
 
 
+
     const text =
     searchInput.value
     .trim()
     .toLowerCase();
+
+
+
+    console.log(
+        "Searching:",
+        text
+    );
 
 
 
@@ -105,6 +120,11 @@ async function searchUsers(){
 
 
 
+    const addedUsers =
+    new Set();
+
+
+
     const snapshot =
     await getDocs(
         collection(db,"users")
@@ -112,23 +132,24 @@ async function searchUsers(){
 
 
 
-    const addedUsers = new Set();
-
-
     snapshot.forEach((userDoc)=>{
+
+
+        const uid =
+        userDoc.id;
+
 
 
         const data =
         userDoc.data();
 
 
-        const uid =
-        userDoc.id;
 
-        if(addedUsers.has(uid))
-        return;
-
-        addedUsers.add(uid);
+        console.log(
+            "Checking user:",
+            uid,
+            data.firstName
+        );
 
 
 
@@ -137,21 +158,51 @@ async function searchUsers(){
 
 
 
+        if(addedUsers.has(uid))
+        {
+
+            console.log(
+                "Duplicate blocked:",
+                uid
+            );
+
+            return;
+
+        }
+
+
+
+
         const terms =
         data.searchTerms || [];
 
 
 
-        const found =
+        const matches =
         terms.some(
             term =>
-            term.includes(text)
+            term
+            .toLowerCase()
+            .includes(text)
         );
 
 
 
-        if(!found)
+        if(!matches)
         return;
+
+
+
+
+        addedUsers.add(uid);
+
+
+
+        console.log(
+            "Creating card:",
+            uid,
+            data.firstName
+        );
 
 
 
@@ -159,6 +210,7 @@ async function searchUsers(){
             uid,
             data
         );
+
 
 
     });
@@ -172,7 +224,13 @@ async function searchUsers(){
 
 
 
-function createSearchCard(uid,data){
+
+
+function createSearchCard(
+uid,
+data
+){
+
 
 
     const card =
@@ -193,16 +251,21 @@ function createSearchCard(uid,data){
         ${data.lastName || ""}
         </h3>
 
+
         <p>
         @${data.username}
         </p>
 
+
     </div>
 
 
-    <button class="primary">
+    <button class="primary add-button">
+
     Add
+
     </button>
+
 
     `;
 
@@ -211,7 +274,14 @@ function createSearchCard(uid,data){
     card.onclick = ()=>{
 
 
-        if(window.openProfile){
+        console.log(
+            "Opening profile:",
+            uid
+        );
+
+
+        if(window.openProfile)
+        {
 
             window.openProfile(uid);
 
@@ -222,12 +292,20 @@ function createSearchCard(uid,data){
 
 
 
-    card.querySelector("button")
+
+
+    card.querySelector(".add-button")
     .onclick =
     async(e)=>{
 
 
         e.stopPropagation();
+
+
+        console.log(
+            "Sending request:",
+            uid
+        );
 
 
         await sendRequest(uid);
@@ -240,6 +318,7 @@ function createSearchCard(uid,data){
     searchResults.appendChild(card);
 
 
+
 }
 
 
@@ -250,12 +329,13 @@ function createSearchCard(uid,data){
 
 
 
-// ======================
+// ==========================
 // SEND REQUEST
-// ======================
+// ==========================
 
 
 async function sendRequest(friendID){
+
 
 
     const existing =
@@ -266,15 +346,15 @@ async function sendRequest(friendID){
             collection(db,"friendRequests"),
 
             where(
-            "from",
-            "==",
-            currentUser.uid
+                "from",
+                "==",
+                currentUser.uid
             ),
 
             where(
-            "to",
-            "==",
-            friendID
+                "to",
+                "==",
+                friendID
             )
 
         )
@@ -283,9 +363,12 @@ async function sendRequest(friendID){
 
 
 
-    if(!existing.empty){
+    if(!existing.empty)
+    {
 
-        alert("Request already sent");
+        console.log(
+            "Request already exists"
+        );
 
         return;
 
@@ -317,7 +400,10 @@ async function sendRequest(friendID){
 
 
 
-    alert("Friend request sent");
+    console.log(
+        "Request sent successfully"
+    );
+
 
 
 }
@@ -330,149 +416,146 @@ async function sendRequest(friendID){
 
 
 
-// ======================
-// INCOMING REQUESTS
-// ======================
+// ==========================
+// REQUESTS
+// ==========================
 
 
 function loadRequests(){
 
 
 
-    const q =
-    query(
+const q =
+query(
 
-        collection(db,"friendRequests"),
+collection(db,"friendRequests"),
 
-        where(
-        "to",
-        "==",
-        currentUser.uid
-        )
+where(
+"to",
+"==",
+currentUser.uid
+)
 
-    );
+);
 
 
 
-    onSnapshot(
-    q,
-    async(snapshot)=>{
+onSnapshot(
+q,
+async(snapshot)=>{
 
 
-        if(!incomingRequests)
-        return;
+if(!incomingRequests)
+return;
 
 
 
-        incomingRequests.innerHTML="";
+incomingRequests.innerHTML="";
 
 
 
-        for(const request of snapshot.docs){
+for(const request of snapshot.docs){
 
 
-            const data =
-            request.data();
+const data =
+request.data();
 
 
 
-            const userSnap =
-            await getDoc(
+const user =
+await getDoc(
 
-                doc(
-                    db,
-                    "users",
-                    data.from
-                )
+doc(
+db,
+"users",
+data.from
+)
 
-            );
+);
 
 
 
-            if(!userSnap.exists())
-            continue;
+if(!user.exists())
+continue;
 
 
 
-            const person =
-            userSnap.data();
+const person =
+user.data();
 
 
 
-            const card =
-            document.createElement("div");
+const card =
+document.createElement("div");
 
 
-            card.className =
-            "friend-card";
 
+card.className =
+"friend-card";
 
 
-            card.innerHTML = `
 
+card.innerHTML = `
 
-            <div class="friend-info">
+<div class="friend-info">
 
-                <h3>
-                ${person.firstName}
-                ${person.lastName || ""}
-                </h3>
+<h3>
+${person.firstName}
+${person.lastName || ""}
+</h3>
 
-                <p>
-                @${person.username}
-                </p>
 
-            </div>
+<p>
+@${person.username}
+</p>
 
+</div>
 
-            <div>
 
-            <button class="primary accept">
-            Accept
-            </button>
+<button class="primary accept">
+Accept
+</button>
 
 
-            <button class="secondary decline">
-            Decline
-            </button>
+<button class="secondary decline">
+Decline
+</button>
 
 
-            </div>
+`;
 
 
-            `;
 
+card.querySelector(".accept")
+.onclick =
+()=>acceptRequest(
+request.id,
+data.from
+);
 
 
 
-            card.querySelector(".accept")
-            .onclick =
-            ()=>acceptRequest(
-                request.id,
-                data.from
-            );
+card.querySelector(".decline")
+.onclick =
+()=>declineRequest(
+request.id
+);
 
 
 
-            card.querySelector(".decline")
-            .onclick =
-            ()=>declineRequest(
-                request.id
-            );
+incomingRequests.appendChild(card);
 
-
-
-            incomingRequests.appendChild(card);
-
-
-        }
-
-
-
-    });
 
 
 }
+
+
+
+});
+
+
+}
+
 
 
 
@@ -488,65 +571,63 @@ friendID
 
 
 
-    await addDoc(
+await addDoc(
 
-        collection(db,"friends"),
+collection(db,"friends"),
 
-        {
+{
 
-            user:
-            currentUser.uid,
+user:
+currentUser.uid,
 
+friend:
+friendID,
 
-            friend:
-            friendID,
+createdAt:
+serverTimestamp()
 
+}
 
-            createdAt:
-            serverTimestamp()
-
-        }
-
-    );
+);
 
 
 
 
-    await addDoc(
+await addDoc(
 
-        collection(db,"friends"),
+collection(db,"friends"),
 
-        {
+{
 
-            user:
-            friendID,
+user:
+friendID,
 
+friend:
+currentUser.uid,
 
-            friend:
-            currentUser.uid,
+createdAt:
+serverTimestamp()
 
+}
 
-            createdAt:
-            serverTimestamp()
-
-        }
-
-    );
+);
 
 
 
-    await deleteDoc(
+await deleteDoc(
 
-        doc(
-            db,
-            "friendRequests",
-            requestID
-        )
+doc(
+db,
+"friendRequests",
+requestID
+)
 
-    );
+);
+
 
 
 }
+
 
 
 
@@ -556,15 +637,17 @@ friendID
 async function declineRequest(id){
 
 
-    await deleteDoc(
 
-        doc(
-            db,
-            "friendRequests",
-            id
-        )
+await deleteDoc(
 
-    );
+doc(
+db,
+"friendRequests",
+id
+)
+
+);
+
 
 
 }
@@ -577,146 +660,123 @@ async function declineRequest(id){
 
 
 
-// ======================
+// ==========================
 // FRIEND LIST
-// ======================
+// ==========================
 
 
 function loadFriends(){
 
 
 
-    const q =
-    query(
+const q =
+query(
 
-        collection(db,"friends"),
+collection(db,"friends"),
 
-        where(
-        "user",
-        "==",
-        currentUser.uid
-        )
+where(
+"user",
+"==",
+currentUser.uid
+)
 
-    );
+);
 
 
 
+onSnapshot(
+q,
+async(snapshot)=>{
 
-    onSnapshot(
-    q,
-    async(snapshot)=>{
 
 
-        if(!friendsList)
-        return;
+if(!friendsList)
+return;
 
 
 
-        friendsList.innerHTML="";
+friendsList.innerHTML="";
 
 
 
-        if(snapshot.empty){
+if(snapshot.empty)
+{
 
+friendsList.innerHTML =
+"<p>No friends yet</p>";
 
-            friendsList.innerHTML =
-            "<p>No friends yet</p>";
+return;
 
+}
 
-            return;
 
 
-        }
+for(const friendDoc of snapshot.docs){
 
 
 
+const data =
+friendDoc.data();
 
 
-        for(const friend of snapshot.docs){
 
+const user =
+await getDoc(
 
+doc(
+db,
+"users",
+data.friend
+)
 
-            const data =
-            friend.data();
+);
 
 
 
-            const userSnap =
-            await getDoc(
+if(!user.exists())
+continue;
 
-                doc(
-                    db,
-                    "users",
-                    data.friend
-                )
 
-            );
 
+const person =
+user.data();
 
 
-            if(!userSnap.exists())
-            continue;
 
+const card =
+document.createElement("div");
 
 
-            const person =
-            userSnap.data();
 
+card.className =
+"friend-card clickable";
 
 
 
-            const card =
-            document.createElement("div");
+card.innerHTML = `
 
+<h3>
+${person.firstName}
+${person.lastName || ""}
+</h3>
 
-            card.className =
-            "friend-card clickable";
+<p>
+@${person.username}
+</p>
 
+`;
 
 
-            card.innerHTML = `
 
-            <div class="friend-info">
+friendsList.appendChild(card);
 
-            <h3>
-            ${person.firstName}
-            ${person.lastName || ""}
-            </h3>
 
-            <p>
-            @${person.username}
-            </p>
 
-            </div>
+}
 
-            `;
 
 
-
-            card.onclick = ()=>{
-
-
-                if(window.openProfile){
-
-                    window.openProfile(
-                    data.friend
-                    );
-
-                }
-
-
-            };
-
-
-
-            friendsList.appendChild(card);
-
-
-
-        }
-
-
-    });
+});
 
 
 }
