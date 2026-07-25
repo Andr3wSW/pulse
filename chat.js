@@ -75,18 +75,38 @@ div.className =
 
 div.innerHTML = `
 
-<strong 
-class="chat-user"
-data-user="${data.senderID}"
->
+<div class="message-header">
 
-${data.senderName}
+    <div class="message-picture">
 
-</strong>
+        ${
+            data.profilePicture
+            ?
+            `<img src="${data.profilePicture}">`
+            :
+            data.senderName.charAt(0).toUpperCase()
+        }
 
-<br>
+    </div>
+
+
+    <strong 
+    class="chat-user"
+    data-user="${data.senderID}"
+    >
+
+    ${data.senderName}
+
+    </strong>
+
+</div>
+
+
+<div class="message-text">
 
 ${data.text}
+
+</div>
 
 `;
 
