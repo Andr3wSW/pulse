@@ -57,13 +57,28 @@ displayName;
 
 
 
-document
-.getElementById("profileInitial")
-.textContent =
-data.firstName
-.charAt(0)
-.toUpperCase();
+const profileCircle =
+document.getElementById("profileInitial");
 
+
+if(data.profilePicture){
+
+    profileCircle.innerHTML = `
+        <img 
+        src="${data.profilePicture}" 
+        class="profile-avatar-image"
+        >
+    `;
+
+}
+else{
+
+    profileCircle.textContent =
+    data.firstName
+    .charAt(0)
+    .toUpperCase();
+
+}
 
 
 }
