@@ -1,5 +1,7 @@
 import { checkAuth } from "./auth.js";
 
+import ImageKit from "https://esm.sh/imagekit-javascript";
+
 import {
     db,
     storage,
@@ -15,15 +17,6 @@ import {
 }
 from
 "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
-
-
-import {
-    ref,
-    uploadBytes,
-    getDownloadURL
-}
-from
-"https://www.gstatic.com/firebasejs/12.0.0/firebase-storage.js";
 
 
 import {
@@ -177,37 +170,91 @@ checkAuth()
 
 
 
-        try{
+                try{
 
 
-            const imageRef =
-            ref(
-                storage,
-                "profilePictures/" + user.uid
-            );
+                    const authResponse =
+                    await fetch(
+                        "https://pulse-imagekit-auth.scottwebster-andrew.workers.dev/"
+                    );
 
 
-            console.log("Uploading to:", imageRef.fullPath);
-
-
-
-            await uploadBytes(
-                imageRef,
-                file
-            );
-
-
-            console.log("Upload complete");
+                    const authData =
+                    await authResponse.json();
 
 
 
-            const url =
-            await getDownloadURL(imageRef);
+                    const formData =
+                    new FormData();
 
 
 
-            console.log("Download URL:", url);
+                    formData.append(
+                        "file",
+                        file
+                    );
 
+
+                    formData.append(
+                        "fileName",
+                        file.name
+                    );
+
+
+                    formData.append(
+                        "publicKey",
+                        "public_6HFXPb7Zif5moejaEPKkz+w7ItE="
+                    );
+
+
+                    formData.append(
+                        "signature",
+                        authData.signature
+                    );
+
+
+                    formData.append(
+                        "expire",
+                        authData.expire
+                    );
+
+
+                    formData.append(
+                        "token",
+                        authData.token
+                    );
+
+
+
+                    console.log("Uploading to ImageKit...");
+
+
+
+                    const uploadResponse =
+                    await fetch(
+                        "https://upload.imagekit.io/api/v1/files/upload",
+                        {
+                            method:"POST",
+                            body:formData
+                        }
+                    );
+
+
+
+                    const result =
+                    await uploadResponse.json();
+
+
+
+                    console.log(
+                        "ImageKit response:",
+                        result
+                    );
+
+
+
+                    const url =
+                    result.url;
 
 
             await updateDoc(
