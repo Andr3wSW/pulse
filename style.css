@@ -28,6 +28,12 @@ html{
 
 }
 
+.hidden-page{
+
+    display:none;
+
+}
+
 
 /* ===========================
    NAVBAR
