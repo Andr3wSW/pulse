@@ -727,7 +727,30 @@ if(snapshot.empty)
 {
 
 friendsList.innerHTML =
-"<p>No friends yet</p>";
+
+<div class="empty-state">
+
+    <div class="empty-icon">
+
+        👋
+
+    </div>
+
+    <h3>
+
+        No friends yet
+
+    </h3>
+
+    <p>
+
+        Search for people above and send your first friend request.
+
+    </p>
+
+</div>
+
+`;
 
 return;
 
@@ -788,7 +811,7 @@ for (const friendDoc of snapshot.docs) {
     card.querySelector(".message-button").onclick = (e) => {
         e.stopPropagation();
 
-        // We'll hook this up to DMs later.
+        // I'll hook this up to DMs later Sebastian.
         console.log("Open DM with", data.friend);
     };
 
