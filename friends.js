@@ -748,7 +748,6 @@ function loadFriends(){
 
                 window.location.href =
                 "messages?user=" + data.friend;
-                );
 
             };
 
