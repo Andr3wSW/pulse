@@ -5,10 +5,11 @@ collection,
 query,
 where,
 getDocs,
-addDoc,
 doc,
 getDoc,
+setDoc,
 onSnapshot,
+addDoc,
 orderBy,
 serverTimestamp
 }
@@ -23,43 +24,43 @@ let currentConversation = null;
 
 
 
-const friendsContainer =
-document.getElementById("messageFriends");
+const conversationList =
+document.getElementById("conversationList");
 
 
-const messagesContainer =
-document.getElementById("directMessages");
+const dmHeader =
+document.getElementById("dmHeader");
 
 
-const input =
-document.getElementById("directMessageInput");
+const dmMessages =
+document.getElementById("dmMessages");
 
 
-const sendButton =
-document.getElementById("sendDirectMessage");
+const dmInput =
+document.getElementById("dmInput");
+
+
+const dmSend =
+document.getElementById("dmSend");
 
 
 
 
 
-auth.onAuthStateChanged(
-async(user)=>{
+auth.onAuthStateChanged(async(user)=>{
 
 
-if(!user)
-return;
+    if(!user)
+    return;
 
 
-currentUser=user;
+    currentUser = user;
 
 
-loadFriends();
-
+    loadFriends();
 
 
 });
-
-
 
 
 
@@ -73,91 +74,92 @@ loadFriends();
 async function loadFriends(){
 
 
+    const q =
+    query(
 
-const q =
-query(
+        collection(db,"friends"),
 
-collection(db,"friends"),
+        where(
+            "user",
+            "==",
+            currentUser.uid
+        )
 
-where(
-"user",
-"==",
-currentUser.uid
-)
-
-);
-
+    );
 
 
-const snapshot =
-await getDocs(q);
+    const snapshot =
+    await getDocs(q);
 
 
 
-friendsContainer.innerHTML="";
+    conversationList.innerHTML="";
 
 
 
-for(const friendDoc of snapshot.docs){
+    for(const friendDoc of snapshot.docs){
+
+
+        const data =
+        friendDoc.data();
 
 
 
-const data =
-friendDoc.data();
+        const userSnap =
+        await getDoc(
+
+            doc(
+                db,
+                "users",
+                data.friend
+            )
+
+        );
 
 
 
-const userSnap =
-await getDoc(
-
-doc(
-db,
-"users",
-data.friend
-)
-
-);
+        if(!userSnap.exists())
+        continue;
 
 
 
-if(!userSnap.exists())
-continue;
+        const person =
+        userSnap.data();
 
 
 
-const person =
-userSnap.data();
+        const button =
+        document.createElement("button");
+
+
+        button.className =
+        "conversation-button";
+
+
+        button.textContent =
+        person.firstName;
 
 
 
-const button =
-document.createElement("button");
+        button.onclick =
+        ()=>{
 
+            openConversation(
+                data.friend,
+                person.firstName
+            );
 
-button.textContent =
-person.firstName;
-
-
-
-button.onclick =
-()=>openConversation(
-data.friend
-);
+        };
 
 
 
-friendsContainer.appendChild(button);
+        conversationList.appendChild(button);
 
+
+    }
 
 
 }
-
-
-
-}
-
-
-
 
 
 
@@ -169,79 +171,67 @@ friendsContainer.appendChild(button);
 // ==========================
 
 
-async function openConversation(friendID){
+async function openConversation(
+friendID,
+friendName
+){
+
+
+    const conversationID =
+    [
+        currentUser.uid,
+        friendID
+    ]
+    .sort()
+    .join("_");
 
 
 
-const conversationID =
-[
-currentUser.uid,
-friendID
-]
-.sort()
-.join("_");
+    currentConversation =
+    conversationID;
 
 
 
-currentConversation =
-conversationID;
-
-
-
-
-const conversationRef =
-doc(
-db,
-"conversations",
-conversationID
-);
-
-
-
-
-const conversation =
-await getDoc(
-conversationRef
-);
-
-
-
-if(!conversation.exists()){
-
-
-await addDoc(
-
-collection(db,"conversations"),
-
-{
-
-participants:[
-currentUser.uid,
-friendID
-],
-
-createdAt:
-serverTimestamp()
-
-}
-
-);
-
-
-}
+    dmHeader.textContent =
+    friendName;
 
 
 
 
-loadMessages(
-conversationID
-);
+    await setDoc(
 
+        doc(
+            db,
+            "conversations",
+            conversationID
+        ),
+
+        {
+
+            participants:[
+                currentUser.uid,
+                friendID
+            ],
+
+            updatedAt:
+            serverTimestamp()
+
+        },
+
+        {
+            merge:true
+        }
+
+    );
+
+
+
+    loadMessages(
+        conversationID
+    );
 
 
 }
-
-
 
 
 
@@ -258,66 +248,80 @@ function loadMessages(id){
 
 
 
-const q =
-query(
+    const q =
+    query(
 
-collection(
-db,
-"conversations",
-id,
-"messages"
-),
+        collection(
 
-orderBy(
-"createdAt"
-)
+            db,
 
-);
+            "conversations",
 
+            id,
 
+            "messages"
 
-onSnapshot(
-q,
-(snapshot)=>{
+        ),
 
+        orderBy(
+            "createdAt"
+        )
 
-messagesContainer.innerHTML="";
+    );
 
 
 
-snapshot.forEach(message=>{
+    onSnapshot(
+
+        q,
+
+        (snapshot)=>{
 
 
-const data =
-message.data();
-
-
-
-const div =
-document.createElement("div");
-
-
-div.textContent =
-data.text;
+            dmMessages.innerHTML="";
 
 
 
-messagesContainer.appendChild(div);
+            snapshot.forEach(message=>{
+
+
+                const data =
+                message.data();
 
 
 
-});
+                const div =
+                document.createElement("div");
 
+
+
+                div.className =
+                "dm-message";
+
+
+
+                div.textContent =
+                data.text;
+
+
+
+                dmMessages.appendChild(div);
+
+
+            });
+
+
+
+            dmMessages.scrollTop =
+            dmMessages.scrollHeight;
+
+
+        }
+
+    );
 
 
 }
-
-);
-
-
-}
-
-
 
 
 
@@ -330,54 +334,58 @@ messagesContainer.appendChild(div);
 // ==========================
 
 
-sendButton.onclick =
+dmSend.onclick =
 async()=>{
 
 
-if(!input.value.trim())
-return;
-
-
-if(!currentConversation)
-return;
+    const text =
+    dmInput.value.trim();
 
 
 
-await addDoc(
-
-collection(
-
-db,
-
-"conversations",
-
-currentConversation,
-
-"messages"
-
-),
-
-{
-
-senderID:
-currentUser.uid,
-
-
-text:
-input.value.trim(),
-
-
-createdAt:
-serverTimestamp()
-
-}
-
-);
+    if(!text)
+    return;
 
 
 
-input.value="";
+    if(!currentConversation)
+    return;
 
+
+
+    await addDoc(
+
+        collection(
+
+            db,
+
+            "conversations",
+
+            currentConversation,
+
+            "messages"
+
+        ),
+
+        {
+
+            senderID:
+            currentUser.uid,
+
+
+            text:text,
+
+
+            createdAt:
+            serverTimestamp()
+
+        }
+
+    );
+
+
+
+    dmInput.value="";
 
 
 };
