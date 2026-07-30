@@ -727,30 +727,7 @@ if(snapshot.empty)
 {
 
 friendsList.innerHTML =
-
-<div class="empty-state">
-
-    <div class="empty-icon">
-
-        👋
-
-    </div>
-
-    <h3>
-
-        No friends yet
-
-    </h3>
-
-    <p>
-
-        Search for people above and send your first friend request.
-
-    </p>
-
-</div>
-
-`;
+"<p>No friends yet</p>";
 
 return;
 
