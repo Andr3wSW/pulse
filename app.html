@@ -249,80 +249,67 @@ Friends
 
 
 
-    <section 
-    id="messages-page"
-    class="hidden-page"
-    >
+    <section
+id="messages-page"
+class="hidden-page"
+>
 
 
-    <div class="messages-layout">
+<div class="messages-layout">
 
 
-        <!-- Conversation List -->
+<div class="conversation-list">
 
-        <aside class="conversation-panel">
+<h2>
+Messages
+</h2>
 
+<div id="conversationList">
 
-            <div class="messages-header">
+</div>
 
-                <h1>
-                Messages
-                </h1>
-
-            </div>
-
-
-            <div id="conversationList">
-
-
-                <p class="empty-text">
-                No conversations yet
-                </p>
-
-
-            </div>
-
-
-        </aside>
+</div>
 
 
 
+<div class="dm-window">
 
 
-        <!-- Chat Area -->
+<div id="dmHeader">
 
-        <main class="dm-panel">
+Select a conversation
 
-
-            <div class="dm-topbar">
-
-
-                <div id="dmUser">
-
-
-                    <h2>
-                    Select a conversation
-                    </h2>
-
-
-                </div>
-
-
-            </div>
+</div>
 
 
 
+<div id="dmMessages">
+
+</div>
 
 
-            <div 
-            id="dmMessages"
-            class="dm-messages"
-            >
+
+<div class="dm-input">
+
+<input
+id="dmInput"
+placeholder="Message..."
+>
 
 
-            </div>
+<button
+id="dmSend"
+>
+Send
+</button>
+
+</div>
 
 
+</div>
+
+
+</div>
 
 
 </section>
@@ -396,6 +383,8 @@ Add Friend
 <script type="module" src="friends.js"></script>
 
 <script type="module" src="profile.js"></script>
+
+<script type="module" src="messages.js"></script>
 
 </body>
 

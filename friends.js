@@ -746,9 +746,8 @@ function loadFriends(){
 
                 e.stopPropagation();
 
-                console.log(
-                    "Open DM:",
-                    data.friend
+                window.location.href =
+                "messages?user=" + data.friend;
                 );
 
             };
