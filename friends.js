@@ -242,14 +242,6 @@ data
     card.className =
     "friend-card clickable";
 
-    card.onclick = ()=>{
-
-        openProfile(data.friend);
-
-    };
-
-
-
     card.innerHTML = `
 
     <div class="friend-info">
@@ -430,6 +422,9 @@ async function sendRequest(friendID){
 
 
 function loadRequests(){
+
+document.getElementById("requestCount").textContent =
+snapshot.size;
 
 
 
@@ -725,6 +720,11 @@ friendsList.innerHTML="";
 
 if(snapshot.empty)
 {
+
+document.getElementById("friendCount").textContent =
+snapshot.size;
+
+
 
 friendsList.innerHTML =
 "<p>No friends yet</p>";
