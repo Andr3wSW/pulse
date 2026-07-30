@@ -23,44 +23,31 @@ let currentUser = null;
 
 
 
-const searchInput =
-document.getElementById("friendSearch");
+const searchInput = document.getElementById("friendSearch");
+const searchResults = document.getElementById("searchResults");
+const incomingRequests = document.getElementById("incomingRequests");
+const friendsList = document.getElementById("friendsList");
 
-const searchResults =
-document.getElementById("searchResults");
-
-const incomingRequests =
-document.getElementById("incomingRequests");
-
-const friendsList =
-document.getElementById("friendsList");
+const friendCount = document.getElementById("friendCount");
+const requestCount = document.getElementById("requestCount");
 
 
 
 
 
-auth.onAuthStateChanged((user)=>{
+auth.onAuthStateChanged(user=>{
 
     if(!user)
-    return;
-
-
-    console.log(
-        "Logged in:",
-        user.uid
-    );
+        return;
 
 
     currentUser = user;
 
 
     loadRequests();
-
     loadFriends();
 
-
 });
-
 
 
 
@@ -73,18 +60,12 @@ auth.onAuthStateChanged((user)=>{
 
 if(searchInput){
 
-
-searchInput.addEventListener(
-"input",
-()=>{
-
-    searchUsers();
-
-});
-
+    searchInput.addEventListener(
+        "input",
+        searchUsers
+    );
 
 }
-
 
 
 
@@ -94,8 +75,7 @@ async function searchUsers(){
 
 
     if(!currentUser)
-    return;
-
+        return;
 
 
     const text =
@@ -105,25 +85,11 @@ async function searchUsers(){
 
 
 
-    console.log(
-        "Searching:",
-        text
-    );
-
-
-
     searchResults.innerHTML="";
 
 
-
     if(text.length < 2)
-    return;
-
-
-
-
-    const addedUsers =
-    new Set();
+        return;
 
 
 
@@ -134,12 +100,11 @@ async function searchUsers(){
 
 
 
-    snapshot.forEach((userDoc)=>{
+    snapshot.forEach(userDoc=>{
 
 
         const uid =
         userDoc.id;
-
 
 
         const data =
@@ -147,31 +112,8 @@ async function searchUsers(){
 
 
 
-        console.log(
-            "Checking user:",
-            uid,
-            data.firstName
-        );
-
-
-
         if(uid === currentUser.uid)
-        return;
-
-
-
-        if(addedUsers.has(uid))
-        {
-
-            console.log(
-                "Duplicate blocked:",
-                uid
-            );
-
             return;
-
-        }
-
 
 
 
@@ -180,31 +122,15 @@ async function searchUsers(){
 
 
 
-        const matches =
-        terms.some(
-            term =>
-            term
-            .toLowerCase()
-            .includes(text)
+        const match =
+        terms.some(term=>
+            term.toLowerCase().includes(text)
         );
 
 
 
-        if(!matches)
-        return;
-
-
-
-
-        addedUsers.add(uid);
-
-
-
-        console.log(
-            "Creating card:",
-            uid,
-            data.firstName
-        );
+        if(!match)
+            return;
 
 
 
@@ -214,9 +140,7 @@ async function searchUsers(){
         );
 
 
-
     });
-
 
 
 }
@@ -227,12 +151,7 @@ async function searchUsers(){
 
 
 
-
-function createSearchCard(
-uid,
-data
-){
-
+function createSearchCard(uid,data){
 
 
     const card =
@@ -242,30 +161,40 @@ data
     card.className =
     "friend-card clickable";
 
+
+
     card.innerHTML = `
 
-    <div class="friend-info">
+        <div class="friend-avatar">
 
-        <h3>
-        ${data.firstName}
-        ${data.lastName || ""}
-        </h3>
+            ${
+                data.profilePicture
+                ?
+                `<img src="${data.profilePicture}">`
+                :
+                data.firstName.charAt(0).toUpperCase()
+            }
 
-
-        <p>
-        @${data.username}
-        </p>
-
-
-    </div>
+        </div>
 
 
-    <button class="primary add-button">
+        <div class="friend-info">
 
-    Add
+            <h3>
+                ${data.firstName}
+                ${data.lastName || ""}
+            </h3>
 
-    </button>
+            <p>
+                @${data.username}
+            </p>
 
+        </div>
+
+
+        <button class="primary add-button">
+            Add
+        </button>
 
     `;
 
@@ -273,39 +202,19 @@ data
 
     card.onclick = ()=>{
 
-
-        console.log(
-            "Opening profile:",
-            uid
-        );
-
-
-        if(window.openProfile)
-        {
-
-            window.openProfile(uid);
-
-        }
-
+        openProfile(uid);
 
     };
 
 
 
-
-
-    card.querySelector(".add-button")
+    card
+    .querySelector(".add-button")
     .onclick =
     async(e)=>{
 
 
         e.stopPropagation();
-
-
-        console.log(
-            "Sending request:",
-            uid
-        );
 
 
         await sendRequest(uid);
@@ -318,10 +227,7 @@ data
     searchResults.appendChild(card);
 
 
-
 }
-
-
 
 
 
@@ -364,16 +270,7 @@ async function sendRequest(friendID){
 
 
     if(!existing.empty)
-    {
-
-        console.log(
-            "Request already exists"
-        );
-
         return;
-
-    }
-
 
 
 
@@ -399,13 +296,6 @@ async function sendRequest(friendID){
     );
 
 
-
-    console.log(
-        "Request sent successfully"
-    );
-
-
-
 }
 
 
@@ -423,158 +313,168 @@ async function sendRequest(friendID){
 
 function loadRequests(){
 
-document.getElementById("requestCount").textContent =
-snapshot.size;
+
+    const q =
+    query(
+
+        collection(db,"friendRequests"),
+
+        where(
+            "to",
+            "==",
+            currentUser.uid
+        )
+
+    );
 
 
 
-const q =
-query(
+    onSnapshot(q,async(snapshot)=>{
 
-collection(db,"friendRequests"),
 
-where(
-"to",
-"==",
-currentUser.uid
-)
-
-);
+        if(requestCount)
+            requestCount.textContent =
+            snapshot.size;
 
 
 
-onSnapshot(
-q,
-async(snapshot)=>{
-
-
-if(!incomingRequests)
-return;
+        incomingRequests.innerHTML="";
 
 
 
-incomingRequests.innerHTML="";
+        if(snapshot.empty){
+
+            incomingRequests.innerHTML =
+            `
+            <div class="empty-state">
+                No requests
+            </div>
+            `;
+
+            return;
+
+        }
 
 
 
-for(const request of snapshot.docs){
 
 
-const data =
-request.data();
-
-
-
-const user =
-await getDoc(
-
-doc(
-db,
-"users",
-data.from
-)
-
-);
+        for(const request of snapshot.docs){
 
 
 
-if(!user.exists())
-continue;
+            const data =
+            request.data();
 
 
 
-const person =
-user.data();
+            const userSnap =
+            await getDoc(
+
+                doc(
+                    db,
+                    "users",
+                    data.from
+                )
+
+            );
 
 
 
-const card =
-document.createElement("div");
+            if(!userSnap.exists())
+                continue;
 
 
 
-card.className =
-"friend-card";
+            const person =
+            userSnap.data();
 
 
 
-card.innerHTML = `
 
-<div class="friend-avatar">
+            const card =
+            document.createElement("div");
 
-${
-person.profilePicture
 
-?
 
-`<img src="${person.profilePicture}">`
+            card.className =
+            "friend-card";
 
-:
 
-person.firstName[0]
+
+            card.innerHTML = `
+
+
+            <div class="friend-avatar">
+
+                ${
+                    person.profilePicture
+                    ?
+                    `<img src="${person.profilePicture}">`
+                    :
+                    person.firstName[0]
+                }
+
+            </div>
+
+
+            <div class="friend-info">
+
+                <h3>
+                    ${person.firstName}
+                </h3>
+
+                <p>
+                    @${person.username}
+                </p>
+
+            </div>
+
+
+            <button class="primary accept">
+                Accept
+            </button>
+
+
+            <button class="secondary decline">
+                Decline
+            </button>
+
+
+            `;
+
+
+
+
+            card
+            .querySelector(".accept")
+            .onclick =
+            ()=>acceptRequest(
+                request.id,
+                data.from
+            );
+
+
+
+            card
+            .querySelector(".decline")
+            .onclick =
+            ()=>declineRequest(
+                request.id
+            );
+
+
+
+            incomingRequests.appendChild(card);
+
+
+        }
+
+
+    });
+
 
 }
-
-</div>
-
-
-<div class="friend-info">
-
-<h3>
-${person.firstName}
-</h3>
-
-<p>
-@${person.username}
-</p>
-
-</div>
-
-
-<button class="primary accept">
-Accept
-</button>
-
-
-<button class="secondary decline">
-Decline
-</button>
-
-
-`;
-
-
-
-card.querySelector(".accept")
-.onclick =
-()=>acceptRequest(
-request.id,
-data.from
-);
-
-
-
-card.querySelector(".decline")
-.onclick =
-()=>declineRequest(
-request.id
-);
-
-
-
-incomingRequests.appendChild(card);
-
-
-
-}
-
-
-
-});
-
-
-}
-
 
 
 
@@ -590,59 +490,57 @@ friendID
 
 
 
-await addDoc(
+    await addDoc(
 
-collection(db,"friends"),
+        collection(db,"friends"),
 
-{
+        {
 
-user:
-currentUser.uid,
+            user:
+            currentUser.uid,
 
-friend:
-friendID,
+            friend:
+            friendID,
 
-createdAt:
-serverTimestamp()
+            createdAt:
+            serverTimestamp()
 
-}
+        }
 
-);
-
-
-
-
-await addDoc(
-
-collection(db,"friends"),
-
-{
-
-user:
-friendID,
-
-friend:
-currentUser.uid,
-
-createdAt:
-serverTimestamp()
-
-}
-
-);
+    );
 
 
 
-await deleteDoc(
+    await addDoc(
 
-doc(
-db,
-"friendRequests",
-requestID
-)
+        collection(db,"friends"),
 
-);
+        {
 
+            user:
+            friendID,
+
+            friend:
+            currentUser.uid,
+
+            createdAt:
+            serverTimestamp()
+
+        }
+
+    );
+
+
+
+    await deleteDoc(
+
+        doc(
+            db,
+            "friendRequests",
+            requestID
+        )
+
+    );
 
 
 }
@@ -656,17 +554,15 @@ requestID
 async function declineRequest(id){
 
 
+    await deleteDoc(
 
-await deleteDoc(
+        doc(
+            db,
+            "friendRequests",
+            id
+        )
 
-doc(
-db,
-"friendRequests",
-id
-)
-
-);
-
+    );
 
 
 }
@@ -688,117 +584,185 @@ function loadFriends(){
 
 
 
-const q =
-query(
+    const q =
+    query(
 
-collection(db,"friends"),
+        collection(db,"friends"),
 
-where(
-"user",
-"==",
-currentUser.uid
-)
+        where(
+            "user",
+            "==",
+            currentUser.uid
+        )
 
-);
-
-
-
-onSnapshot(
-q,
-async(snapshot)=>{
-
-
-
-if(!friendsList)
-return;
-
-
-
-friendsList.innerHTML="";
-
-
-
-if(snapshot.empty)
-{
-
-document.getElementById("friendCount").textContent =
-snapshot.size;
-
-
-
-friendsList.innerHTML =
-"<p>No friends yet</p>";
-
-return;
-
-}
-
-
-
-for (const friendDoc of snapshot.docs) {
-
-    const data = friendDoc.data();
-
-    const user = await getDoc(
-        doc(db, "users", data.friend)
     );
 
-    if (!user.exists()) continue;
 
-    const person = user.data();
 
-    const card = document.createElement("div");
-
-    card.className = "friend-card clickable";
-
-    card.onclick = () => {
-        openProfile(data.friend);
-    };
-
-    card.innerHTML = `
-
-        <div class="friend-avatar">
-
-            ${
-                person.profilePicture
-                ? `<img src="${person.profilePicture}">`
-                : person.firstName.charAt(0).toUpperCase()
-            }
-
-        </div>
-
-        <div class="friend-info">
-
-            <h3>
-                ${person.firstName} ${person.lastName || ""}
-            </h3>
-
-            <p>
-                @${person.username}
-            </p>
-
-        </div>
-
-        <button class="secondary message-button">
-            Message
-        </button>
-
-    `;
-
-    card.querySelector(".message-button").onclick = (e) => {
-        e.stopPropagation();
-
-        // I'll hook this up to DMs later Sebastian.
-        console.log("Open DM with", data.friend);
-    };
-
-    friendsList.appendChild(card);
-
-}
+    onSnapshot(q,async(snapshot)=>{
 
 
 
-});
+        if(friendCount)
+            friendCount.textContent =
+            snapshot.size;
+
+
+
+        friendsList.innerHTML="";
+
+
+
+        if(snapshot.empty){
+
+
+            friendsList.innerHTML =
+
+            `
+            <div class="empty-state">
+
+                <div class="empty-icon">
+                    👋
+                </div>
+
+                <h3>
+                    No friends yet
+                </h3>
+
+                <p>
+                    Search for someone above to connect.
+                </p>
+
+            </div>
+            `;
+
+
+            return;
+
+        }
+
+
+
+
+        for(const friendDoc of snapshot.docs){
+
+
+
+            const data =
+            friendDoc.data();
+
+
+
+            const userSnap =
+            await getDoc(
+
+                doc(
+                    db,
+                    "users",
+                    data.friend
+                )
+
+            );
+
+
+
+            if(!userSnap.exists())
+                continue;
+
+
+
+            const person =
+            userSnap.data();
+
+
+
+
+            const card =
+            document.createElement("div");
+
+
+
+            card.className =
+            "friend-card clickable";
+
+
+
+            card.innerHTML = `
+
+
+            <div class="friend-avatar">
+
+                ${
+                    person.profilePicture
+                    ?
+                    `<img src="${person.profilePicture}">`
+                    :
+                    person.firstName[0]
+                }
+
+            </div>
+
+
+
+            <div class="friend-info">
+
+                <h3>
+                    ${person.firstName}
+                    ${person.lastName || ""}
+                </h3>
+
+
+                <p>
+                    @${person.username}
+                </p>
+
+            </div>
+
+
+
+            <button class="message-button">
+                Message
+            </button>
+
+
+            `;
+
+
+
+            card.onclick = ()=>{
+
+                openProfile(
+                    data.friend
+                );
+
+            };
+
+
+
+            card
+            .querySelector(".message-button")
+            .onclick =
+            e=>{
+
+                e.stopPropagation();
+
+                console.log(
+                    "Open DM:",
+                    data.friend
+                );
+
+            };
+
+
+
+            friendsList.appendChild(card);
+
+
+        }
+
+
+
+    });
 
 
 }
