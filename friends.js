@@ -735,66 +735,64 @@ return;
 
 
 
-for(const friendDoc of snapshot.docs){
+for (const friendDoc of snapshot.docs) {
 
+    const data = friendDoc.data();
 
+    const user = await getDoc(
+        doc(db, "users", data.friend)
+    );
 
-const data =
-friendDoc.data();
+    if (!user.exists()) continue;
 
+    const person = user.data();
 
+    const card = document.createElement("div");
 
-const user =
-await getDoc(
+    card.className = "friend-card clickable";
 
-doc(
-db,
-"users",
-data.friend
-)
+    card.onclick = () => {
+        openProfile(data.friend);
+    };
 
-);
+    card.innerHTML = `
 
+        <div class="friend-avatar">
 
+            ${
+                person.profilePicture
+                ? `<img src="${person.profilePicture}">`
+                : person.firstName.charAt(0).toUpperCase()
+            }
 
-if(!user.exists())
-continue;
+        </div>
 
+        <div class="friend-info">
 
+            <h3>
+                ${person.firstName} ${person.lastName || ""}
+            </h3>
 
-const person =
-user.data();
+            <p>
+                @${person.username}
+            </p>
 
+        </div>
 
+        <button class="secondary message-button">
+            Message
+        </button>
 
-const card =
-document.createElement("div");
+    `;
 
+    card.querySelector(".message-button").onclick = (e) => {
+        e.stopPropagation();
 
+        // We'll hook this up to DMs later.
+        console.log("Open DM with", data.friend);
+    };
 
-card.className =
-"friend-card clickable";
-
-
-
-card.innerHTML = `
-
-<h3>
-${person.firstName}
-${person.lastName || ""}
-</h3>
-
-<p>
-@${person.username}
-</p>
-
-`;
-
-
-
-friendsList.appendChild(card);
-
-
+    friendsList.appendChild(card);
 
 }
 
