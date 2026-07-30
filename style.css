@@ -2751,6 +2751,226 @@ footer p{
 
 }
 
+/* ==========================
+   DIRECT MESSAGES
+========================== */
+
+
+.messages-layout{
+
+    display:grid;
+
+    grid-template-columns:320px 1fr;
+
+    height:650px;
+
+    gap:20px;
+
+}
+
+
+
+/* Conversation sidebar */
+
+
+.conversation-panel{
+
+    background:
+    rgba(15,17,21,.8);
+
+    border:
+    1px solid rgba(255,255,255,.08);
+
+    border-radius:30px;
+
+    padding:25px;
+
+    overflow:hidden;
+
+}
+
+
+
+.messages-header h1{
+
+    font-size:32px;
+
+    margin-bottom:25px;
+
+}
+
+
+
+.conversation-card{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:15px;
+
+    padding:15px;
+
+    border-radius:18px;
+
+    cursor:pointer;
+
+    transition:.2s;
+
+}
+
+
+
+.conversation-card:hover{
+
+    background:
+    rgba(34,197,94,.1);
+
+}
+
+
+
+/* Chat area */
+
+
+.dm-panel{
+
+    background:
+    rgba(15,17,21,.8);
+
+    border:
+    1px solid rgba(255,255,255,.08);
+
+    border-radius:30px;
+
+    display:flex;
+
+    flex-direction:column;
+
+}
+
+
+
+.dm-topbar{
+
+    padding:25px;
+
+    border-bottom:
+    1px solid rgba(255,255,255,.08);
+
+}
+
+
+
+.dm-messages{
+
+    flex:1;
+
+    padding:25px;
+
+    overflow-y:auto;
+
+}
+
+
+
+.dm-message{
+
+    max-width:70%;
+
+    padding:14px 18px;
+
+    border-radius:20px;
+
+    margin-bottom:12px;
+
+    background:
+    rgba(255,255,255,.08);
+
+}
+
+
+
+.dm-message.mine{
+
+    margin-left:auto;
+
+    background:#22c55e;
+
+    color:#0F1115;
+
+}
+
+
+
+.dm-input-area{
+
+    display:flex;
+
+    gap:15px;
+
+    padding:20px;
+
+}
+
+
+
+.dm-input-area input{
+
+    flex:1;
+
+    padding:15px 20px;
+
+    border-radius:18px;
+
+    border:none;
+
+    background:
+    rgba(255,255,255,.08);
+
+    color:white;
+
+}
+
+
+
+.dm-input-area button{
+
+    padding:15px 25px;
+
+    border-radius:18px;
+
+    border:none;
+
+    background:#22c55e;
+
+    color:#0F1115;
+
+    font-weight:700;
+
+    cursor:pointer;
+
+}
+
+
+
+@media(max-width:800px){
+
+    .messages-layout{
+
+        grid-template-columns:1fr;
+
+    }
+
+
+    .conversation-panel{
+
+        display:none;
+
+    }
+
+}
+
 
 /* ==========================
    RESPONSIVE
