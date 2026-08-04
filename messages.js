@@ -573,6 +573,11 @@ async()=>{
 window.openMessage =
 async function(friendID){
 
+    console.log(
+        "openMessage called with:",
+        friendID
+    );
+
 
     const userSnap =
     await getDoc(
@@ -601,6 +606,19 @@ async function(friendID){
     await getConversation(
         friendID
     );
+
+    const messagesButton =
+
+    document.querySelector(
+        '[data-page="messages"]'
+    );
+
+
+    if(messagesButton){
+
+        messagesButton.click();
+
+    }
 
 
 
