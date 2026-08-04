@@ -24,8 +24,6 @@ let currentConversation = null;
 
 let unsubscribeMessages = null;
 
-
-
 const conversationList =
 document.getElementById("conversationList");
 
