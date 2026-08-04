@@ -2770,10 +2770,12 @@ footer p{
 
 
 
-/* Conversation sidebar */
+/* ==========================
+   Conversation Sidebar
+========================== */
 
 
-.conversation-panel{
+.conversation-list{
 
     background:
     rgba(15,17,21,.8);
@@ -2785,15 +2787,15 @@ footer p{
 
     padding:25px;
 
-    overflow:hidden;
+    overflow-y:auto;
 
 }
 
 
 
-.messages-header h1{
+.conversation-list h2{
 
-    font-size:32px;
+    font-size:28px;
 
     margin-bottom:25px;
 
@@ -2801,7 +2803,8 @@ footer p{
 
 
 
-.conversation-card{
+
+.conversation-item{
 
     display:flex;
 
@@ -2817,23 +2820,55 @@ footer p{
 
     transition:.2s;
 
+    margin-bottom:10px;
+
 }
 
 
 
-.conversation-card:hover{
+.conversation-item:hover{
 
     background:
     rgba(34,197,94,.1);
 
+    transform:translateY(-2px);
+
 }
 
 
 
-/* Chat area */
 
 
-.dm-panel{
+.conversation-item h3{
+
+    margin:0;
+
+    font-size:17px;
+
+}
+
+
+
+.conversation-item p{
+
+    margin:4px 0 0;
+
+    opacity:.55;
+
+    font-size:14px;
+
+}
+
+
+
+
+
+/* ==========================
+   DM Window
+========================== */
+
+
+.dm-window{
 
     background:
     rgba(15,17,21,.8);
@@ -2847,22 +2882,43 @@ footer p{
 
     flex-direction:column;
 
+    overflow:hidden;
+
 }
 
 
 
-.dm-topbar{
 
-    padding:25px;
+/* Header */
+
+#dmHeader{
+
+    height:80px;
+
+    padding:20px 25px;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:15px;
+
 
     border-bottom:
     1px solid rgba(255,255,255,.08);
 
+    font-size:20px;
+
+    font-weight:700;
+
 }
 
 
 
-.dm-messages{
+/* Messages area */
+
+
+#dmMessages{
 
     flex:1;
 
@@ -2870,7 +2926,12 @@ footer p{
 
     overflow-y:auto;
 
+    display:flex;
+
+    flex-direction:column;
+
 }
+
 
 
 
@@ -2887,7 +2948,10 @@ footer p{
     background:
     rgba(255,255,255,.08);
 
+    word-wrap:break-word;
+
 }
+
 
 
 
@@ -2903,7 +2967,11 @@ footer p{
 
 
 
-.dm-input-area{
+
+/* Input */
+
+
+.dm-input{
 
     display:flex;
 
@@ -2911,11 +2979,15 @@ footer p{
 
     padding:20px;
 
+    border-top:
+    1px solid rgba(255,255,255,.08);
+
 }
 
 
 
-.dm-input-area input{
+
+.dm-input input{
 
     flex:1;
 
@@ -2925,16 +2997,22 @@ footer p{
 
     border:none;
 
+    outline:none;
+
     background:
     rgba(255,255,255,.08);
 
     color:white;
 
+    font-size:16px;
+
 }
 
 
 
-.dm-input-area button{
+
+
+#dmSend{
 
     padding:15px 25px;
 
@@ -2950,27 +3028,65 @@ footer p{
 
     cursor:pointer;
 
+    transition:.2s;
+
 }
 
 
 
+#dmSend:hover{
+
+    transform:translateY(-2px);
+
+    filter:brightness(1.1);
+
+}
+
+
+
+
+
+/* ==========================
+   Profile Pictures
+========================== */
+
+
+.conversation-item .friend-avatar,
+#dmHeader .friend-avatar{
+
+    width:45px;
+
+    height:45px;
+
+}
+
+
+
+
+
+/* Mobile */
+
 @media(max-width:800px){
+
 
     .messages-layout{
 
         grid-template-columns:1fr;
 
-    }
-
-
-    .conversation-panel{
-
-        display:none;
+        height:auto;
 
     }
+
+
+
+    .conversation-list{
+
+        max-height:300px;
+
+    }
+
 
 }
-
 
 /* ==========================
    RESPONSIVE

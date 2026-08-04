@@ -739,14 +739,17 @@ function loadFriends(){
 
 
 
-            card
-            .querySelector(".message-button")
-            .onclick =
-            e=>{
+            card.querySelector(".message-button").onclick = (e) => {
 
                 e.stopPropagation();
 
-                openMessage(data.friend);
+                if(window.openMessage){
+
+                    window.openMessage(
+                        data.friend
+                    );
+
+                }
 
             };
 
