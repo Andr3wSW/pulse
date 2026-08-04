@@ -743,6 +743,12 @@ function loadFriends(){
 
                 e.stopPropagation();
 
+                console.log(
+                    "Opening DM with:",
+                    data.friend
+                );
+
+
                 if(window.openMessage){
 
                     window.openMessage(
@@ -750,8 +756,13 @@ function loadFriends(){
                     );
 
                 }
+                else{
 
-            };
+                    console.error(
+                        "openMessage does not exist"
+                    );
+
+                }
 
 
 

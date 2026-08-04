@@ -610,5 +610,7 @@ async function(friendID){
         person
     );
 
+    console.log("openMessage loaded");
+
 
 };
