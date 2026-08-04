@@ -746,8 +746,7 @@ function loadFriends(){
 
                 e.stopPropagation();
 
-                window.location.href =
-                "messages?user=" + data.friend;
+                openMessage(data.friend);
 
             };
 
