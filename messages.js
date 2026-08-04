@@ -1,17 +1,17 @@
 import { auth, db } from "./firebase.js";
 
 import {
-collection,
-query,
-where,
-getDocs,
-doc,
-getDoc,
-setDoc,
-onSnapshot,
-addDoc,
-orderBy,
-serverTimestamp
+    collection,
+    query,
+    where,
+    getDocs,
+    addDoc,
+    doc,
+    getDoc,
+    setDoc,
+    onSnapshot,
+    orderBy,
+    serverTimestamp
 }
 from
 "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
@@ -21,6 +21,8 @@ from
 let currentUser = null;
 
 let currentConversation = null;
+
+let unsubscribeMessages = null;
 
 
 
@@ -57,7 +59,7 @@ auth.onAuthStateChanged(async(user)=>{
     currentUser = user;
 
 
-    loadFriends();
+    loadConversations();
 
 
 });
@@ -66,97 +68,150 @@ auth.onAuthStateChanged(async(user)=>{
 
 
 
-// ==========================
-// LOAD FRIENDS
-// ==========================
+// =================================
+// LOAD CONVERSATIONS
+// =================================
 
 
-async function loadFriends(){
+function loadConversations(){
 
 
     const q =
     query(
 
-        collection(db,"friends"),
+        collection(db,"conversations"),
 
         where(
-            "user",
-            "==",
+            "participants",
+            "array-contains",
             currentUser.uid
         )
 
     );
 
 
-    const snapshot =
-    await getDocs(q);
+
+    onSnapshot(
+    q,
+    async(snapshot)=>{
+
+
+        conversationList.innerHTML="";
 
 
 
-    conversationList.innerHTML="";
+        for(const conversation of snapshot.docs){
+
+
+            const data =
+            conversation.data();
 
 
 
-    for(const friendDoc of snapshot.docs){
-
-
-        const data =
-        friendDoc.data();
-
-
-
-        const userSnap =
-        await getDoc(
-
-            doc(
-                db,
-                "users",
-                data.friend
-            )
-
-        );
-
-
-
-        if(!userSnap.exists())
-        continue;
-
-
-
-        const person =
-        userSnap.data();
-
-
-
-        const button =
-        document.createElement("button");
-
-
-        button.className =
-        "conversation-button";
-
-
-        button.textContent =
-        person.firstName;
-
-
-
-        button.onclick =
-        ()=>{
-
-            openConversation(
-                data.friend,
-                person.firstName
+            const otherID =
+            data.participants.find(
+                id => id !== currentUser.uid
             );
 
-        };
+
+
+            if(!otherID)
+            continue;
 
 
 
-        conversationList.appendChild(button);
+            const userSnap =
+            await getDoc(
+
+                doc(
+                    db,
+                    "users",
+                    otherID
+                )
+
+            );
 
 
-    }
+
+            if(!userSnap.exists())
+            continue;
+
+
+
+            const person =
+            userSnap.data();
+
+
+
+            const button =
+            document.createElement("div");
+
+
+
+            button.className =
+            "conversation-item";
+
+
+
+            button.innerHTML = `
+
+                <div class="friend-avatar">
+
+                    ${
+                    person.profilePicture
+
+                    ?
+
+                    `<img src="${person.profilePicture}">`
+
+                    :
+
+                    person.firstName
+                    .charAt(0)
+                    .toUpperCase()
+
+                    }
+
+                </div>
+
+
+                <div>
+
+                    <h3>
+                    ${person.firstName}
+                    </h3>
+
+
+                    <p>
+                    ${data.lastMessage || "Start chatting"}
+                    </p>
+
+                </div>
+
+            `;
+
+
+
+            button.onclick =
+            ()=>{
+
+                openConversation(
+                    conversation.id,
+                    otherID,
+                    person
+                );
+
+            };
+
+
+
+            conversationList.appendChild(button);
+
+
+        }
+
+
+    });
 
 
 }
@@ -166,24 +221,17 @@ async function loadFriends(){
 
 
 
-// ==========================
+
+// =================================
 // OPEN CONVERSATION
-// ==========================
+// =================================
 
 
 async function openConversation(
+conversationID,
 friendID,
-friendName
+person
 ){
-
-
-    const conversationID =
-    [
-        currentUser.uid,
-        friendID
-    ]
-    .sort()
-    .join("_");
 
 
 
@@ -192,37 +240,33 @@ friendName
 
 
 
-    dmHeader.textContent =
-    friendName;
+    dmHeader.innerHTML = `
+
+        <div class="friend-avatar">
+
+            ${
+            person.profilePicture
+
+            ?
+
+            `<img src="${person.profilePicture}">`
+
+            :
+
+            person.firstName
+            .charAt(0)
+            .toUpperCase()
+
+            }
+
+        </div>
 
 
+        <span>
+        ${person.firstName}
+        </span>
 
-
-    await setDoc(
-
-        doc(
-            db,
-            "conversations",
-            conversationID
-        ),
-
-        {
-
-            participants:[
-                currentUser.uid,
-                friendID
-            ],
-
-            updatedAt:
-            serverTimestamp()
-
-        },
-
-        {
-            merge:true
-        }
-
-    );
+    `;
 
 
 
@@ -239,12 +283,101 @@ friendName
 
 
 
-// ==========================
+
+
+// =================================
+// CREATE OR FIND CONVERSATION
+// =================================
+
+
+async function getConversation(friendID){
+
+
+
+    const id =
+    [
+
+        currentUser.uid,
+
+        friendID
+
+    ]
+    .sort()
+    .join("_");
+
+
+
+    const conversationRef =
+    doc(
+        db,
+        "conversations",
+        id
+    );
+
+
+
+    const snap =
+    await getDoc(
+        conversationRef
+    );
+
+
+
+    if(!snap.exists()){
+
+
+        await setDoc(
+
+            conversationRef,
+
+            {
+
+                participants:[
+
+                    currentUser.uid,
+
+                    friendID
+
+                ],
+
+                lastMessage:"",
+
+                updatedAt:
+                serverTimestamp()
+
+            }
+
+        );
+
+
+    }
+
+
+
+    return id;
+
+
+}
+
+
+
+
+
+
+
+// =================================
 // LOAD MESSAGES
-// ==========================
+// =================================
 
 
 function loadMessages(id){
+
+
+
+    if(unsubscribeMessages)
+    {
+        unsubscribeMessages();
+    }
 
 
 
@@ -263,62 +396,74 @@ function loadMessages(id){
 
         ),
 
+
         orderBy(
             "createdAt"
         )
 
+
     );
 
 
+
+    unsubscribeMessages =
 
     onSnapshot(
 
-        q,
+    q,
 
-        (snapshot)=>{
-
-
-            dmMessages.innerHTML="";
+    (snapshot)=>{
 
 
-
-            snapshot.forEach(message=>{
-
-
-                const data =
-                message.data();
+        dmMessages.innerHTML="";
 
 
 
-                const div =
-                document.createElement("div");
+        snapshot.forEach(message=>{
+
+
+            const data =
+            message.data();
 
 
 
-                div.className =
-                "dm-message";
+            const div =
+            document.createElement("div");
 
 
 
-                div.textContent =
-                data.text;
+            div.className =
+            data.senderID === currentUser.uid
+
+            ?
+
+            "dm-message mine"
+
+            :
+
+            "dm-message";
 
 
 
-                dmMessages.appendChild(div);
-
-
-            });
+            div.textContent =
+            data.text;
 
 
 
-            dmMessages.scrollTop =
-            dmMessages.scrollHeight;
+            dmMessages.appendChild(div);
 
 
-        }
 
-    );
+        });
+
+
+
+        dmMessages.scrollTop =
+        dmMessages.scrollHeight;
+
+
+
+    });
 
 
 }
@@ -329,9 +474,10 @@ function loadMessages(id){
 
 
 
-// ==========================
+
+// =================================
 // SEND MESSAGE
-// ==========================
+// =================================
 
 
 dmSend.onclick =
@@ -385,7 +531,86 @@ async()=>{
 
 
 
+    await setDoc(
+
+        doc(
+            db,
+            "conversations",
+            currentConversation
+        ),
+
+        {
+
+            lastMessage:text,
+
+            updatedAt:
+            serverTimestamp()
+
+        },
+
+        {
+
+            merge:true
+
+        }
+
+    );
+
+
+
     dmInput.value="";
+
+
+};
+
+
+
+
+
+// =================================
+// OPEN FROM FRIEND BUTTON
+// =================================
+
+
+window.openMessage =
+async function(friendID){
+
+
+    const userSnap =
+    await getDoc(
+
+        doc(
+            db,
+            "users",
+            friendID
+        )
+
+    );
+
+
+
+    if(!userSnap.exists())
+    return;
+
+
+
+    const person =
+    userSnap.data();
+
+
+
+    const conversationID =
+    await getConversation(
+        friendID
+    );
+
+
+
+    openConversation(
+        conversationID,
+        friendID,
+        person
+    );
 
 
 };
