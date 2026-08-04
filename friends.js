@@ -767,7 +767,6 @@ function loadFriends(){
             };
 
 
-
             friendsList.appendChild(card);
 
 
