@@ -155,6 +155,7 @@ async function loadReports() {
                 Failed to load reports.
             </div>
         `;
+        
     }
 
 }
