@@ -358,11 +358,77 @@ Bio
 </p>
 
 
-<button 
-id="profileAction"
+<div class="profile-actions">
+
+    <button 
+    id="profileAction"
+    >
+    Add Friend
+    </button>
+
+    <button 
+    id="reportUser"
+    class="report-button"
+    >
+    Report User
+    </button>
+
+</div>
+
+<div 
+id="reportForm"
+class="report-form hidden-page"
 >
-Add Friend
-</button>
+
+    <h3>Report User</h3>
+
+    <select id="reportReason">
+
+        <option value="">
+            Select a reason
+        </option>
+
+        <option value="harassment">
+            Harassment
+        </option>
+
+        <option value="spam">
+            Spam
+        </option>
+
+        <option value="inappropriate">
+            Inappropriate Content
+        </option>
+
+        <option value="impersonation">
+            Impersonation
+        </option>
+
+        <option value="other">
+            Other
+        </option>
+
+    </select>
+
+    <textarea
+    id="reportDetails"
+    placeholder="Additional details (optional)"
+    maxlength="500"
+    ></textarea>
+
+    <div class="report-actions">
+
+        <button id="cancelReport">
+            Cancel
+        </button>
+
+        <button id="submitReport">
+            Submit Report
+        </button>
+
+    </div>
+
+</div>
 
 
 </div>
