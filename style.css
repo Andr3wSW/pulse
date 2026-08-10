@@ -3193,33 +3193,21 @@ footer p{
 }
 
 /* ==========================
-   MODERATION
+   MODERATION REPORTS
 ========================== */
 
-.moderation-header{
+.moderation-report {
 
-    margin-bottom:35px;
+    display:flex;
 
-}
+    justify-content:space-between;
+    align-items:center;
 
-.moderation-header h1{
+    gap:20px;
 
-    font-size:42px;
+    padding:20px;
 
-    margin-bottom:10px;
-
-}
-
-.moderation-header p{
-
-    opacity:.65;
-
-    font-size:18px;
-
-}
-
-
-.moderation-section{
+    margin-bottom:15px;
 
     background:
     rgba(15,17,21,.8);
@@ -3227,118 +3215,78 @@ footer p{
     border:
     1px solid rgba(255,255,255,.08);
 
-    border-radius:30px;
-
-    padding:30px;
-
-}
-
-
-.moderation-section h2{
-
-    font-size:24px;
-
-    margin-bottom:25px;
-
-}
-
-
-.report-card{
-
-    padding:22px;
-
-    margin-bottom:15px;
-
-    border:
-    1px solid rgba(255,255,255,.08);
-
     border-radius:20px;
 
+    cursor:pointer;
+
+    transition:.2s;
+}
+
+
+.moderation-report:hover {
+
     background:
-    rgba(255,255,255,.03);
+    rgba(34,197,94,.08);
+
+    border-color:
+    rgba(34,197,94,.25);
+
+    transform:translateY(-1px);
 
 }
 
 
-.report-card-header{
+.moderation-report-info {
 
-    display:flex;
-
-    justify-content:space-between;
-
-    align-items:center;
-
-    margin-bottom:15px;
+    min-width:0;
 
 }
 
 
-.report-reason{
+.moderation-report-info h3 {
 
-    font-weight:700;
+    margin:0 0 8px;
 
     font-size:18px;
 
 }
 
 
-.report-date{
+.moderation-report-info p {
 
-    opacity:.5;
+    margin:5px 0;
 
-    font-size:13px;
-
-}
-
-
-.report-users p{
-
-    margin:6px 0;
-
-    opacity:.8;
+    color:rgba(255,255,255,.65);
 
 }
 
 
-.report-details{
+.moderation-report-status {
 
-    margin-top:15px;
+    flex-shrink:0;
 
-    padding:15px;
+}
 
-    border-radius:12px;
+
+.moderation-report-status .count-badge {
 
     background:
-    rgba(255,255,255,.05);
-
-    opacity:.75;
-
-}
-
-
-.report-status{
-
-    margin-top:15px;
-
-}
-
-
-.report-status span{
-
-    display:inline-block;
-
-    padding:6px 12px;
-
-    border-radius:10px;
-
-    background:
-    rgba(34,197,94,.12);
+    rgba(34,197,94,.15);
 
     color:#22c55e;
 
-    font-size:13px;
+}
 
-    font-weight:700;
+
+@media(max-width:700px){
+
+    .moderation-report {
+
+        flex-direction:column;
+
+        align-items:flex-start;
+
+    }
 
 }
 
