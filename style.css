@@ -3193,6 +3193,156 @@ footer p{
 }
 
 /* ==========================
+   MODERATION
+========================== */
+
+.moderation-header{
+
+    margin-bottom:35px;
+
+}
+
+.moderation-header h1{
+
+    font-size:42px;
+
+    margin-bottom:10px;
+
+}
+
+.moderation-header p{
+
+    opacity:.65;
+
+    font-size:18px;
+
+}
+
+
+.moderation-section{
+
+    background:
+    rgba(15,17,21,.8);
+
+    border:
+    1px solid rgba(255,255,255,.08);
+
+    border-radius:30px;
+
+    padding:30px;
+
+}
+
+
+.moderation-section h2{
+
+    font-size:24px;
+
+    margin-bottom:25px;
+
+}
+
+
+.report-card{
+
+    padding:22px;
+
+    margin-bottom:15px;
+
+    border:
+    1px solid rgba(255,255,255,.08);
+
+    border-radius:20px;
+
+    background:
+    rgba(255,255,255,.03);
+
+}
+
+
+.report-card-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:15px;
+
+}
+
+
+.report-reason{
+
+    font-weight:700;
+
+    font-size:18px;
+
+}
+
+
+.report-date{
+
+    opacity:.5;
+
+    font-size:13px;
+
+}
+
+
+.report-users p{
+
+    margin:6px 0;
+
+    opacity:.8;
+
+}
+
+
+.report-details{
+
+    margin-top:15px;
+
+    padding:15px;
+
+    border-radius:12px;
+
+    background:
+    rgba(255,255,255,.05);
+
+    opacity:.75;
+
+}
+
+
+.report-status{
+
+    margin-top:15px;
+
+}
+
+
+.report-status span{
+
+    display:inline-block;
+
+    padding:6px 12px;
+
+    border-radius:10px;
+
+    background:
+    rgba(34,197,94,.12);
+
+    color:#22c55e;
+
+    font-size:13px;
+
+    font-weight:700;
+
+}
+
+/* ==========================
    RESPONSIVE
 ========================== */
 

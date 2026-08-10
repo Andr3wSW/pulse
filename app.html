@@ -98,6 +98,14 @@ Friends
 
 </button>
 
+<button
+    id="moderationOption"
+    class="app-option hidden-page"
+    data-page="moderation"
+>
+    Moderation
+</button>
+
 
 </aside>
 
@@ -314,6 +322,49 @@ Friends
 
     </section>
 
+    <section
+    id="moderation-page"
+    class="hidden-page"
+    >
+
+        <div class="moderation-header">
+
+            <h1>
+                Moderation
+            </h1>
+
+            <p>
+                Review reports submitted by Pulse users.
+            </p>
+
+        </div>
+
+
+        <div class="moderation-section">
+
+            <h2>
+                Open Reports
+                <span
+                    id="openReportCount"
+                    class="count-badge"
+                >
+                    0
+                </span>
+            </h2>
+
+
+            <div id="reportsList">
+
+                <div class="empty-state">
+                    No open reports.
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
 
 
 </main>
@@ -451,6 +502,8 @@ class="report-form hidden-page"
 <script type="module" src="profile.js"></script>
 
 <script type="module" src="messages.js"></script>
+
+<script type="module" src="moderation.js"></script>
 
 </body>
 

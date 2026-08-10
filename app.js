@@ -3,160 +3,222 @@ import { checkAuth } from "./auth.js";
 import { db } from "./firebase.js";
 
 import {
-doc,
-getDoc
+    doc,
+    getDoc
 }
 from
 "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
 
 
-
+// ==========================
+// AUTH / PROFILE
+// ==========================
 
 checkAuth()
 
 .then(async(user)=>{
 
-
-const userRef =
-doc(
-db,
-"users",
-user.uid
-);
-
-
-const userSnap =
-await getDoc(userRef);
+    const userRef =
+    doc(
+        db,
+        "users",
+        user.uid
+    );
 
 
-
-if(userSnap.exists()){
-
-
-const data =
-userSnap.data();
+    const userSnap =
+    await getDoc(userRef);
 
 
-
-const displayName =
-data.firstName +
-(
-data.lastName
-?
-" " + data.lastName
-:
-""
-);
+    if(!userSnap.exists())
+        return;
 
 
-
-document
-.getElementById("profileName")
-.textContent =
-displayName;
+    const data =
+    userSnap.data();
 
 
+    // ==========================
+    // PROFILE HEADER
+    // ==========================
 
-const profileCircle =
-document.getElementById("profileInitial");
-
-
-if(data.profilePicture){
-
-    profileCircle.innerHTML = `
-        <img 
-        src="${data.profilePicture}" 
-        class="profile-avatar-image"
-        >
-    `;
-
-}
-else{
-
-    profileCircle.textContent =
-    data.firstName
-    .charAt(0)
-    .toUpperCase();
-
-}
+    const displayName =
+    data.firstName +
+    (
+        data.lastName
+        ?
+        " " + data.lastName
+        :
+        ""
+    );
 
 
-}
+    const profileName =
+    document.getElementById(
+        "profileName"
+    );
 
 
+    if(profileName){
+
+        profileName.textContent =
+        displayName;
+
+    }
+
+
+    const profileCircle =
+    document.getElementById(
+        "profileInitial"
+    );
+
+
+    if(profileCircle){
+
+        if(data.profilePicture){
+
+            profileCircle.innerHTML = `
+                <img
+                    src="${data.profilePicture}"
+                    class="profile-avatar-image"
+                >
+            `;
+
+        }
+
+        else{
+
+            profileCircle.textContent =
+            data.firstName
+            .charAt(0)
+            .toUpperCase();
+
+        }
+
+    }
+
+
+    // ==========================
+    // MODERATION ACCESS
+    // ==========================
+
+    const role =
+    data.role || "user";
+
+
+    const moderationOption =
+    document.getElementById(
+        "moderationOption"
+    );
+
+
+    if(
+        moderationOption &&
+        (
+            role === "owner" ||
+            role === "admin" ||
+            role === "moderator"
+        )
+    ){
+
+        moderationOption.classList.remove(
+            "hidden-page"
+        );
+
+    }
 
 });
 
+
 // ==========================
-// App Navigation
+// APP NAVIGATION
 // ==========================
 
 const buttons =
-document.querySelectorAll(".app-option");
+document.querySelectorAll(
+    ".app-option"
+);
 
 
 const pages = {
 
     global:
-    document.getElementById("global-page"),
+    document.getElementById(
+        "global-page"
+    ),
 
     friends:
-    document.getElementById("friends-page"),
+    document.getElementById(
+        "friends-page"
+    ),
 
     messages:
-    document.getElementById("messages-page")
+    document.getElementById(
+        "messages-page"
+    ),
+
+    moderation:
+    document.getElementById(
+        "moderation-page"
+    )
 
 };
 
 
-
 buttons.forEach(button=>{
 
+    button.addEventListener(
+        "click",
+        ()=>{
 
-    button.addEventListener("click",()=>{
-
-
-        const selected =
-        button.dataset.page;
-
-
-
-        // remove active
-
-        buttons.forEach(btn=>{
-
-            btn.classList.remove("active");
-
-        });
+            const selected =
+            button.dataset.page;
 
 
+            // Remove active state
 
-        button.classList.add("active");
+            buttons.forEach(btn=>{
 
+                btn.classList.remove(
+                    "active"
+                );
 
-
-        // hide everything
-
-        Object.values(pages).forEach(page=>{
-
-            if(page)
-            page.classList.add("hidden-page");
-
-        });
+            });
 
 
+            button.classList.add(
+                "active"
+            );
 
-        // show selected
 
-        if(pages[selected]){
+            // Hide every page
 
-            pages[selected]
-            .classList.remove("hidden-page");
+            Object.values(pages)
+            .forEach(page=>{
+
+                if(page){
+
+                    page.classList.add(
+                        "hidden-page"
+                    );
+
+                }
+
+            });
+
+
+            // Show selected page
+
+            if(pages[selected]){
+
+                pages[selected]
+                .classList.remove(
+                    "hidden-page"
+                );
+
+            }
 
         }
-
-
-    });
-
+    );
 
 });
