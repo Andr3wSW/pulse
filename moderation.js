@@ -35,7 +35,7 @@ let currentUser = null;
 // AUTH
 // ==========================
 
-auth.onAuthStateChanged(async user => {
+auth.onAuthStateChanged(async (user) => {
 
     if (!user)
         return;
@@ -55,25 +55,23 @@ async function loadReports() {
 
     try {
 
-        const reportsQuery =
-            query(
-                collection(db, "reports"),
-                where("status", "==", "open"),
-                orderBy("createdAt", "desc")
-            );
-
+        const reportsQuery = query(
+            collection(db, "reports"),
+            where("status", "==", "open"),
+            orderBy("createdAt", "desc")
+        );
 
         const snapshot =
             await getDocs(reportsQuery);
 
+        if (openReportCount) {
 
-        if (openReportCount)
             openReportCount.textContent =
                 snapshot.size;
 
+        }
 
         reportsList.innerHTML = "";
-
 
         if (snapshot.empty) {
 
@@ -84,15 +82,12 @@ async function loadReports() {
             `;
 
             return;
-
         }
-
 
         for (const reportDoc of snapshot.docs) {
 
             const data =
                 reportDoc.data();
-
 
             const card =
                 await createReportCard(
@@ -100,14 +95,10 @@ async function loadReports() {
                     data
                 );
 
-
             reportsList.appendChild(card);
-
         }
 
-    }
-
-    catch (error) {
+    } catch (error) {
 
         console.error(
             "Failed to load reports:",
@@ -119,9 +110,7 @@ async function loadReports() {
                 Failed to load reports.
             </div>
         `;
-
     }
-
 }
 
 
@@ -137,20 +126,17 @@ async function createReportCard(
     const card =
         document.createElement("div");
 
-
     card.className =
         "moderation-report";
 
-
     let reportedName =
         "Unknown User";
-
 
     let reporterName =
         "Unknown User";
 
 
-    // Get reported user
+    // Reported user
 
     if (data.reportedUser) {
 
@@ -163,22 +149,18 @@ async function createReportCard(
                 )
             );
 
-
         if (reportedSnap.exists()) {
 
             const user =
                 reportedSnap.data();
 
-
             reportedName =
                 `${user.firstName} ${user.lastName || ""}`;
-
         }
-
     }
 
 
-    // Get reporter
+    // Reporter
 
     if (data.reportedBy) {
 
@@ -191,18 +173,14 @@ async function createReportCard(
                 )
             );
 
-
         if (reporterSnap.exists()) {
 
             const user =
                 reporterSnap.data();
 
-
             reporterName =
                 `${user.firstName} ${user.lastName || ""}`;
-
         }
-
     }
 
 
@@ -228,7 +206,6 @@ async function createReportCard(
 
         </div>
 
-
         <div class="moderation-report-status">
 
             <span class="count-badge">
@@ -239,8 +216,6 @@ async function createReportCard(
 
     `;
 
-
-    // Open report
 
     card.onclick = () => {
 
@@ -255,7 +230,6 @@ async function createReportCard(
 
 
     return card;
-
 }
 
 
@@ -272,7 +246,6 @@ function openReport(
 
     const panel =
         document.createElement("div");
-
 
     panel.className =
         "report-review-panel";
@@ -416,7 +389,6 @@ function openReport(
             );
 
         };
-
 }
 
 
@@ -440,16 +412,13 @@ async function dismissReport(
             ),
 
             {
-
-                status:
-                    "dismissed",
+                status: "dismissed",
 
                 resolvedBy:
                     currentUser.uid,
 
                 resolvedAt:
                     serverTimestamp()
-
             }
 
         );
@@ -459,9 +428,7 @@ async function dismissReport(
 
         await loadReports();
 
-    }
-
-    catch (error) {
+    } catch (error) {
 
         console.error(
             "Failed to dismiss report:",
@@ -471,9 +438,7 @@ async function dismissReport(
         alert(
             "Failed to dismiss report."
         );
-
     }
-
 }
 
 
@@ -494,7 +459,6 @@ async function timeoutUser(
         );
 
         return;
-
     }
 
 
@@ -512,8 +476,7 @@ async function timeoutUser(
 
         const timeoutUntil =
             new Date(
-                Date.now()
-                +
+                Date.now() +
                 (24 * 60 * 60 * 1000)
             );
 
@@ -527,14 +490,12 @@ async function timeoutUser(
             ),
 
             {
-
                 timeoutUntil:
                     timeoutUntil,
 
                 timeoutReason:
                     data.reason ||
                     "User reported"
-
             }
 
         );
@@ -549,19 +510,15 @@ async function timeoutUser(
             ),
 
             {
+                status: "resolved",
 
-                status:
-                    "resolved",
-
-                action:
-                    "timeout",
+                action: "timeout",
 
                 resolvedBy:
                     currentUser.uid,
 
                 resolvedAt:
                     serverTimestamp()
-
             }
 
         );
@@ -571,13 +528,12 @@ async function timeoutUser(
 
         await loadReports();
 
+
         alert(
             "User has been timed out for 24 hours."
         );
 
-    }
-
-    catch (error) {
+    } catch (error) {
 
         console.error(
             "Failed to timeout user:",
@@ -587,9 +543,7 @@ async function timeoutUser(
         alert(
             "Failed to timeout user."
         );
-
     }
-
 }
 
 
