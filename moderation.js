@@ -145,7 +145,7 @@ async function loadReports() {
     } catch (error) {
 
         console.error(
-            "Failed to load reports:",
+            "Failed to load the reports:",
             error
         );
 
@@ -155,7 +155,7 @@ async function loadReports() {
                 Failed to load reports.
             </div>
         `;
-        
+
     }
 
 }
