@@ -137,6 +137,12 @@ async function loadReports() {
                 </div>
             `;
 
+            card.onclick = () => {
+
+                openReport(reportDoc.id, data);
+
+            };
+
 
             reportsList.appendChild(card);
         }
@@ -157,5 +163,15 @@ async function loadReports() {
         `;
 
     }
+
+}
+
+function openReport(reportID, data) {
+
+    console.log(
+        "Opening report:",
+        reportID,
+        data
+    );
 
 }
